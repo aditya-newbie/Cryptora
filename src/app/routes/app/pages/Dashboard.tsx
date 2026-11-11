@@ -14,6 +14,8 @@ import {
 
 import fetchMarket from "../../../../services/coingecko/market";
 import fetchTrending from "../../../../services/coingecko/trending";
+import type { TrendingCoin } from "../../../../types/TrendingCoin";
+import { formatNumber } from "../../../../utils/format";
 
 export default function Dashboard() {
 
@@ -27,74 +29,35 @@ export default function Dashboard() {
     queryFn: fetchTrending
   })
 
+  const coins: TrendingCoin[] | undefined = trendingQuery.data?.coins
+
+
   return (
     <div className="font-body min-h-screen bg-canvas text-white">
       {/* ── Ticker Tape ── */}
       <div className="w-full overflow-x-auto scrollbar-hide border-b border-card bg-canvas">
         <div className="flex items-center gap-8 px-6 py-2.5 whitespace-nowrap min-w-max">
-          {/* BTC */}
-          <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold">₿</span>
-            <span className="text-sm text-gray-300">BTC</span>
-            <span className="text-sm font-medium tabular-nums">$67,432</span>
-            <span className="text-sm text-gain tabular-nums">+1.2%</span>
-          </div>
 
-          {/* ETH */}
-          <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-[10px] font-bold">Ξ</span>
-            <span className="text-sm text-gray-300">ETH</span>
-            <span className="text-sm font-medium tabular-nums">$3,245</span>
-            <span className="text-sm text-loss tabular-nums">-0.5%</span>
-          </div>
-
-          {/* BNB */}
-          <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-yellow-500 text-[10px] font-bold">B</span>
-            <span className="text-sm text-gray-300">BNB</span>
-            <span className="text-sm font-medium tabular-nums">$602</span>
-            <span className="text-sm text-gain tabular-nums">+0.9%</span>
-          </div>
-
-          {/* SOL */}
-          <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-purple-500 text-[10px] font-bold">S</span>
-            <span className="text-sm text-gray-300">SOL</span>
-            <span className="text-sm font-medium tabular-nums">$153</span>
-            <span className="text-sm text-gain tabular-nums">+2.4%</span>
-          </div>
-
-          {/* XRP */}
-          <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-500 text-[10px] font-bold">✕</span>
-            <span className="text-sm text-gray-300">XRP</span>
-            <span className="text-sm font-medium tabular-nums">$0.52</span>
-            <span className="text-sm text-loss tabular-nums">-1.1%</span>
-          </div>
-
-          {/* DOGE */}
-          <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-400 text-[10px] font-bold">D</span>
-            <span className="text-sm text-gray-300">DOGE</span>
-            <span className="text-sm font-medium tabular-nums">$0.16</span>
-            <span className="text-sm text-gain tabular-nums">+3.0%</span>
-          </div>
-
-          {/* ADA */}
-          <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-sky-500 text-[10px] font-bold">A</span>
-            <span className="text-sm text-gray-300">ADA</span>
-            <span className="text-sm font-medium tabular-nums">$0.38</span>
-            <span className="text-sm text-gain tabular-nums">+1.8%</span>
-          </div>
-
-          {/* AVAX */}
-          <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold">A</span>
-            <span className="text-sm text-gray-300">AVAX</span>
-            <span className="text-sm font-medium tabular-nums">$34.12</span>
-            <span className="text-sm text-loss tabular-nums">-0.7%</span>
-          </div>
+          {coins && coins.map(coin => {
+            return (
+              <div key={coin.item.id} className="flex items-center gap-2">
+                <img
+                  className="flex h-5 w-5 items-center justify-center"
+                  src={coin.item.thumb}
+                  alt={coin.item.name}
+                />
+                <span className="text-sm text-gray-300">{coin.item.name}</span>
+                <span className="text-sm font-medium tabular-nums">₹{formatNumber(coin.item.data.price)}</span>
+                <span className={`text-sm 
+                  ${
+                    coin.item.data.price_change_percentage_24h.inr >=0
+                      ? "text-gain"
+                      : "text-loss"
+                  } 
+                  tabular-nums`}>{formatNumber(coin.item.data.price_change_percentage_24h.inr)}%</span>
+              </div>
+            )
+          })}
         </div>
       </div>
 

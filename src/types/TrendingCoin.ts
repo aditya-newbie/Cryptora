@@ -1,4 +1,4 @@
-export default interface TrendingCoin {
+export interface TrendingCoin {
   item: {
     id: string;
     coin_id: number;
@@ -32,4 +32,8 @@ export default interface TrendingCoin {
       } | null;
     };
   };
+}
+
+export interface TrendingResponse {
+  coins: TrendingCoin[],
 }
