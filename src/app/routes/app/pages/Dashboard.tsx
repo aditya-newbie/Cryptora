@@ -1,9 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-
 import {
   Info,
   Filter,
-  ChevronDown,
   List,
   LayoutGrid,
   DollarSign,
@@ -12,24 +9,54 @@ import {
   Bitcoin,
 } from "lucide-react";
 
-import fetchMarket from "../../../../services/coingecko/market";
-import fetchTrending from "../../../../services/coingecko/trending";
 import type { TrendingCoin } from "../../../../types/TrendingCoin";
-import { formatNumber } from "../../../../utils/format";
+import { formatNumber, formatMatricPrefix, capitalise } from "../../../../utils/format";
+import { getMarketBreadth } from "../../../../utils/calc";
+import useDashboard from "../../../../hooks/useDashboard";
+import { useFilterStore } from "../../../../stores/dashboard-filter-store";
+import { DashboardSelect } from "../../../../components/select";
 
 export default function Dashboard() {
 
-  const marketQuery = useQuery({
-    queryKey: ["market"],
-    queryFn: fetchMarket
-  })
+  const { market, trending, global, error, isPending } = useDashboard();
 
-  const trendingQuery = useQuery({
-    queryKey: ["trending"],
-    queryFn: fetchTrending
-  })
+  const category = useFilterStore((state) => state.category);
+  const categoryFilters = useFilterStore((state) => state.categoryFilters);
+  const setCategory = useFilterStore((state) => state.setCategory);
+  const marketCap = useFilterStore((state) => state.marketCap);
+  const marketCapFilters = useFilterStore((state) => state.marketCapFilters);
+  const setMarketCap = useFilterStore((state) => state.setMarketCap);
+  const change24h = useFilterStore((state) => state.change24h);
+  const change24hFilters = useFilterStore((state) => state.change24hFilters);
+  const setChange24h = useFilterStore((state) => state.setChange24h);
 
-  const coins: TrendingCoin[] | undefined = trendingQuery.data?.coins
+  if (isPending) {
+    return <div className="p-6 text-gray-300">Loading market data...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 text-loss">
+        Could not load market data: {error.message}
+      </div>
+    );
+  }
+
+  const coins: TrendingCoin[] | undefined = trending?.coins;
+  const marketBreadth = getMarketBreadth(market);
+  const totalMarketCap = global?.data?.total_market_cap?.inr;
+  const marketCapChangePercentage = global?.data?.market_cap_change_percentage_24h_usd;
+  const volume24h = global?.data?.total_volume?.inr;
+  const volumeChangePercentage = global?.data?.volume_change_percentage_24h_usd;
+  const fearGreedIndex = global?.data?.fear_and_greed_index;
+  const btcDominance = (global?.data?.market_cap_percentage.btc)?.toFixed(1);
+
+  // const categoryFiltered = market.filter(coin => {
+  //   if (category === "All Categories") return true;
+  //   if (category === "Layer 1 (L1)") {
+
+  //   }
+  // })
 
 
   return (
@@ -49,10 +76,9 @@ export default function Dashboard() {
                 <span className="text-sm text-gray-300">{coin.item.name}</span>
                 <span className="text-sm font-medium tabular-nums">₹{formatNumber(coin.item.data.price)}</span>
                 <span className={`text-sm 
-                  ${
-                    coin.item.data.price_change_percentage_24h.inr >=0
-                      ? "text-gain"
-                      : "text-loss"
+                  ${coin.item.data.price_change_percentage_24h.inr >= 0
+                    ? "text-gain"
+                    : "text-loss"
                   } 
                   tabular-nums`}>{formatNumber(coin.item.data.price_change_percentage_24h.inr)}%</span>
               </div>
@@ -80,14 +106,14 @@ export default function Dashboard() {
                 <span>Market Breadth</span>
                 <Info className="h-3.5 w-3.5 text-gray-500" />
                 <span className="ml-4 text-gray-400">
-                  <span className="text-gain text-xs">68% Up</span>
+                  <span className="text-gain text-xs">{marketBreadth.advancing}%</span>
                   <span className="mx-1">·</span>
-                  <span className="text-loss text-xs">32% Down</span>
+                  <span className="text-loss text-xs">{marketBreadth.declining}%</span>
                 </span>
               </div>
               <div className="mt-2.5 flex h-2 w-64 overflow-hidden rounded-full">
-                <div className="bg-gain" style={{ width: "68%" }}></div>
-                <div className="bg-loss" style={{ width: "32%" }}></div>
+                <div className="bg-gain" style={{ width: `${marketBreadth.advancing}%` }}></div>
+                <div className="bg-loss" style={{ width: `${marketBreadth.declining}%` }}></div>
               </div>
             </div>
           </div>
@@ -100,8 +126,11 @@ export default function Dashboard() {
                 <DollarSign className="h-4 w-4 text-accent" />
                 <span>Total Market Cap</span>
               </div>
-              <p className="mt-3 text-3xl font-bold tabular-nums">$2.43T</p>
-              <p className="mt-1 text-sm text-gain tabular-nums">+1.21%</p>
+              <p className="mt-3 text-3xl font-bold tabular-nums">₹{formatMatricPrefix(totalMarketCap)}</p>
+              <p className={
+                `mt-1 text-sm tabular-nums 
+                ${Number(marketCapChangePercentage) >= 0 ? "text-gain" : "text-loss"}`
+              }>{formatNumber(marketCapChangePercentage)}%</p>
             </div>
 
             {/* 24h Volume */}
@@ -110,8 +139,8 @@ export default function Dashboard() {
                 <BarChart3 className="h-4 w-4 text-accent" />
                 <span>24h Volume</span>
               </div>
-              <p className="mt-3 text-3xl font-bold tabular-nums">$112.4B</p>
-              <p className="mt-1 text-sm text-gain tabular-nums">+8.32%</p>
+              <p className="mt-3 text-3xl font-bold tabular-nums">₹{formatMatricPrefix(volume24h)}</p>
+              <p className="mt-1 text-sm text-gain tabular-nums">{formatNumber(volumeChangePercentage)}%</p>
             </div>
 
             {/* Market Sentiment */}
@@ -121,8 +150,11 @@ export default function Dashboard() {
                 <span>Market Sentiment</span>
               </div>
               <div className="mt-3 flex flex-col items-center">
-                <span className="text-3xl font-bold tabular-nums">72</span>
-                <span className="mt-1 text-sm text-gain">Greed</span>
+                <span className="text-3xl font-bold tabular-nums">{fearGreedIndex?.value}</span>
+                <span className={
+                  `mt-1 text-sm 
+                  ₹{fearGreedIndex?.sentiment === "fear" ? "text-loss" : "text-gain"}`
+                }>{capitalise(fearGreedIndex?.sentiment)}</span>
               </div>
             </div>
 
@@ -132,8 +164,7 @@ export default function Dashboard() {
                 <Bitcoin className="h-4 w-4 text-accent" />
                 <span>BTC Dominance</span>
               </div>
-              <p className="mt-3 text-3xl font-bold tabular-nums">52.3%</p>
-              <p className="mt-1 text-sm text-loss tabular-nums">−0.42%</p>
+              <p className="mt-4 text-3xl font-bold tabular-nums">{btcDominance}%</p>
             </div>
           </div>
         </div>
@@ -148,22 +179,13 @@ export default function Dashboard() {
             </button>
 
             {/* Category Dropdown */}
-            <button className="flex items-center gap-2 rounded-lg border border-card bg-card px-4 py-2 text-sm text-gray-300 hover:text-white cursor-pointer">
-              Category
-              <ChevronDown className="h-4 w-4 text-gray-500" />
-            </button>
+            <DashboardSelect value={category} onChange={setCategory} values={categoryFilters} placeholder="Category"/>
 
             {/* Market Cap Dropdown */}
-            <button className="flex items-center gap-2 rounded-lg border border-card bg-card px-4 py-2 text-sm text-gray-300 hover:text-white cursor-pointer">
-              Market Cap
-              <ChevronDown className="h-4 w-4 text-gray-500" />
-            </button>
+            <DashboardSelect value={marketCap} onChange={setMarketCap} values={marketCapFilters} placeholder="MarketCap" />
 
             {/* 24h Change Dropdown */}
-            <button className="flex items-center gap-2 rounded-lg border border-card bg-card px-4 py-2 text-sm text-gray-300 hover:text-white cursor-pointer">
-              24h Change
-              <ChevronDown className="h-4 w-4 text-gray-500" />
-            </button>
+            <DashboardSelect value={change24h} onChange={setChange24h} values={change24hFilters} placeholder="24h Change" />
           </div>
 
           {/* Right: View Toggle */}
@@ -194,121 +216,41 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {/* Row 1 - Bitcoin */}
-              <tr className="border-b border-card hover-card">
-                <td className="px-5 py-4 text-gray-400">1</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-xs font-bold">₿</span>
-                    <div>
-                      <span className="font-medium">Bitcoin</span>
-                      <span className="ml-2 text-xs text-gray-500">BTC</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$67,432</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+1.20%</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+3.86%</td>
-                <td className="px-5 py-4 tabular-nums">$1.33T</td>
-                <td className="px-5 py-4 tabular-nums">$28.42B</td>
-                <td className="px-5 py-4 tabular-nums">19.72M BTC</td>
-                <td className="px-5 py-4">
-                  {/* Chart placeholder */}
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
 
-              {/* Row 2 - Ethereum */}
-              <tr className="border-b border-card hover-card">
-                <td className="px-5 py-4 text-gray-400">2</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-xs font-bold">Ξ</span>
-                    <div>
-                      <span className="font-medium">Ethereum</span>
-                      <span className="ml-2 text-xs text-gray-500">ETH</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$3,245</td>
-                <td className="px-5 py-4 text-loss tabular-nums">-0.50%</td>
-                <td className="px-5 py-4 text-loss tabular-nums">-2.14%</td>
-                <td className="px-5 py-4 tabular-nums">$390.2B</td>
-                <td className="px-5 py-4 tabular-nums">$15.67B</td>
-                <td className="px-5 py-4 tabular-nums">120.19M ETH</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
+              {market && market.slice(0, 10).map(coin => {
+                return (
+                  <tr key={coin.id} className="border-b border-card hover-card">
+                    <td className="px-5 py-4 text-gray-400">{coin.market_cap_rank}</td>
+                    <td className="px-5 py-4">
+                      <div className="flex items-center gap-3">
+                        <img className="flex h-8 w-8 items-center justify-center rounded-full" src={coin.image} />
+                        <div>
+                          <span className="font-medium">{coin.name}</span>
+                          <span className="ml-2 text-xs text-gray-500">{coin.symbol}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-5 py-4 font-medium tabular-nums">₹{coin.current_price}</td>
+                    <td className={
+                      `px-5 py-4 tabular-nums
+                       ${coin.price_change_percentage_24h >= 0 ? "text-gain" : "text-loss"}`
+                      }>+{formatNumber(coin.price_change_percentage_24h)}%</td>
+                    <td className={
+                      `px-5 py-4 tabular-nums
+                      ${ coin.price_change_percentage_7d_in_currency &&
+                        coin.price_change_percentage_7d_in_currency >= 0 ? "text-gain" : "text-loss"}`
+                    }>{coin.price_change_percentage_7d_in_currency?.toFixed(2)}%</td>
+                    <td className="px-5 py-4 tabular-nums">₹{formatMatricPrefix(coin.market_cap)}</td>
+                    <td className="px-5 py-4 tabular-nums">₹{formatMatricPrefix(coin.total_volume)}</td>
+                    <td className="px-5 py-4 tabular-nums">{formatMatricPrefix(coin.circulating_supply)} {coin.symbol.toUpperCase()}</td>
+                    <td className="px-5 py-4">
+                      {/* Chart placeholder */}
+                      <div className="h-8 w-24 rounded bg-gray-800/50"></div>
+                    </td>
+                  </tr>
+                )
+              })}
 
-              {/* Row 3 - BNB */}
-              <tr className="border-b border-card hover-card">
-                <td className="px-5 py-4 text-gray-400">3</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500 text-xs font-bold">B</span>
-                    <div>
-                      <span className="font-medium">BNB</span>
-                      <span className="ml-2 text-xs text-gray-500">BNB</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$602</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+0.90%</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+4.21%</td>
-                <td className="px-5 py-4 tabular-nums">$92.78B</td>
-                <td className="px-5 py-4 tabular-nums">$2.14B</td>
-                <td className="px-5 py-4 tabular-nums">153.86M BNB</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
-
-              {/* Row 4 - Solana */}
-              <tr className="border-b border-card hover-card">
-                <td className="px-5 py-4 text-gray-400">4</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-500 text-xs font-bold">S</span>
-                    <div>
-                      <span className="font-medium">Solana</span>
-                      <span className="ml-2 text-xs text-gray-500">SOL</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$153</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+2.40%</td>
-                <td className="px-5 py-4 text-loss tabular-nums">-1.33%</td>
-                <td className="px-5 py-4 tabular-nums">$70.47B</td>
-                <td className="px-5 py-4 tabular-nums">$4.98B</td>
-                <td className="px-5 py-4 tabular-nums">459.31M SOL</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
-
-              {/* Row 5 - XRP */}
-              <tr className="hover-card">
-                <td className="px-5 py-4 text-gray-400">5</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-500 text-xs font-bold">✕</span>
-                    <div>
-                      <span className="font-medium">XRP</span>
-                      <span className="ml-2 text-xs text-gray-500">XRP</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$0.52</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+3.01%</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+2.17%</td>
-                <td className="px-5 py-4 tabular-nums">$29.12B</td>
-                <td className="px-5 py-4 tabular-nums">$2.53B</td>
-                <td className="px-5 py-4 tabular-nums">55.96M XRP</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>

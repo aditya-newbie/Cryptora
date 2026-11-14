@@ -115,11 +115,11 @@ export default function Market() {
                     </div>
                   </div>
                 </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$67,432.50</td>
+                <td className="px-5 py-4 font-medium tabular-nums">₹67,432.50</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+1.20%</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+3.86%</td>
-                <td className="px-5 py-4 tabular-nums">$1.33T</td>
-                <td className="px-5 py-4 tabular-nums">$28.42B</td>
+                <td className="px-5 py-4 tabular-nums">₹1.33T</td>
+                <td className="px-5 py-4 tabular-nums">₹28.42B</td>
                 <td className="px-5 py-4 tabular-nums">19.72M BTC</td>
                 <td className="px-5 py-4">
                   <div className="h-8 w-24 rounded bg-gray-800/50"></div>
@@ -138,11 +138,11 @@ export default function Market() {
                     </div>
                   </div>
                 </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$3,245.10</td>
+                <td className="px-5 py-4 font-medium tabular-nums">₹3,245.10</td>
                 <td className="px-5 py-4 text-loss tabular-nums">-0.50%</td>
                 <td className="px-5 py-4 text-loss tabular-nums">-2.14%</td>
-                <td className="px-5 py-4 tabular-nums">$390.2B</td>
-                <td className="px-5 py-4 tabular-nums">$15.67B</td>
+                <td className="px-5 py-4 tabular-nums">₹390.2B</td>
+                <td className="px-5 py-4 tabular-nums">₹15.67B</td>
                 <td className="px-5 py-4 tabular-nums">120.19M ETH</td>
                 <td className="px-5 py-4">
                   <div className="h-8 w-24 rounded bg-gray-800/50"></div>
@@ -161,11 +161,11 @@ export default function Market() {
                     </div>
                   </div>
                 </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$602.00</td>
+                <td className="px-5 py-4 font-medium tabular-nums">₹602.00</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+0.90%</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+4.21%</td>
-                <td className="px-5 py-4 tabular-nums">$92.78B</td>
-                <td className="px-5 py-4 tabular-nums">$2.14B</td>
+                <td className="px-5 py-4 tabular-nums">₹92.78B</td>
+                <td className="px-5 py-4 tabular-nums">₹2.14B</td>
                 <td className="px-5 py-4 tabular-nums">153.86M BNB</td>
                 <td className="px-5 py-4">
                   <div className="h-8 w-24 rounded bg-gray-800/50"></div>
@@ -184,11 +184,11 @@ export default function Market() {
                     </div>
                   </div>
                 </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$153.00</td>
+                <td className="px-5 py-4 font-medium tabular-nums">₹153.00</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+2.40%</td>
                 <td className="px-5 py-4 text-loss tabular-nums">-1.33%</td>
-                <td className="px-5 py-4 tabular-nums">$70.47B</td>
-                <td className="px-5 py-4 tabular-nums">$4.98B</td>
+                <td className="px-5 py-4 tabular-nums">₹70.47B</td>
+                <td className="px-5 py-4 tabular-nums">₹4.98B</td>
                 <td className="px-5 py-4 tabular-nums">459.31M SOL</td>
                 <td className="px-5 py-4">
                   <div className="h-8 w-24 rounded bg-gray-800/50"></div>
@@ -207,11 +207,11 @@ export default function Market() {
                     </div>
                   </div>
                 </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$0.52</td>
+                <td className="px-5 py-4 font-medium tabular-nums">₹0.52</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+3.01%</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+2.17%</td>
-                <td className="px-5 py-4 tabular-nums">$29.12B</td>
-                <td className="px-5 py-4 tabular-nums">$2.53B</td>
+                <td className="px-5 py-4 tabular-nums">₹29.12B</td>
+                <td className="px-5 py-4 tabular-nums">₹2.53B</td>
                 <td className="px-5 py-4 tabular-nums">55.96B XRP</td>
                 <td className="px-5 py-4">
                   <div className="h-8 w-24 rounded bg-gray-800/50"></div>
@@ -230,11 +230,11 @@ export default function Market() {
                     </div>
                   </div>
                 </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$0.16</td>
+                <td className="px-5 py-4 font-medium tabular-nums">₹0.16</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+3.00%</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+6.74%</td>
-                <td className="px-5 py-4 tabular-nums">$23.41B</td>
-                <td className="px-5 py-4 tabular-nums">$1.21B</td>
+                <td className="px-5 py-4 tabular-nums">₹23.41B</td>
+                <td className="px-5 py-4 tabular-nums">₹1.21B</td>
                 <td className="px-5 py-4 tabular-nums">144.72B DOGE</td>
                 <td className="px-5 py-4">
                   <div className="h-8 w-24 rounded bg-gray-800/50"></div>
@@ -253,11 +253,11 @@ export default function Market() {
                     </div>
                   </div>
                 </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$0.42</td>
+                <td className="px-5 py-4 font-medium tabular-nums">₹0.42</td>
                 <td className="px-5 py-4 text-loss tabular-nums">-1.12%</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+0.86%</td>
-                <td className="px-5 py-4 tabular-nums">$15.02B</td>
-                <td className="px-5 py-4 tabular-nums">$478.36M</td>
+                <td className="px-5 py-4 tabular-nums">₹15.02B</td>
+                <td className="px-5 py-4 tabular-nums">₹478.36M</td>
                 <td className="px-5 py-4 tabular-nums">35.68B ADA</td>
                 <td className="px-5 py-4">
                   <div className="h-8 w-24 rounded bg-gray-800/50"></div>
@@ -276,11 +276,11 @@ export default function Market() {
                     </div>
                   </div>
                 </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$34.21</td>
+                <td className="px-5 py-4 font-medium tabular-nums">₹34.21</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+4.35%</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+9.20%</td>
-                <td className="px-5 py-4 tabular-nums">$13.45B</td>
-                <td className="px-5 py-4 tabular-nums">$713.90M</td>
+                <td className="px-5 py-4 tabular-nums">₹13.45B</td>
+                <td className="px-5 py-4 tabular-nums">₹713.90M</td>
                 <td className="px-5 py-4 tabular-nums">392.22M AVAX</td>
                 <td className="px-5 py-4">
                   <div className="h-8 w-24 rounded bg-gray-800/50"></div>
@@ -299,11 +299,11 @@ export default function Market() {
                     </div>
                   </div>
                 </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$16.82</td>
+                <td className="px-5 py-4 font-medium tabular-nums">₹16.82</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+2.18%</td>
                 <td className="px-5 py-4 text-gain tabular-nums">+5.61%</td>
-                <td className="px-5 py-4 tabular-nums">$10.68B</td>
-                <td className="px-5 py-4 tabular-nums">$524.31M</td>
+                <td className="px-5 py-4 tabular-nums">₹10.68B</td>
+                <td className="px-5 py-4 tabular-nums">₹524.31M</td>
                 <td className="px-5 py-4 tabular-nums">633.10M LINK</td>
                 <td className="px-5 py-4">
                   <div className="h-8 w-24 rounded bg-gray-800/50"></div>
@@ -322,11 +322,11 @@ export default function Market() {
                     </div>
                   </div>
                 </td>
-                <td className="px-5 py-4 font-medium tabular-nums">$0.78</td>
+                <td className="px-5 py-4 font-medium tabular-nums">₹0.78</td>
                 <td className="px-5 py-4 text-loss tabular-nums">-0.63%</td>
                 <td className="px-5 py-4 text-loss tabular-nums">-1.97%</td>
-                <td className="px-5 py-4 tabular-nums">$7.73B</td>
-                <td className="px-5 py-4 tabular-nums">$280.41M</td>
+                <td className="px-5 py-4 tabular-nums">₹7.73B</td>
+                <td className="px-5 py-4 tabular-nums">₹280.41M</td>
                 <td className="px-5 py-4 tabular-nums">9.87B MATIC</td>
                 <td className="px-5 py-4">
                   <div className="h-8 w-24 rounded bg-gray-800/50"></div>

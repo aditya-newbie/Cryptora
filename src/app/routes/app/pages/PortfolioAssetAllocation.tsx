@@ -21,7 +21,7 @@ export default function PortfolioAssetAllocation() {
             <div className="relative flex h-48 w-48 shrink-0 items-center justify-center rounded-full border-8 border-card bg-canvas/40">
               <div className="flex flex-col items-center text-center">
                 <span className="text-xl font-bold tabular-nums text-white">
-                  $12,450.80
+                  ₹12,450.80
                 </span>
                 <span className="text-xs text-gray-400">Total Value</span>
               </div>
@@ -37,7 +37,7 @@ export default function PortfolioAssetAllocation() {
                 </div>
                 <span className="tabular-nums text-gray-400">42.3%</span>
                 <span className="font-medium tabular-nums text-white">
-                  $5,270.70
+                  ₹5,270.70
                 </span>
               </div>
 
@@ -49,7 +49,7 @@ export default function PortfolioAssetAllocation() {
                 </div>
                 <span className="tabular-nums text-gray-400">26.1%</span>
                 <span className="font-medium tabular-nums text-white">
-                  $3,251.40
+                  ₹3,251.40
                 </span>
               </div>
 
@@ -61,7 +61,7 @@ export default function PortfolioAssetAllocation() {
                 </div>
                 <span className="tabular-nums text-gray-400">12.8%</span>
                 <span className="font-medium tabular-nums text-white">
-                  $1,592.70
+                  ₹1,592.70
                 </span>
               </div>
 
@@ -73,7 +73,7 @@ export default function PortfolioAssetAllocation() {
                 </div>
                 <span className="tabular-nums text-gray-400">7.4%</span>
                 <span className="font-medium tabular-nums text-white">
-                  $921.30
+                  ₹921.30
                 </span>
               </div>
 
@@ -85,7 +85,7 @@ export default function PortfolioAssetAllocation() {
                 </div>
                 <span className="tabular-nums text-gray-400">11.4%</span>
                 <span className="font-medium tabular-nums text-white">
-                  $1,414.70
+                  ₹1,414.70
                 </span>
               </div>
             </div>
@@ -306,7 +306,7 @@ export default function PortfolioAssetAllocation() {
                   </div>
                 </td>
                 <td className="py-3 font-medium tabular-nums text-white">
-                  $5,270.70
+                  ₹5,270.70
                 </td>
                 <td className="py-3 text-right tabular-nums text-gray-300">
                   42.3%
@@ -328,7 +328,7 @@ export default function PortfolioAssetAllocation() {
                   </div>
                 </td>
                 <td className="py-3 font-medium tabular-nums text-white">
-                  $3,251.40
+                  ₹3,251.40
                 </td>
                 <td className="py-3 text-right tabular-nums text-gray-300">
                   26.1%
@@ -350,7 +350,7 @@ export default function PortfolioAssetAllocation() {
                   </div>
                 </td>
                 <td className="py-3 font-medium tabular-nums text-white">
-                  $1,592.70
+                  ₹1,592.70
                 </td>
                 <td className="py-3 text-right tabular-nums text-gray-300">
                   12.8%
@@ -372,7 +372,7 @@ export default function PortfolioAssetAllocation() {
                   </div>
                 </td>
                 <td className="py-3 font-medium tabular-nums text-white">
-                  $921.30
+                  ₹921.30
                 </td>
                 <td className="py-3 text-right tabular-nums text-gray-300">
                   7.4%
@@ -393,7 +393,7 @@ export default function PortfolioAssetAllocation() {
                   </div>
                 </td>
                 <td className="py-3 font-medium tabular-nums text-white">
-                  $1,414.70
+                  ₹1,414.70
                 </td>
                 <td className="py-3 text-right tabular-nums text-gray-300">
                   11.4%

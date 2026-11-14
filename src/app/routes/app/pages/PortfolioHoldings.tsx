@@ -32,7 +32,7 @@ export default function PortfolioHoldings() {
           <div>
             <p className="text-xs text-gray-400">Total Value</p>
             <p className="mt-1 text-2xl font-bold tabular-nums text-white">
-              $12,450.80
+              ₹12,450.80
             </p>
           </div>
         </div>
@@ -46,7 +46,7 @@ export default function PortfolioHoldings() {
             <p className="text-xs text-gray-400">Total P&L</p>
             <div className="mt-1 flex items-center justify-between gap-2">
               <span className="text-2xl font-bold tabular-nums text-gain">
-                +$450.80
+                +₹450.80
               </span>
               <span className="rounded-full bg-gain/15 px-2 py-0.5 text-xs font-semibold tabular-nums text-gain">
                 +3.76%
@@ -64,7 +64,7 @@ export default function PortfolioHoldings() {
             <p className="text-xs text-gray-400">24h P&L</p>
             <div className="mt-1 flex items-center justify-between gap-2">
               <span className="text-2xl font-bold tabular-nums text-gain">
-                +$112.40
+                +₹112.40
               </span>
               <span className="rounded-full bg-gain/15 px-2 py-0.5 text-xs font-semibold tabular-nums text-gain">
                 +0.91%
@@ -128,10 +128,10 @@ export default function PortfolioHoldings() {
                   </div>
                 </td>
                 <td className="py-3 tabular-nums text-gray-300">0.1250</td>
-                <td className="py-3 tabular-nums text-gray-400">$68,000.00</td>
-                <td className="py-3 tabular-nums text-gray-300">$73,420.00</td>
-                <td className="py-3 font-medium tabular-nums text-white">$9,177.50</td>
-                <td className="py-3 font-medium tabular-nums text-gain">+$677.50</td>
+                <td className="py-3 tabular-nums text-gray-400">₹68,000.00</td>
+                <td className="py-3 tabular-nums text-gray-300">₹73,420.00</td>
+                <td className="py-3 font-medium tabular-nums text-white">₹9,177.50</td>
+                <td className="py-3 font-medium tabular-nums text-gain">+₹677.50</td>
                 <td className="py-3 font-medium tabular-nums">
                   <span className="rounded bg-gain/15 px-2 py-0.5 text-gain">+7.97%</span>
                 </td>
@@ -158,10 +158,10 @@ export default function PortfolioHoldings() {
                   </div>
                 </td>
                 <td className="py-3 tabular-nums text-gray-300">1.2500</td>
-                <td className="py-3 tabular-nums text-gray-400">$3,210.00</td>
-                <td className="py-3 tabular-nums text-gray-300">$3,402.00</td>
-                <td className="py-3 font-medium tabular-nums text-white">$4,252.50</td>
-                <td className="py-3 font-medium tabular-nums text-gain">+$240.00</td>
+                <td className="py-3 tabular-nums text-gray-400">₹3,210.00</td>
+                <td className="py-3 tabular-nums text-gray-300">₹3,402.00</td>
+                <td className="py-3 font-medium tabular-nums text-white">₹4,252.50</td>
+                <td className="py-3 font-medium tabular-nums text-gain">+₹240.00</td>
                 <td className="py-3 font-medium tabular-nums">
                   <span className="rounded bg-gain/15 px-2 py-0.5 text-gain">+5.98%</span>
                 </td>
@@ -188,10 +188,10 @@ export default function PortfolioHoldings() {
                   </div>
                 </td>
                 <td className="py-3 tabular-nums text-gray-300">8.0000</td>
-                <td className="py-3 tabular-nums text-gray-400">$138.00</td>
-                <td className="py-3 tabular-nums text-gray-300">$127.50</td>
-                <td className="py-3 font-medium tabular-nums text-white">$1,020.00</td>
-                <td className="py-3 font-medium tabular-nums text-loss">-$84.00</td>
+                <td className="py-3 tabular-nums text-gray-400">₹138.00</td>
+                <td className="py-3 tabular-nums text-gray-300">₹127.50</td>
+                <td className="py-3 font-medium tabular-nums text-white">₹1,020.00</td>
+                <td className="py-3 font-medium tabular-nums text-loss">-₹84.00</td>
                 <td className="py-3 font-medium tabular-nums">
                   <span className="rounded bg-loss/15 px-2 py-0.5 text-loss">-7.60%</span>
                 </td>
@@ -218,10 +218,10 @@ export default function PortfolioHoldings() {
                   </div>
                 </td>
                 <td className="py-3 tabular-nums text-gray-300">6.0000</td>
-                <td className="py-3 tabular-nums text-gray-400">$145.00</td>
-                <td className="py-3 tabular-nums text-gray-300">$153.55</td>
-                <td className="py-3 font-medium tabular-nums text-white">$921.30</td>
-                <td className="py-3 font-medium tabular-nums text-gain">+$51.30</td>
+                <td className="py-3 tabular-nums text-gray-400">₹145.00</td>
+                <td className="py-3 tabular-nums text-gray-300">₹153.55</td>
+                <td className="py-3 font-medium tabular-nums text-white">₹921.30</td>
+                <td className="py-3 font-medium tabular-nums text-gain">+₹51.30</td>
                 <td className="py-3 font-medium tabular-nums">
                   <span className="rounded bg-gain/15 px-2 py-0.5 text-gain">+5.89%</span>
                 </td>
@@ -248,10 +248,10 @@ export default function PortfolioHoldings() {
                   </div>
                 </td>
                 <td className="py-3 tabular-nums text-gray-300">1,000.0000</td>
-                <td className="py-3 tabular-nums text-gray-400">$0.42</td>
-                <td className="py-3 tabular-nums text-gray-300">$0.44</td>
-                <td className="py-3 font-medium tabular-nums text-white">$440.00</td>
-                <td className="py-3 font-medium tabular-nums text-gain">+$20.00</td>
+                <td className="py-3 tabular-nums text-gray-400">₹0.42</td>
+                <td className="py-3 tabular-nums text-gray-300">₹0.44</td>
+                <td className="py-3 font-medium tabular-nums text-white">₹440.00</td>
+                <td className="py-3 font-medium tabular-nums text-gain">+₹20.00</td>
                 <td className="py-3 font-medium tabular-nums">
                   <span className="rounded bg-gain/15 px-2 py-0.5 text-gain">+4.76%</span>
                 </td>
@@ -278,10 +278,10 @@ export default function PortfolioHoldings() {
                   </div>
                 </td>
                 <td className="py-3 tabular-nums text-gray-300">50.0000</td>
-                <td className="py-3 tabular-nums text-gray-400">$6.20</td>
-                <td className="py-3 tabular-nums text-gray-300">$6.10</td>
-                <td className="py-3 font-medium tabular-nums text-white">$305.00</td>
-                <td className="py-3 font-medium tabular-nums text-loss">-$5.00</td>
+                <td className="py-3 tabular-nums text-gray-400">₹6.20</td>
+                <td className="py-3 tabular-nums text-gray-300">₹6.10</td>
+                <td className="py-3 font-medium tabular-nums text-white">₹305.00</td>
+                <td className="py-3 font-medium tabular-nums text-loss">-₹5.00</td>
                 <td className="py-3 font-medium tabular-nums">
                   <span className="rounded bg-loss/15 px-2 py-0.5 text-loss">-1.61%</span>
                 </td>
@@ -308,10 +308,10 @@ export default function PortfolioHoldings() {
                   </div>
                 </td>
                 <td className="py-3 tabular-nums text-gray-300">10.0000</td>
-                <td className="py-3 tabular-nums text-gray-400">$32.00</td>
-                <td className="py-3 tabular-nums text-gray-300">$31.40</td>
-                <td className="py-3 font-medium tabular-nums text-white">$314.00</td>
-                <td className="py-3 font-medium tabular-nums text-loss">-$6.00</td>
+                <td className="py-3 tabular-nums text-gray-400">₹32.00</td>
+                <td className="py-3 tabular-nums text-gray-300">₹31.40</td>
+                <td className="py-3 font-medium tabular-nums text-white">₹314.00</td>
+                <td className="py-3 font-medium tabular-nums text-loss">-₹6.00</td>
                 <td className="py-3 font-medium tabular-nums">
                   <span className="rounded bg-loss/15 px-2 py-0.5 text-loss">-1.88%</span>
                 </td>
@@ -339,8 +339,8 @@ export default function PortfolioHoldings() {
                 <td className="py-3 text-gray-500">—</td>
                 <td className="py-3 text-gray-500">—</td>
                 <td className="py-3 text-gray-500">—</td>
-                <td className="py-3 font-medium tabular-nums text-white">$1,414.70</td>
-                <td className="py-3 font-medium tabular-nums text-gain">+$7.00</td>
+                <td className="py-3 font-medium tabular-nums text-white">₹1,414.70</td>
+                <td className="py-3 font-medium tabular-nums text-gain">+₹7.00</td>
                 <td className="py-3 font-medium tabular-nums">
                   <span className="rounded bg-gain/15 px-2 py-0.5 text-gain">+0.50%</span>
                 </td>

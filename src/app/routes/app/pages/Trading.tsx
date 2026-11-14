@@ -31,7 +31,7 @@ export default function Trading() {
 
             {/* Price + Change */}
             <div className="flex items-center gap-3">
-              <span className="text-2xl font-bold tabular-nums">$67,432.50</span>
+              <span className="text-2xl font-bold tabular-nums">₹67,432.50</span>
               <span className="text-sm text-gain tabular-nums">+1,612.40 (+2.45%)</span>
             </div>
           </div>
@@ -40,19 +40,19 @@ export default function Trading() {
           <div className="flex items-center gap-8">
             <div>
               <p className="text-[10px] text-gray-500">24h High</p>
-              <p className="text-sm font-medium tabular-nums">$68,750.07</p>
+              <p className="text-sm font-medium tabular-nums">₹68,750.07</p>
             </div>
             <div>
               <p className="text-[10px] text-gray-500">24h Low</p>
-              <p className="text-sm font-medium tabular-nums">$65,781.20</p>
+              <p className="text-sm font-medium tabular-nums">₹65,781.20</p>
             </div>
             <div>
               <p className="text-[10px] text-gray-500">24h Volume</p>
-              <p className="text-sm font-medium tabular-nums">$28.42B</p>
+              <p className="text-sm font-medium tabular-nums">₹28.42B</p>
             </div>
             <div>
               <p className="text-[10px] text-gray-500">Market Cap</p>
-              <p className="text-sm font-medium tabular-nums">$1.33T</p>
+              <p className="text-sm font-medium tabular-nums">₹1.33T</p>
             </div>
           </div>
 
@@ -201,8 +201,8 @@ export default function Trading() {
                       <span className="rounded bg-gain/20 px-2 py-0.5 text-gain">Buy (Limit)</span>
                     </td>
                     <td className="py-3 tabular-nums">0.0100 BTC</td>
-                    <td className="py-3 tabular-nums">$66,500.00</td>
-                    <td className="py-3 tabular-nums">$665.00</td>
+                    <td className="py-3 tabular-nums">₹66,500.00</td>
+                    <td className="py-3 tabular-nums">₹665.00</td>
                     <td className="py-3">
                       <span className="rounded bg-accent/20 px-2 py-0.5 text-accent">Open</span>
                     </td>
@@ -240,7 +240,7 @@ export default function Trading() {
               <div className="mt-3">
                 <p className="text-[10px] text-gray-500">Account Value</p>
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl font-bold tabular-nums">$10,428.75</span>
+                  <span className="text-2xl font-bold tabular-nums">₹10,428.75</span>
                   <span className="text-sm text-gain tabular-nums">+4.29%</span>
                 </div>
               </div>
@@ -249,11 +249,11 @@ export default function Trading() {
               <div className="mt-2 flex items-center justify-between text-xs text-gray-400">
                 <div>
                   <span>Available Cash</span>
-                  <p className="mt-0.5 font-medium text-white tabular-nums">$7,530.20</p>
+                  <p className="mt-0.5 font-medium text-white tabular-nums">₹7,530.20</p>
                 </div>
                 <div className="text-right">
                   <span>Invested</span>
-                  <p className="mt-0.5 font-medium text-white tabular-nums">$2,898.55</p>
+                  <p className="mt-0.5 font-medium text-white tabular-nums">₹2,898.55</p>
                 </div>
               </div>
 
@@ -329,7 +329,7 @@ export default function Trading() {
                 <tbody className="text-gray-300">
                   <tr className="border-t border-card">
                     <td className="py-2 tabular-nums">21:34:12</td>
-                    <td className="py-2 tabular-nums">$67,432.50</td>
+                    <td className="py-2 tabular-nums">₹67,432.50</td>
                     <td className="py-2 tabular-nums">0.1250</td>
                     <td className="py-2 text-right">
                       <span className="rounded bg-gain/20 px-2 py-0.5 text-gain">Buy</span>
@@ -337,7 +337,7 @@ export default function Trading() {
                   </tr>
                   <tr className="border-t border-card">
                     <td className="py-2 tabular-nums">21:33:58</td>
-                    <td className="py-2 tabular-nums">$67,429.00</td>
+                    <td className="py-2 tabular-nums">₹67,429.00</td>
                     <td className="py-2 tabular-nums">0.2100</td>
                     <td className="py-2 text-right">
                       <span className="rounded bg-gain/20 px-2 py-0.5 text-gain">Buy</span>
@@ -345,7 +345,7 @@ export default function Trading() {
                   </tr>
                   <tr className="border-t border-card">
                     <td className="py-2 tabular-nums">21:33:46</td>
-                    <td className="py-2 tabular-nums">$67,415.20</td>
+                    <td className="py-2 tabular-nums">₹67,415.20</td>
                     <td className="py-2 tabular-nums">0.0750</td>
                     <td className="py-2 text-right">
                       <span className="rounded bg-loss/20 px-2 py-0.5 text-loss">Sell</span>
@@ -353,7 +353,7 @@ export default function Trading() {
                   </tr>
                   <tr className="border-t border-card">
                     <td className="py-2 tabular-nums">21:33:40</td>
-                    <td className="py-2 tabular-nums">$67,413.70</td>
+                    <td className="py-2 tabular-nums">₹67,413.70</td>
                     <td className="py-2 tabular-nums">0.3200</td>
                     <td className="py-2 text-right">
                       <span className="rounded bg-gain/20 px-2 py-0.5 text-gain">Buy</span>
@@ -361,7 +361,7 @@ export default function Trading() {
                   </tr>
                   <tr className="border-t border-card">
                     <td className="py-2 tabular-nums">21:33:21</td>
-                    <td className="py-2 tabular-nums">$67,398.10</td>
+                    <td className="py-2 tabular-nums">₹67,398.10</td>
                     <td className="py-2 tabular-nums">0.0500</td>
                     <td className="py-2 text-right">
                       <span className="rounded bg-loss/20 px-2 py-0.5 text-loss">Sell</span>

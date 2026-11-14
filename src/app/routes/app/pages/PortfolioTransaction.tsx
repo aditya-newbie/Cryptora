@@ -53,7 +53,7 @@ export default function PortfolioTransaction() {
           <div>
             <p className="text-xs text-gray-400">Net Flow</p>
             <p className="mt-1 text-2xl font-bold tabular-nums text-gain">
-              +$1,240.50
+              +₹1,240.50
             </p>
           </div>
         </div>
@@ -120,9 +120,9 @@ export default function PortfolioTransaction() {
                   </div>
                 </td>
                 <td className="py-3.5 tabular-nums text-gray-300">0.0200</td>
-                <td className="py-3.5 tabular-nums text-gray-300">$73,420.00</td>
+                <td className="py-3.5 tabular-nums text-gray-300">₹73,420.00</td>
                 <td className="py-3.5 font-medium tabular-nums text-white">
-                  $1,468.40
+                  ₹1,468.40
                 </td>
                 <td className="py-3.5 text-gray-500">—</td>
                 <td className="py-3.5 text-right">
@@ -155,12 +155,12 @@ export default function PortfolioTransaction() {
                   </div>
                 </td>
                 <td className="py-3.5 tabular-nums text-gray-300">4.0000</td>
-                <td className="py-3.5 tabular-nums text-gray-300">$128.00</td>
+                <td className="py-3.5 tabular-nums text-gray-300">₹128.00</td>
                 <td className="py-3.5 font-medium tabular-nums text-white">
-                  $512.00
+                  ₹512.00
                 </td>
                 <td className="py-3.5 font-medium tabular-nums text-gain">
-                  +$36.00 (+7.56%)
+                  +₹36.00 (+7.56%)
                 </td>
                 <td className="py-3.5 text-right">
                   <button className="text-gray-500 hover:text-white cursor-pointer">
@@ -192,9 +192,9 @@ export default function PortfolioTransaction() {
                   </div>
                 </td>
                 <td className="py-3.5 tabular-nums text-gray-300">0.5000</td>
-                <td className="py-3.5 tabular-nums text-gray-300">$3,360.00</td>
+                <td className="py-3.5 tabular-nums text-gray-300">₹3,360.00</td>
                 <td className="py-3.5 font-medium tabular-nums text-white">
-                  $1,680.00
+                  ₹1,680.00
                 </td>
                 <td className="py-3.5 text-gray-500">—</td>
                 <td className="py-3.5 text-right">
@@ -227,12 +227,12 @@ export default function PortfolioTransaction() {
                   </div>
                 </td>
                 <td className="py-3.5 tabular-nums text-gray-300">20.0000</td>
-                <td className="py-3.5 tabular-nums text-gray-300">$6.15</td>
+                <td className="py-3.5 tabular-nums text-gray-300">₹6.15</td>
                 <td className="py-3.5 font-medium tabular-nums text-white">
-                  $123.00
+                  ₹123.00
                 </td>
                 <td className="py-3.5 font-medium tabular-nums text-loss">
-                  -$4.00 (-3.15%)
+                  -₹4.00 (-3.15%)
                 </td>
                 <td className="py-3.5 text-right">
                   <button className="text-gray-500 hover:text-white cursor-pointer">
@@ -264,9 +264,9 @@ export default function PortfolioTransaction() {
                   </div>
                 </td>
                 <td className="py-3.5 tabular-nums text-gray-300">1.5000</td>
-                <td className="py-3.5 tabular-nums text-gray-300">$150.00</td>
+                <td className="py-3.5 tabular-nums text-gray-300">₹150.00</td>
                 <td className="py-3.5 font-medium tabular-nums text-white">
-                  $225.00
+                  ₹225.00
                 </td>
                 <td className="py-3.5 text-gray-500">—</td>
                 <td className="py-3.5 text-right">
@@ -299,9 +299,9 @@ export default function PortfolioTransaction() {
                   </div>
                 </td>
                 <td className="py-3.5 tabular-nums text-gray-300">500.0000</td>
-                <td className="py-3.5 tabular-nums text-gray-300">$0.43</td>
+                <td className="py-3.5 tabular-nums text-gray-300">₹0.43</td>
                 <td className="py-3.5 font-medium tabular-nums text-white">
-                  $215.00
+                  ₹215.00
                 </td>
                 <td className="py-3.5 text-gray-500">—</td>
                 <td className="py-3.5 text-right">
@@ -334,12 +334,12 @@ export default function PortfolioTransaction() {
                   </div>
                 </td>
                 <td className="py-3.5 tabular-nums text-gray-300">5.0000</td>
-                <td className="py-3.5 tabular-nums text-gray-300">$31.80</td>
+                <td className="py-3.5 tabular-nums text-gray-300">₹31.80</td>
                 <td className="py-3.5 font-medium tabular-nums text-white">
-                  $159.00
+                  ₹159.00
                 </td>
                 <td className="py-3.5 font-medium tabular-nums text-gain">
-                  +$12.00 (+8.16%)
+                  +₹12.00 (+8.16%)
                 </td>
                 <td className="py-3.5 text-right">
                   <button className="text-gray-500 hover:text-white cursor-pointer">
@@ -371,12 +371,12 @@ export default function PortfolioTransaction() {
                   </div>
                 </td>
                 <td className="py-3.5 tabular-nums text-gray-300">0.2500</td>
-                <td className="py-3.5 tabular-nums text-gray-300">$3,280.00</td>
+                <td className="py-3.5 tabular-nums text-gray-300">₹3,280.00</td>
                 <td className="py-3.5 font-medium tabular-nums text-white">
-                  $820.00
+                  ₹820.00
                 </td>
                 <td className="py-3.5 font-medium tabular-nums text-gain">
-                  +$50.00 (+6.49%)
+                  +₹50.00 (+6.49%)
                 </td>
                 <td className="py-3.5 text-right">
                   <button className="text-gray-500 hover:text-white cursor-pointer">

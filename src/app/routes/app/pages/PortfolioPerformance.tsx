@@ -38,7 +38,7 @@ export default function PortfolioPerformance() {
                 <span className="text-sm text-gray-400">Total P&L</span>
               </div>
               <span className="text-sm font-semibold tabular-nums text-gain">
-                +$4,850.80
+                +₹4,850.80
               </span>
             </div>
 
@@ -91,7 +91,7 @@ export default function PortfolioPerformance() {
               <p className="text-sm font-medium text-gray-400">Portfolio Value</p>
               <div className="mt-1 flex items-baseline gap-3">
                 <span className="text-3xl font-bold tabular-nums text-white">
-                  $12,450.80
+                  ₹12,450.80
                 </span>
                 <span className="text-sm font-semibold tabular-nums text-gain">
                   +64.20%

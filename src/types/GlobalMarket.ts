@@ -1,0 +1,23 @@
+export interface FearAndGreedIndex {
+  value: number;
+  sentiment: string;
+}
+
+export interface GlobalData {
+  active_cryptocurrencies: number;
+  upcoming_icos: number;
+  ongoing_icos: number;
+  ended_icos: number;
+  markets: number;
+  total_market_cap: Record<string, number>;
+  total_volume: Record<string, number>;
+  market_cap_percentage: Record<string, number>;
+  market_cap_change_percentage_24h_usd: number;
+  volume_change_percentage_24h_usd?: number;
+  updated_at: number;
+  fear_and_greed_index?: FearAndGreedIndex;
+}
+
+export default interface GlobalMarketResponse {
+  data: GlobalData;
+}

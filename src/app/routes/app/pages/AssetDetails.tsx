@@ -46,7 +46,7 @@ export default function AssetDetails() {
 
             {/* Price + Change */}
             <div className="ml-6 border-l border-card pl-6">
-              <p className="text-3xl font-bold tabular-nums">$67,432.50</p>
+              <p className="text-3xl font-bold tabular-nums">₹67,432.50</p>
               <p className="mt-1 text-sm text-gain tabular-nums">
                 +1,612.40 (+2.45%) <span className="text-gray-500">24h</span>
               </p>
@@ -147,7 +147,7 @@ export default function AssetDetails() {
                   <span>Market Cap</span>
                   <Info className="h-3 w-3 text-gray-600" />
                 </div>
-                <span className="text-sm font-medium tabular-nums">$1.33T</span>
+                <span className="text-sm font-medium tabular-nums">₹1.33T</span>
               </div>
 
               {/* Fully Diluted Valuation */}
@@ -156,7 +156,7 @@ export default function AssetDetails() {
                   <Coins className="h-4 w-4" />
                   <span>Fully Diluted Valuation</span>
                 </div>
-                <span className="text-sm font-medium tabular-nums">$1.41T</span>
+                <span className="text-sm font-medium tabular-nums">₹1.41T</span>
               </div>
 
               {/* 24h Volume */}
@@ -165,7 +165,7 @@ export default function AssetDetails() {
                   <Wallet className="h-4 w-4" />
                   <span>24h Volume</span>
                 </div>
-                <span className="text-sm font-medium tabular-nums">$28.42B</span>
+                <span className="text-sm font-medium tabular-nums">₹28.42B</span>
               </div>
 
               <div className="border-t border-card"></div>
@@ -206,7 +206,7 @@ export default function AssetDetails() {
                   <span>All-Time High</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-sm font-medium tabular-nums">$73,750.07</span>
+                  <span className="text-sm font-medium tabular-nums">₹73,750.07</span>
                   <span className="ml-2 text-xs text-loss tabular-nums">(-8.57%)</span>
                 </div>
               </div>
@@ -218,7 +218,7 @@ export default function AssetDetails() {
                   <span>All-Time Low</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-sm font-medium tabular-nums">$67.81</span>
+                  <span className="text-sm font-medium tabular-nums">₹67.81</span>
                   <span className="ml-2 text-xs text-gain tabular-nums">(+99,397%)</span>
                 </div>
               </div>
@@ -258,13 +258,13 @@ export default function AssetDetails() {
                 <div className="flex items-center gap-1.5">
                   <span className="h-2.5 w-2.5 rounded-full bg-gain"></span>
                   <span className="text-gray-400">Buy Volume</span>
-                  <span className="font-medium tabular-nums">$42.58M</span>
+                  <span className="font-medium tabular-nums">₹42.58M</span>
                   <span className="text-gain tabular-nums">(57.7%)</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="h-2.5 w-2.5 rounded-full bg-loss"></span>
                   <span className="text-gray-400">Sell Volume</span>
-                  <span className="font-medium tabular-nums">$31.21M</span>
+                  <span className="font-medium tabular-nums">₹31.21M</span>
                   <span className="text-loss tabular-nums">(42.3%)</span>
                 </div>
               </div>
@@ -292,45 +292,45 @@ export default function AssetDetails() {
                 <tbody className="text-gray-300">
                   <tr className="border-t border-card">
                     <td className="py-2.5 tabular-nums">21:34:12</td>
-                    <td className="py-2.5 tabular-nums">$67,432.50</td>
+                    <td className="py-2.5 tabular-nums">₹67,432.50</td>
                     <td className="py-2.5 tabular-nums">0.1250 BTC</td>
-                    <td className="py-2.5 tabular-nums">$8,429.06</td>
+                    <td className="py-2.5 tabular-nums">₹8,429.06</td>
                     <td className="py-2.5 text-right">
                       <span className="rounded bg-gain/20 px-2 py-0.5 text-gain">Buy</span>
                     </td>
                   </tr>
                   <tr className="border-t border-card">
                     <td className="py-2.5 tabular-nums">21:34:07</td>
-                    <td className="py-2.5 tabular-nums">$67,428.10</td>
+                    <td className="py-2.5 tabular-nums">₹67,428.10</td>
                     <td className="py-2.5 tabular-nums">0.0500 BTC</td>
-                    <td className="py-2.5 tabular-nums">$3,371.41</td>
+                    <td className="py-2.5 tabular-nums">₹3,371.41</td>
                     <td className="py-2.5 text-right">
                       <span className="rounded bg-loss/20 px-2 py-0.5 text-loss">Sell</span>
                     </td>
                   </tr>
                   <tr className="border-t border-card">
                     <td className="py-2.5 tabular-nums">21:33:58</td>
-                    <td className="py-2.5 tabular-nums">$67,429.00</td>
+                    <td className="py-2.5 tabular-nums">₹67,429.00</td>
                     <td className="py-2.5 tabular-nums">0.2100 BTC</td>
-                    <td className="py-2.5 tabular-nums">$14,160.09</td>
+                    <td className="py-2.5 tabular-nums">₹14,160.09</td>
                     <td className="py-2.5 text-right">
                       <span className="rounded bg-gain/20 px-2 py-0.5 text-gain">Buy</span>
                     </td>
                   </tr>
                   <tr className="border-t border-card">
                     <td className="py-2.5 tabular-nums">21:33:46</td>
-                    <td className="py-2.5 tabular-nums">$67,415.20</td>
+                    <td className="py-2.5 tabular-nums">₹67,415.20</td>
                     <td className="py-2.5 tabular-nums">0.0750 BTC</td>
-                    <td className="py-2.5 tabular-nums">$5,056.14</td>
+                    <td className="py-2.5 tabular-nums">₹5,056.14</td>
                     <td className="py-2.5 text-right">
                       <span className="rounded bg-loss/20 px-2 py-0.5 text-loss">Sell</span>
                     </td>
                   </tr>
                   <tr className="border-t border-card">
                     <td className="py-2.5 tabular-nums">21:33:40</td>
-                    <td className="py-2.5 tabular-nums">$67,413.70</td>
+                    <td className="py-2.5 tabular-nums">₹67,413.70</td>
                     <td className="py-2.5 tabular-nums">0.3200 BTC</td>
-                    <td className="py-2.5 tabular-nums">$21,572.38</td>
+                    <td className="py-2.5 tabular-nums">₹21,572.38</td>
                     <td className="py-2.5 text-right">
                       <span className="rounded bg-gain/20 px-2 py-0.5 text-gain">Buy</span>
                     </td>
