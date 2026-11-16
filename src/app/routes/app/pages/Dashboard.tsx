@@ -9,26 +9,34 @@ import {
   Bitcoin,
 } from "lucide-react";
 
-import type { TrendingCoin } from "../../../../types/TrendingCoin";
 import { formatNumber, formatMatricPrefix, capitalise } from "../../../../utils/format";
 import { getMarketBreadth } from "../../../../utils/calc";
 import useDashboard from "../../../../hooks/useDashboard";
+import { useShallow } from "zustand/react/shallow";
 import { useFilterStore } from "../../../../stores/dashboard-filter-store";
 import { DashboardSelect } from "../../../../components/select";
+import {
+  filter24hChange,
+  filterCategory,
+  filterMarketCap,
+} from "../../../../utils/filter";
 
 export default function Dashboard() {
 
-  const { market, trending, global, error, isPending } = useDashboard();
+  const { market, trending, global, categories, error, isPending } = useDashboard();
 
-  const category = useFilterStore((state) => state.category);
-  const categoryFilters = useFilterStore((state) => state.categoryFilters);
-  const setCategory = useFilterStore((state) => state.setCategory);
-  const marketCap = useFilterStore((state) => state.marketCap);
-  const marketCapFilters = useFilterStore((state) => state.marketCapFilters);
-  const setMarketCap = useFilterStore((state) => state.setMarketCap);
-  const change24h = useFilterStore((state) => state.change24h);
-  const change24hFilters = useFilterStore((state) => state.change24hFilters);
-  const setChange24h = useFilterStore((state) => state.setChange24h);
+  const { category, categoryFilters, setCategory, marketCap, marketCapFilters, setMarketCap, change24h, change24hFilters, setChange24h } = useFilterStore(useShallow((state) => ({
+    category: state.category,
+    categoryFilters: state.categoryFilters,
+    setCategory: state.setCategory,
+    marketCap: state.marketCap,
+    marketCapFilters: state.marketCapFilters,
+    setMarketCap: state.setMarketCap,
+    change24h: state.change24h,
+    change24hFilters: state.change24hFilters,
+    setChange24h: state.setChange24h,
+  })))
+
 
   if (isPending) {
     return <div className="p-6 text-gray-300">Loading market data...</div>;
@@ -42,22 +50,13 @@ export default function Dashboard() {
     );
   }
 
-  const coins: TrendingCoin[] | undefined = trending?.coins;
   const marketBreadth = getMarketBreadth(market);
-  const totalMarketCap = global?.data?.total_market_cap?.inr;
   const marketCapChangePercentage = global?.data?.market_cap_change_percentage_24h_usd;
-  const volume24h = global?.data?.total_volume?.inr;
-  const volumeChangePercentage = global?.data?.volume_change_percentage_24h_usd;
   const fearGreedIndex = global?.data?.fear_and_greed_index;
-  const btcDominance = (global?.data?.market_cap_percentage.btc)?.toFixed(1);
 
-  // const categoryFiltered = market.filter(coin => {
-  //   if (category === "All Categories") return true;
-  //   if (category === "Layer 1 (L1)") {
-
-  //   }
-  // })
-
+  const filteredCategory = filterCategory(category, categories, market);
+  const filteredByMarketCap = filterMarketCap(marketCap, filteredCategory);
+  const filteredMarket = filter24hChange(change24h, filteredByMarketCap);
 
   return (
     <div className="font-body min-h-screen bg-canvas text-white">
@@ -65,7 +64,7 @@ export default function Dashboard() {
       <div className="w-full overflow-x-auto scrollbar-hide border-b border-card bg-canvas">
         <div className="flex items-center gap-8 px-6 py-2.5 whitespace-nowrap min-w-max">
 
-          {coins && coins.map(coin => {
+          {trending?.coins.map(coin => {
             return (
               <div key={coin.item.id} className="flex items-center gap-2">
                 <img
@@ -126,10 +125,10 @@ export default function Dashboard() {
                 <DollarSign className="h-4 w-4 text-accent" />
                 <span>Total Market Cap</span>
               </div>
-              <p className="mt-3 text-3xl font-bold tabular-nums">₹{formatMatricPrefix(totalMarketCap)}</p>
+              <p className="mt-3 text-3xl font-bold tabular-nums">₹{formatMatricPrefix(global?.data?.total_market_cap?.inr)}</p>
               <p className={
                 `mt-1 text-sm tabular-nums 
-                ${Number(marketCapChangePercentage) >= 0 ? "text-gain" : "text-loss"}`
+                ${(marketCapChangePercentage ?? 1) >= 0 ? "text-gain" : "text-loss"}`
               }>{formatNumber(marketCapChangePercentage)}%</p>
             </div>
 
@@ -139,8 +138,8 @@ export default function Dashboard() {
                 <BarChart3 className="h-4 w-4 text-accent" />
                 <span>24h Volume</span>
               </div>
-              <p className="mt-3 text-3xl font-bold tabular-nums">₹{formatMatricPrefix(volume24h)}</p>
-              <p className="mt-1 text-sm text-gain tabular-nums">{formatNumber(volumeChangePercentage)}%</p>
+              <p className="mt-3 text-3xl font-bold tabular-nums">₹{formatMatricPrefix(global?.data?.total_volume?.inr)}</p>
+              <p className="mt-1 text-sm text-gain tabular-nums">{formatNumber(global?.data?.volume_change_percentage_24h_usd)}%</p>
             </div>
 
             {/* Market Sentiment */}
@@ -153,7 +152,7 @@ export default function Dashboard() {
                 <span className="text-3xl font-bold tabular-nums">{fearGreedIndex?.value}</span>
                 <span className={
                   `mt-1 text-sm 
-                  ₹{fearGreedIndex?.sentiment === "fear" ? "text-loss" : "text-gain"}`
+                  ${(fearGreedIndex?.sentiment === "fear") || (fearGreedIndex?.sentiment === "extreme_fear") ? "text-loss" : "text-gain"}`
                 }>{capitalise(fearGreedIndex?.sentiment)}</span>
               </div>
             </div>
@@ -164,7 +163,7 @@ export default function Dashboard() {
                 <Bitcoin className="h-4 w-4 text-accent" />
                 <span>BTC Dominance</span>
               </div>
-              <p className="mt-4 text-3xl font-bold tabular-nums">{btcDominance}%</p>
+              <p className="mt-4 text-3xl font-bold tabular-nums">{(global?.data?.market_cap_percentage.btc)?.toFixed(1)}%</p>
             </div>
           </div>
         </div>
@@ -179,7 +178,7 @@ export default function Dashboard() {
             </button>
 
             {/* Category Dropdown */}
-            <DashboardSelect value={category} onChange={setCategory} values={categoryFilters} placeholder="Category"/>
+            <DashboardSelect value={category} onChange={setCategory} values={categoryFilters} placeholder="Category" />
 
             {/* Market Cap Dropdown */}
             <DashboardSelect value={marketCap} onChange={setMarketCap} values={marketCapFilters} placeholder="MarketCap" />
@@ -217,7 +216,7 @@ export default function Dashboard() {
             </thead>
             <tbody>
 
-              {market && market.slice(0, 10).map(coin => {
+              {filteredMarket.slice(0, 10).map(coin => {
                 return (
                   <tr key={coin.id} className="border-b border-card hover-card">
                     <td className="px-5 py-4 text-gray-400">{coin.market_cap_rank}</td>
@@ -234,10 +233,10 @@ export default function Dashboard() {
                     <td className={
                       `px-5 py-4 tabular-nums
                        ${coin.price_change_percentage_24h >= 0 ? "text-gain" : "text-loss"}`
-                      }>+{formatNumber(coin.price_change_percentage_24h)}%</td>
+                    }>+{formatNumber(coin.price_change_percentage_24h)}%</td>
                     <td className={
                       `px-5 py-4 tabular-nums
-                      ${ coin.price_change_percentage_7d_in_currency &&
+                      ${coin.price_change_percentage_7d_in_currency &&
                         coin.price_change_percentage_7d_in_currency >= 0 ? "text-gain" : "text-loss"}`
                     }>{coin.price_change_percentage_7d_in_currency?.toFixed(2)}%</td>
                     <td className="px-5 py-4 tabular-nums">₹{formatMatricPrefix(coin.market_cap)}</td>

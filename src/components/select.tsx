@@ -1,10 +1,11 @@
 import * as Select from "@radix-ui/react-select";
 import { ChevronDown, Check } from "lucide-react";
+import type { FilterItem } from "../types/Dashboard";
 
 interface CategorySelectProps {
   value: string;
   onChange: (value: string) => void;
-  values: string[];
+  values: FilterItem[];
   placeholder?: string;
 }
 
@@ -32,11 +33,11 @@ export function DashboardSelect({
           <Select.Viewport className="max-h-72 p-1.5 scrollbar-hide">
             {values.map((item) => (
               <Select.Item
-                key={item}
-                value={item}
+                key={item.id}
+                value={item.id}
                 className="flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-xs font-medium text-gray-300 outline-none cursor-pointer transition-colors hover:bg-card-hover hover:text-white data-[highlighted]:bg-card-hover data-[highlighted]:text-white data-[state=checked]:text-accent"
               >
-                <Select.ItemText>{item}</Select.ItemText>
+                <Select.ItemText>{item.name}</Select.ItemText>
                 <Select.ItemIndicator>
                   <Check className="h-3.5 w-3.5 text-accent" />
                 </Select.ItemIndicator>

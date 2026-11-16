@@ -1,16 +1,19 @@
 import type MarketCoin from "../../types/MarketCoin"
+import type { CategoryMarkets } from "../../types/Dashboard";
 
 const API_KEY = import.meta.env.VITE_COINGECKO_API_KEY
 
-export default async function fetchMarket(): Promise<MarketCoin[]> {
-
-  console.log("fetching market")
-  const res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h,24h,7d",
-  {
+function fetchCoinGecko(url: string) {
+  return fetch(url, {
     headers: {
       "x-cg-demo-api-key": API_KEY,
     },
   });
+}
+
+export default async function fetchMarket(): Promise<MarketCoin[]> {
+
+  const res = await fetchCoinGecko("https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h,24h,7d");
 
   if (!res.ok) {
     throw new Error("Failed to fetch market data")
@@ -18,4 +21,41 @@ export default async function fetchMarket(): Promise<MarketCoin[]> {
 
 
   return res.json();
+}
+
+export async function fetchCategory(): Promise<CategoryMarkets> {
+
+  const layer1 = await fetchCoinGecko("https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&category=layer-1");
+  const layer2 = await fetchCoinGecko("https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&category=layer-2");
+  const defi = await fetchCoinGecko("https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&category=decentralized-finance-defi");
+  const memeCoins = await fetchCoinGecko("https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&category=meme-token");
+  const gaming = await fetchCoinGecko("https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&category=gaming");
+  const stableCoins = await fetchCoinGecko("https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&category=stablecoins");
+  const rwa = await fetchCoinGecko("https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&category=real-world-assets-rwa");
+  const privacyCoins = await fetchCoinGecko("https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&category=privacy-coins");
+
+  const allCategoriesLoaded =
+    layer1.ok &&
+    layer2.ok &&
+    defi.ok &&
+    memeCoins.ok &&
+    gaming.ok &&
+    stableCoins.ok &&
+    rwa.ok &&
+    privacyCoins.ok;
+
+  if (!allCategoriesLoaded) {
+    throw Error("Failed to fetch market category data")
+  }
+
+  return {
+    layer1: await layer1.json(),
+    layer2: await layer2.json(),
+    defi: await defi.json(),
+    memeCoins: await memeCoins.json(),
+    gaming: await gaming.json(),
+    stablecoins: await stableCoins.json(),
+    rwa: await rwa.json(),
+    privacyCoins: await privacyCoins.json(),
+  };
 }

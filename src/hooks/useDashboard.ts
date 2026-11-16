@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import type MarketCoin from "../types/MarketCoin";
 import type { TrendingResponse } from "../types/TrendingCoin";
 import type GlobalMarketResponse from "../types/GlobalMarket";
-import fetchMarket from "../services/coingecko/market";
+import fetchMarket, { fetchCategory } from "../services/coingecko/market";
+import type { CategoryMarkets } from "../types/Dashboard";
 import fetchTrending from "../services/coingecko/trending";
 import fetchGlobal from "../services/coingecko/global";
 
@@ -10,6 +11,7 @@ interface DashboardApi {
   market: MarketCoin[] | undefined,
   trending: TrendingResponse | undefined,
   global: GlobalMarketResponse | undefined,
+  categories: CategoryMarkets | undefined,
   isLoading: boolean,
   error: Error | null,
   isError: boolean,
@@ -30,6 +32,11 @@ export default function useDashboard(): DashboardApi {
       queryKey: ["global"],
       queryFn: fetchGlobal
     })
+    const categoryQuery = useQuery({
+      queryKey: ["categories"],
+      queryFn: fetchCategory,
+      staleTime: 1000 * 60 * 60 * 24 * 14,
+    })
 
     let error = null;
 
@@ -41,16 +48,19 @@ export default function useDashboard(): DashboardApi {
     } 
     if (globalQuery.isError) {
       error = globalQuery.error
+    } if (categoryQuery.isError) {
+      error = categoryQuery.error
     }
 
     return {
       market: marketQuery.data,
       trending: trendingQuery.data,
       global: globalQuery.data,
-      isLoading: marketQuery.isLoading || trendingQuery.isLoading || globalQuery.isLoading,
+      categories: categoryQuery.data,
+      isLoading: marketQuery.isLoading || trendingQuery.isLoading || globalQuery.isLoading || categoryQuery.isLoading,
       error,
-      isError :  marketQuery.isError || trendingQuery.isError || globalQuery.isError,
-      isPending :  marketQuery.isPending || trendingQuery.isPending || globalQuery.isPending,
+      isError :  marketQuery.isError || trendingQuery.isError || globalQuery.isError || categoryQuery.isError,
+      isPending :  marketQuery.isPending || trendingQuery.isPending || globalQuery.isPending ||categoryQuery.isPending,
     }
   
 }

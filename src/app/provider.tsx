@@ -17,7 +17,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5,
-      gcTime: 1000 * 60 * 60 * 24,
+      gcTime: 1000 * 60 * 60 * 24 * 15,
     }
   }
 })
@@ -26,7 +26,7 @@ export default function AppProvider({children}: ChildrenProps) {
   return (
     <PersistQueryClientProvider client={queryClient} persistOptions={{
       persister,
-      maxAge: 1000 * 60 * 60 * 24,
+      maxAge: 1000 * 60 * 60 * 24 * 15,
     }}
     >
       {children}
