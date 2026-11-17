@@ -16,10 +16,12 @@ import { useShallow } from "zustand/react/shallow";
 import { useFilterStore } from "../../../../stores/dashboard-filter-store";
 import { DashboardSelect } from "../../../../components/select";
 import {
+  convertChartData,
   filter24hChange,
   filterCategory,
   filterMarketCap,
-} from "../../../../utils/filter";
+} from "../../../../utils/mutate";
+import MiniChart from "../../../../components/MiniChart";
 
 export default function Dashboard() {
 
@@ -243,13 +245,16 @@ export default function Dashboard() {
                     <td className="px-5 py-4 tabular-nums">₹{formatMatricPrefix(coin.total_volume)}</td>
                     <td className="px-5 py-4 tabular-nums">{formatMatricPrefix(coin.circulating_supply)} {coin.symbol.toUpperCase()}</td>
                     <td className="px-5 py-4">
-                      {/* Chart placeholder */}
-                      <div className="h-8 w-24 rounded bg-gray-800/50"></div>
+                      <div className="h-8 w-24 rounded bg-gray-800/50">
+                        <MiniChart 
+                          data={convertChartData(coin.sparkline_in_7d?.price)} 
+                          gain={(coin?.price_change_percentage_7d_in_currency ?? 1) >= 0} 
+                        />
+                      </div>
                     </td>
                   </tr>
                 )
               })}
-
             </tbody>
           </table>
         </div>

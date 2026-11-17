@@ -4,6 +4,10 @@ export interface MarketCoinRoi {
   percentage: number;
 }
 
+interface Sparkline {
+  price: number[];
+}
+
 export default interface MarketCoin {
   id: string;
   symbol: string;
@@ -34,4 +38,5 @@ export default interface MarketCoin {
   price_change_percentage_1h_in_currency?: number | null;
   price_change_percentage_24h_in_currency?: number | null;
   price_change_percentage_7d_in_currency?: number | null;
+  sparkline_in_7d?: Sparkline | null;
 }

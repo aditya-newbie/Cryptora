@@ -75,3 +75,10 @@ export function filter24hChange(
       return coins;
   }
 }
+
+export function convertChartData(data: number[] | undefined | null) {
+  if (!data) {
+    return [];
+  }
+  return data.map((value, i) => ({price: value, time: i}));
+}
