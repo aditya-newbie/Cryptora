@@ -5,6 +5,7 @@ import {
   Wallet,
   Settings,
 } from "lucide-react";
+import { NavLink } from "react-router";
 
 export default function Header() {
   return (
@@ -59,29 +60,74 @@ export default function Header() {
 
           {/* Nav Links */}
           <nav className="flex items-center gap-1 sm:gap-2">
-            {/* Dashboard (Active) */}
-            <button className="flex shrink-0 items-center gap-2 rounded-xl border border-accent bg-accent/15 px-3.5 py-1.5 text-xs font-medium text-white shadow-[0_0_12px_rgba(139,92,246,0.3)] transition-colors sm:text-sm cursor-pointer">
-              <Home className="h-4 w-4 text-accent" />
-              <span>Dashboard</span>
-            </button>
+            {/* Dashboard */}
+            <NavLink
+              to="/"
+              end
+              className={({ isActive }) =>
+                `hover-card flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-medium transition-colors sm:text-sm ${
+                  isActive ? "bg-card-hover text-white" : "text-gray-400 hover:text-white"
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <Home className={`h-4 w-4 ${isActive ? "text-accent" : "text-gray-400"}`} />
+                  <span>Dashboard</span>
+                </>
+              )}
+            </NavLink>
 
             {/* Markets */}
-            <button className="hover-card flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-medium text-gray-400 hover:text-white transition-colors sm:text-sm cursor-pointer">
-              <BarChart3 className="h-4 w-4 text-gray-400" />
-              <span>Markets</span>
-            </button>
+            <NavLink
+              to="/market"
+              className={({ isActive }) =>
+                `hover-card flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-medium transition-colors sm:text-sm ${
+                  isActive ? "bg-card-hover text-white" : "text-gray-400 hover:text-white"
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <BarChart3 className={`h-4 w-4 ${isActive ? "text-accent" : "text-gray-400"}`} />
+                  <span>Markets</span>
+                </>
+              )}
+            </NavLink>
 
             {/* Trading */}
-            <button className="hover-card flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-medium text-gray-400 hover:text-white transition-colors sm:text-sm cursor-pointer">
-              <SlidersHorizontal className="h-4 w-4 text-gray-400" />
-              <span>Trading</span>
-            </button>
+            <NavLink
+              to="/trade"
+              className={({ isActive }) =>
+                `hover-card flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-medium transition-colors sm:text-sm ${
+                  isActive ? "bg-card-hover text-white" : "text-gray-400 hover:text-white"
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <SlidersHorizontal className={`h-4 w-4 ${isActive ? "text-accent" : "text-gray-400"}`} />
+                  <span>Trading</span>
+                </>
+              )}
+            </NavLink>
 
             {/* Portfolio */}
-            <button className="hover-card flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-medium text-gray-400 hover:text-white transition-colors sm:text-sm cursor-pointer">
-              <Wallet className="h-4 w-4 text-gray-400" />
-              <span>Portfolio</span>
-            </button>
+            <NavLink
+              to="/portfolio"
+              className={({ isActive }) =>
+                `hover-card flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-medium transition-colors sm:text-sm ${
+                  isActive ? "bg-card-hover text-white" : "text-gray-400 hover:text-white"
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <Wallet className={`h-4 w-4 ${isActive ? "text-accent" : "text-gray-400"}`} />
+                  <span>Portfolio</span>
+                </>
+              )}
+            </NavLink>
           </nav>
         </div>
 
