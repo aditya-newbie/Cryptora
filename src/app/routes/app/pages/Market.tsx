@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import {
   Search,
   Flame,
@@ -8,8 +9,18 @@ import {
   Filter,
   Layers,
 } from "lucide-react";
+import fetchMarket from "../../../../services/coingecko/market";
+import { formatMatricPrefix, formatNumber } from "../../../../utils/format";
+import MiniChart from "../../../../components/MiniChart";
+import { convertChartData } from "../../../../utils/mutate";
 
 export default function Market() {
+
+  const marketQuery = useQuery({
+    queryKey: ["market"],
+    queryFn: fetchMarket
+  })
+
   return (
     <div className="font-body min-h-screen bg-canvas text-white">
       <div className="mx-auto max-w-350 px-6 py-8">
@@ -103,235 +114,44 @@ export default function Market() {
               </tr>
             </thead>
             <tbody>
-              {/* Row 1 - Bitcoin */}
-              <tr className="border-b border-card hover-card">
-                <td className="px-5 py-4 text-gray-400">1</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-xs font-bold">₿</span>
-                    <div>
-                      <span className="font-medium">Bitcoin</span>
-                      <span className="ml-2 text-xs text-gray-500">BTC</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">₹67,432.50</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+1.20%</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+3.86%</td>
-                <td className="px-5 py-4 tabular-nums">₹1.33T</td>
-                <td className="px-5 py-4 tabular-nums">₹28.42B</td>
-                <td className="px-5 py-4 tabular-nums">19.72M BTC</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
 
-              {/* Row 2 - Ethereum */}
-              <tr className="border-b border-card hover-card">
-                <td className="px-5 py-4 text-gray-400">2</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-xs font-bold">Ξ</span>
-                    <div>
-                      <span className="font-medium">Ethereum</span>
-                      <span className="ml-2 text-xs text-gray-500">ETH</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">₹3,245.10</td>
-                <td className="px-5 py-4 text-loss tabular-nums">-0.50%</td>
-                <td className="px-5 py-4 text-loss tabular-nums">-2.14%</td>
-                <td className="px-5 py-4 tabular-nums">₹390.2B</td>
-                <td className="px-5 py-4 tabular-nums">₹15.67B</td>
-                <td className="px-5 py-4 tabular-nums">120.19M ETH</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
-
-              {/* Row 3 - BNB */}
-              <tr className="border-b border-card hover-card">
-                <td className="px-5 py-4 text-gray-400">3</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500 text-xs font-bold">B</span>
-                    <div>
-                      <span className="font-medium">BNB</span>
-                      <span className="ml-2 text-xs text-gray-500">BNB</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">₹602.00</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+0.90%</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+4.21%</td>
-                <td className="px-5 py-4 tabular-nums">₹92.78B</td>
-                <td className="px-5 py-4 tabular-nums">₹2.14B</td>
-                <td className="px-5 py-4 tabular-nums">153.86M BNB</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
-
-              {/* Row 4 - Solana */}
-              <tr className="border-b border-card hover-card">
-                <td className="px-5 py-4 text-gray-400">4</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-500 text-xs font-bold">S</span>
-                    <div>
-                      <span className="font-medium">Solana</span>
-                      <span className="ml-2 text-xs text-gray-500">SOL</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">₹153.00</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+2.40%</td>
-                <td className="px-5 py-4 text-loss tabular-nums">-1.33%</td>
-                <td className="px-5 py-4 tabular-nums">₹70.47B</td>
-                <td className="px-5 py-4 tabular-nums">₹4.98B</td>
-                <td className="px-5 py-4 tabular-nums">459.31M SOL</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
-
-              {/* Row 5 - XRP */}
-              <tr className="border-b border-card hover-card">
-                <td className="px-5 py-4 text-gray-400">5</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-500 text-xs font-bold">✕</span>
-                    <div>
-                      <span className="font-medium">XRP</span>
-                      <span className="ml-2 text-xs text-gray-500">XRP</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">₹0.52</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+3.01%</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+2.17%</td>
-                <td className="px-5 py-4 tabular-nums">₹29.12B</td>
-                <td className="px-5 py-4 tabular-nums">₹2.53B</td>
-                <td className="px-5 py-4 tabular-nums">55.96B XRP</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
-
-              {/* Row 6 - Dogecoin */}
-              <tr className="border-b border-card hover-card">
-                <td className="px-5 py-4 text-gray-400">6</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-400 text-xs font-bold">D</span>
-                    <div>
-                      <span className="font-medium">Dogecoin</span>
-                      <span className="ml-2 text-xs text-gray-500">DOGE</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">₹0.16</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+3.00%</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+6.74%</td>
-                <td className="px-5 py-4 tabular-nums">₹23.41B</td>
-                <td className="px-5 py-4 tabular-nums">₹1.21B</td>
-                <td className="px-5 py-4 tabular-nums">144.72B DOGE</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
-
-              {/* Row 7 - Cardano */}
-              <tr className="border-b border-card hover-card">
-                <td className="px-5 py-4 text-gray-400">7</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-500 text-xs font-bold">A</span>
-                    <div>
-                      <span className="font-medium">Cardano</span>
-                      <span className="ml-2 text-xs text-gray-500">ADA</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">₹0.42</td>
-                <td className="px-5 py-4 text-loss tabular-nums">-1.12%</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+0.86%</td>
-                <td className="px-5 py-4 tabular-nums">₹15.02B</td>
-                <td className="px-5 py-4 tabular-nums">₹478.36M</td>
-                <td className="px-5 py-4 tabular-nums">35.68B ADA</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
-
-              {/* Row 8 - Avalanche */}
-              <tr className="border-b border-card hover-card">
-                <td className="px-5 py-4 text-gray-400">8</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-xs font-bold">A</span>
-                    <div>
-                      <span className="font-medium">Avalanche</span>
-                      <span className="ml-2 text-xs text-gray-500">AVAX</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">₹34.21</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+4.35%</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+9.20%</td>
-                <td className="px-5 py-4 tabular-nums">₹13.45B</td>
-                <td className="px-5 py-4 tabular-nums">₹713.90M</td>
-                <td className="px-5 py-4 tabular-nums">392.22M AVAX</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
-
-              {/* Row 9 - Chainlink */}
-              <tr className="border-b border-card hover-card">
-                <td className="px-5 py-4 text-gray-400">9</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-bold">⬡</span>
-                    <div>
-                      <span className="font-medium">Chainlink</span>
-                      <span className="ml-2 text-xs text-gray-500">LINK</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">₹16.82</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+2.18%</td>
-                <td className="px-5 py-4 text-gain tabular-nums">+5.61%</td>
-                <td className="px-5 py-4 tabular-nums">₹10.68B</td>
-                <td className="px-5 py-4 tabular-nums">₹524.31M</td>
-                <td className="px-5 py-4 tabular-nums">633.10M LINK</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
-
-              {/* Row 10 - Polygon */}
-              <tr className="hover-card">
-                <td className="px-5 py-4 text-gray-400">10</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-500 text-xs font-bold">P</span>
-                    <div>
-                      <span className="font-medium">Polygon</span>
-                      <span className="ml-2 text-xs text-gray-500">MATIC</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-5 py-4 font-medium tabular-nums">₹0.78</td>
-                <td className="px-5 py-4 text-loss tabular-nums">-0.63%</td>
-                <td className="px-5 py-4 text-loss tabular-nums">-1.97%</td>
-                <td className="px-5 py-4 tabular-nums">₹7.73B</td>
-                <td className="px-5 py-4 tabular-nums">₹280.41M</td>
-                <td className="px-5 py-4 tabular-nums">9.87B MATIC</td>
-                <td className="px-5 py-4">
-                  <div className="h-8 w-24 rounded bg-gray-800/50"></div>
-                </td>
-              </tr>
+              {(marketQuery?.data ?? []).map(coin => {
+                return (
+                  <tr key={coin.id} className="border-b border-card hover-card">
+                    <td className="px-5 py-4 text-gray-400">{coin.market_cap_rank}</td>
+                    <td className="px-5 py-4">
+                      <div className="flex items-center gap-3">
+                        <img className="flex h-8 w-8 items-center justify-center rounded-full" src={coin.image} />
+                        <div>
+                          <span className="font-medium">{coin.name}</span>
+                          <span className="ml-2 text-xs text-gray-500">{coin.symbol}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-5 py-4 font-medium tabular-nums">₹{coin.current_price}</td>
+                    <td className={
+                      `px-5 py-4 tabular-nums
+                                     ${coin.price_change_percentage_24h >= 0 ? "text-gain" : "text-loss"}`
+                    }>+{formatNumber(coin.price_change_percentage_24h)}%</td>
+                    <td className={
+                      `px-5 py-4 tabular-nums
+                                    ${coin.price_change_percentage_7d_in_currency &&
+                        coin.price_change_percentage_7d_in_currency >= 0 ? "text-gain" : "text-loss"}`
+                    }>{coin.price_change_percentage_7d_in_currency?.toFixed(2)}%</td>
+                    <td className="px-5 py-4 tabular-nums">₹{formatMatricPrefix(coin.market_cap)}</td>
+                    <td className="px-5 py-4 tabular-nums">₹{formatMatricPrefix(coin.total_volume)}</td>
+                    <td className="px-5 py-4 tabular-nums">{formatMatricPrefix(coin.circulating_supply)} {coin.symbol.toUpperCase()}</td>
+                    <td className="px-5 py-4">
+                      <div className="h-8 w-24 rounded bg-gray-800/50">
+                        <MiniChart
+                          data={convertChartData(coin.sparkline_in_7d?.price)}
+                          gain={(coin?.price_change_percentage_7d_in_currency ?? 1) >= 0}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>

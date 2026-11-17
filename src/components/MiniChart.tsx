@@ -42,7 +42,7 @@ export default function MiniChart({ data, gain }: props) {
           stroke={
             gain ? "#059669" : "#E11D48"
           }
-          strokeWidth={1.2}
+          strokeWidth={1.1}
           dot={false}
           activeDot={false}
         />

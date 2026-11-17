@@ -1,8 +1,6 @@
 import {
   Info,
   Filter,
-  List,
-  LayoutGrid,
   DollarSign,
   BarChart3,
   Gauge,
@@ -189,15 +187,7 @@ export default function Dashboard() {
             <DashboardSelect value={change24h} onChange={setChange24h} values={change24hFilters} placeholder="24h Change" />
           </div>
 
-          {/* Right: View Toggle */}
-          <div className="flex items-center overflow-hidden rounded-lg border border-card">
-            <button className="flex h-9 w-9 items-center justify-center bg-accent text-white cursor-pointer">
-              <List className="h-4 w-4" />
-            </button>
-            <button className="flex h-9 w-9 items-center justify-center bg-card text-gray-400 hover:text-white cursor-pointer">
-              <LayoutGrid className="h-4 w-4" />
-            </button>
-          </div>
+
         </div>
 
         {/* ── Asset Table ── */}
@@ -246,9 +236,9 @@ export default function Dashboard() {
                     <td className="px-5 py-4 tabular-nums">{formatMatricPrefix(coin.circulating_supply)} {coin.symbol.toUpperCase()}</td>
                     <td className="px-5 py-4">
                       <div className="h-8 w-24 rounded bg-gray-800/50">
-                        <MiniChart 
-                          data={convertChartData(coin.sparkline_in_7d?.price)} 
-                          gain={(coin?.price_change_percentage_7d_in_currency ?? 1) >= 0} 
+                        <MiniChart
+                          data={convertChartData(coin.sparkline_in_7d?.price)}
+                          gain={(coin?.price_change_percentage_7d_in_currency ?? 1) >= 0}
                         />
                       </div>
                     </td>
