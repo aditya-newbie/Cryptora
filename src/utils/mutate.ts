@@ -76,9 +76,28 @@ export function filter24hChange(
   }
 }
 
+export function filterVolume24h(
+  volume: string,
+  market: MarketCoin[] | undefined,
+): MarketCoin[] {
+  const coins = market ?? [];
+
+  switch (volume) {
+    case "high":
+      return coins.filter((coin) => coin.total_volume !== null && coin.total_volume >= 1_000_000_000);
+    case "medium":
+      return coins.filter((coin) => coin.total_volume !== null && coin.total_volume >= 100_000_000 && coin.total_volume < 1_000_000_000);
+    case "low":
+      return coins.filter((coin) => coin.total_volume !== null && coin.total_volume < 100_000_000);
+    default:
+      return coins;
+  }
+}
+
 export function convertChartData(data: number[] | undefined | null) {
   if (!data) {
     return [];
   }
-  return data.map((value, i) => ({price: value, time: i}));
+  return data.map((value, i) => ({ price: value, time: i }));
 }
+

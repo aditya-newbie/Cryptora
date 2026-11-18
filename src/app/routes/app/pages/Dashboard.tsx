@@ -12,7 +12,7 @@ import { getMarketBreadth } from "../../../../utils/calc";
 import useDashboard from "../../../../hooks/useDashboard";
 import { useShallow } from "zustand/react/shallow";
 import { useFilterStore } from "../../../../stores/dashboard-filter-store";
-import { DashboardSelect } from "../../../../components/select";
+import { PrimarySelect } from "../../../../components/select";
 import {
   convertChartData,
   filter24hChange,
@@ -178,13 +178,13 @@ export default function Dashboard() {
             </button>
 
             {/* Category Dropdown */}
-            <DashboardSelect value={category} onChange={setCategory} values={categoryFilters} placeholder="Category" />
+            <PrimarySelect value={category} onChange={setCategory} values={categoryFilters} placeholder="Category" />
 
             {/* Market Cap Dropdown */}
-            <DashboardSelect value={marketCap} onChange={setMarketCap} values={marketCapFilters} placeholder="MarketCap" />
+            <PrimarySelect value={marketCap} onChange={setMarketCap} values={marketCapFilters} placeholder="MarketCap" />
 
             {/* 24h Change Dropdown */}
-            <DashboardSelect value={change24h} onChange={setChange24h} values={change24hFilters} placeholder="24h Change" />
+            <PrimarySelect value={change24h} onChange={setChange24h} values={change24hFilters} placeholder="24h Change" />
           </div>
 
 

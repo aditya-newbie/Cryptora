@@ -5,14 +5,14 @@ import {
   Rocket,
   TrendingDown,
   Sparkles,
-  ChevronDown,
   Filter,
-  Layers,
 } from "lucide-react";
-import fetchMarket from "../../../../services/coingecko/market";
+import fetchMarket, { fetchCategory } from "../../../../services/coingecko/market";
 import { formatMatricPrefix, formatNumber } from "../../../../utils/format";
 import MiniChart from "../../../../components/MiniChart";
-import { convertChartData } from "../../../../utils/mutate";
+import { convertChartData, filter24hChange, filterCategory, filterMarketCap, filterVolume24h } from "../../../../utils/mutate";
+import { PrimarySelect, SecondarySelect } from "../../../../components/select";
+import { useFilterStore } from "../../../../stores/dashboard-filter-store";
 
 export default function Market() {
 
@@ -20,6 +20,30 @@ export default function Market() {
     queryKey: ["market"],
     queryFn: fetchMarket
   })
+
+  const categoryQuery = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategory,
+    staleTime: 1000 * 60 * 60 * 24 * 14,
+  })
+
+  const category = useFilterStore((state) => state.category);
+  const setCategory = useFilterStore((state) => state.setCategory);
+  const categoryFilters = useFilterStore((state) => state.categoryFilters);
+  const marketCap = useFilterStore((state) => state.marketCap);
+  const setMarketCap = useFilterStore((state) => state.setMarketCap);
+  const marketCapFilters = useFilterStore((state) => state.marketCapFilters);
+  const change24h = useFilterStore((state) => state.change24h);
+  const setChange24h = useFilterStore((state) => state.setChange24h);
+  const change24hFilters = useFilterStore((state) => state.change24hFilters);
+  const volume24h = useFilterStore((state) => state.volume24h);
+  const setVolume24h = useFilterStore((state) => state.setVolume24h);
+  const volume24hFilters = useFilterStore((state) => state.volume24hFilters);
+
+  const filteredCategory = filterCategory(category, categoryQuery?.data, marketQuery?.data);
+  const filteredMarketCap = filterMarketCap(marketCap, filteredCategory);
+  const fileteredVolume24h = filterVolume24h(volume24h, filteredMarketCap);
+  const filteredMarket = filter24hChange(change24h, fileteredVolume24h);
 
   return (
     <div className="font-body min-h-screen bg-canvas text-white">
@@ -51,11 +75,7 @@ export default function Market() {
             <Sparkles className="h-4 w-4 text-yellow-400" />
             New Listings
           </button>
-          <button className="flex items-center gap-2 rounded-full border border-card px-4 py-2 text-sm text-gray-400 hover:text-white cursor-pointer">
-            <Layers className="h-4 w-4 text-blue-400" />
-            Categories
-            <ChevronDown className="h-3.5 w-3.5 text-gray-500" />
-          </button>
+          <SecondarySelect value={category} onChange={setCategory} values={categoryFilters} placeholder="Category" />
         </div>
 
         {/* ── Search + Filter Bar ── */}
@@ -68,28 +88,13 @@ export default function Market() {
           </div>
 
           {/* Market Cap Dropdown */}
-          <button className="flex items-center gap-2 rounded-lg border border-card bg-card px-4 py-2.5 text-sm text-gray-300 hover:text-white cursor-pointer">
-            Market Cap
-            <ChevronDown className="h-4 w-4 text-gray-500" />
-          </button>
+          <PrimarySelect value={marketCap} onChange={setMarketCap} values={marketCapFilters} placeholder="MarketCap" />
 
           {/* Volume (24h) Dropdown */}
-          <button className="flex items-center gap-2 rounded-lg border border-card bg-card px-4 py-2.5 text-sm text-gray-300 hover:text-white cursor-pointer">
-            Volume (24h)
-            <ChevronDown className="h-4 w-4 text-gray-500" />
-          </button>
+          <PrimarySelect value={volume24h} onChange={setVolume24h} values={volume24hFilters} placeholder="Volume (24h)" />
 
           {/* 24h Change Dropdown */}
-          <button className="flex items-center gap-2 rounded-lg border border-card bg-card px-4 py-2.5 text-sm text-gray-300 hover:text-white cursor-pointer">
-            24h Change
-            <ChevronDown className="h-4 w-4 text-gray-500" />
-          </button>
-
-          {/* Network Dropdown */}
-          <button className="flex items-center gap-2 rounded-lg border border-card bg-card px-4 py-2.5 text-sm text-gray-300 hover:text-white cursor-pointer">
-            Network
-            <ChevronDown className="h-4 w-4 text-gray-500" />
-          </button>
+          <PrimarySelect value={change24h} onChange={setChange24h} values={change24hFilters} placeholder="24h Change" />
 
           {/* Filter Button */}
           <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent text-white cursor-pointer">
@@ -115,7 +120,7 @@ export default function Market() {
             </thead>
             <tbody>
 
-              {(marketQuery?.data ?? []).map(coin => {
+              {filteredMarket.map(coin => {
                 return (
                   <tr key={coin.id} className="border-b border-card hover-card">
                     <td className="px-5 py-4 text-gray-400">{coin.market_cap_rank}</td>
