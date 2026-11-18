@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import {
   Search,
   Flame,
@@ -7,25 +6,19 @@ import {
   Sparkles,
   Filter,
 } from "lucide-react";
-import fetchMarket, { fetchCategory } from "../../../../services/coingecko/market";
 import { formatMatricPrefix, formatNumber } from "../../../../utils/format";
 import MiniChart from "../../../../components/MiniChart";
-import { convertChartData, filter24hChange, filterCategory, filterMarketCap, filterVolume24h } from "../../../../utils/mutate";
+import { convertChartData, filter24hChange, filterCategory, filterMarketCap, filterTabPill, filterVolume24h } from "../../../../utils/mutate";
 import { PrimarySelect, SecondarySelect } from "../../../../components/select";
 import { useFilterStore } from "../../../../stores/dashboard-filter-store";
+import React, { useMemo, useState } from "react";
+import useMarket from "../../../../hooks/useMarket";
 
 export default function Market() {
 
-  const marketQuery = useQuery({
-    queryKey: ["market"],
-    queryFn: fetchMarket
-  })
+  const { market, trending, categories } = useMarket();
 
-  const categoryQuery = useQuery({
-    queryKey: ["categories"],
-    queryFn: fetchCategory,
-    staleTime: 1000 * 60 * 60 * 24 * 14,
-  })
+  const [ selectedTabPill, setSelectedTabPill ] = useState("all")
 
   const category = useFilterStore((state) => state.category);
   const setCategory = useFilterStore((state) => state.setCategory);
@@ -40,10 +33,18 @@ export default function Market() {
   const setVolume24h = useFilterStore((state) => state.setVolume24h);
   const volume24hFilters = useFilterStore((state) => state.volume24hFilters);
 
-  const filteredCategory = filterCategory(category, categoryQuery?.data, marketQuery?.data);
-  const filteredMarketCap = filterMarketCap(marketCap, filteredCategory);
-  const fileteredVolume24h = filterVolume24h(volume24h, filteredMarketCap);
-  const filteredMarket = filter24hChange(change24h, fileteredVolume24h);
+  const filteredMarket = useMemo(() => {
+    const filterdTab = filterTabPill(selectedTabPill, market, trending)
+    const filteredCategory = filterCategory(category, categories, filterdTab);
+    const filteredMarketCap = filterMarketCap(marketCap, filteredCategory);
+    const fileteredVolume24h = filterVolume24h(volume24h, filteredMarketCap);
+    return filter24hChange(change24h, fileteredVolume24h);
+  }, [selectedTabPill, trending, market, categories, category, marketCap, volume24h, change24h])
+
+  function handleTabPillChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setSelectedTabPill(event.target.value)
+  }
+
 
   return (
     <div className="font-body min-h-screen bg-canvas text-white">
@@ -56,25 +57,70 @@ export default function Market() {
 
         {/* ── Tab Pills ── */}
         <div className="mt-6 flex items-center gap-3">
-          <button className="flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-medium text-white cursor-pointer">
-            All Assets
-          </button>
-          <button className="flex items-center gap-2 rounded-full border border-card px-4 py-2 text-sm text-gray-400 hover:text-white cursor-pointer">
+          <label className="flex items-center gap-2 rounded-full border border-card px-4 py-2 text-sm text-gray-400 hover:text-white cursor-pointer has-checked:bg-accent has-checked:border-accent has-checked:text-white">
+            <input
+              type="radio"
+              name="market-tab"
+              checked={selectedTabPill === "all"}
+              value="all"
+              onChange={handleTabPillChange}
+              className="sr-only"
+            />
+            <span>All Assets</span>
+          </label>
+
+          <label className="flex items-center gap-2 rounded-full border border-card px-4 py-2 text-sm text-gray-400 hover:text-white cursor-pointer has-checked:bg-accent has-checked:border-accent has-checked:text-white">
+            <input
+              type="radio"
+              name="market-tab"
+              checked={selectedTabPill === "trending"}
+              value="trending"
+              onChange={handleTabPillChange}
+              className="sr-only"
+            />
             <Flame className="h-4 w-4 text-orange-400" />
-            Trending
-          </button>
-          <button className="flex items-center gap-2 rounded-full border border-card px-4 py-2 text-sm text-gray-400 hover:text-white cursor-pointer">
+            <span>Trending</span>
+          </label>
+
+          <label className="flex items-center gap-2 rounded-full border border-card px-4 py-2 text-sm text-gray-400 hover:text-white cursor-pointer has-checked:bg-accent has-checked:border-accent has-checked:text-white">
+            <input
+              type="radio"
+              name="market-tab"
+              checked={selectedTabPill === "gainers"}
+              value="gainers"
+              onChange={handleTabPillChange}
+              className="sr-only"
+            />
             <Rocket className="h-4 w-4 text-gain" />
-            Gainers
-          </button>
-          <button className="flex items-center gap-2 rounded-full border border-card px-4 py-2 text-sm text-gray-400 hover:text-white cursor-pointer">
+            <span>Gainers</span>
+          </label>
+
+          <label className="flex items-center gap-2 rounded-full border border-card px-4 py-2 text-sm text-gray-400 hover:text-white cursor-pointer has-checked:bg-accent has-checked:border-accent has-checked:text-white">
+            <input
+              type="radio"
+              name="market-tab"
+              checked={selectedTabPill === "losers"}
+              value="losers"
+              onChange={handleTabPillChange}
+              className="sr-only"
+            />
             <TrendingDown className="h-4 w-4 text-loss" />
-            Losers
-          </button>
-          <button className="flex items-center gap-2 rounded-full border border-card px-4 py-2 text-sm text-gray-400 hover:text-white cursor-pointer">
+            <span>Losers</span>
+          </label>
+
+          <label className="flex items-center gap-2 rounded-full border border-card px-4 py-2 text-sm text-gray-400 hover:text-white cursor-pointer has-checked:bg-accent has-checked:border-accent has-checked:text-white">
+            <input
+              type="radio"
+              name="market-tab"
+              checked={selectedTabPill === "new-listings"}
+              value="new-listings"
+              onChange={handleTabPillChange}
+              className="sr-only"
+            />
             <Sparkles className="h-4 w-4 text-yellow-400" />
-            New Listings
-          </button>
+            <span>New Listings</span>
+          </label>
+
           <SecondarySelect value={category} onChange={setCategory} values={categoryFilters} placeholder="Category" />
         </div>
 
@@ -136,11 +182,11 @@ export default function Market() {
                     <td className="px-5 py-4 font-medium tabular-nums">₹{coin.current_price}</td>
                     <td className={
                       `px-5 py-4 tabular-nums
-                                     ${coin.price_change_percentage_24h >= 0 ? "text-gain" : "text-loss"}`
-                    }>+{formatNumber(coin.price_change_percentage_24h)}%</td>
+                      ${coin.price_change_percentage_24h >= 0 ? "text-gain" : "text-loss"}`
+                    }>{formatNumber(coin.price_change_percentage_24h)}%</td>
                     <td className={
                       `px-5 py-4 tabular-nums
-                                    ${coin.price_change_percentage_7d_in_currency &&
+                      ${coin.price_change_percentage_7d_in_currency &&
                         coin.price_change_percentage_7d_in_currency >= 0 ? "text-gain" : "text-loss"}`
                     }>{coin.price_change_percentage_7d_in_currency?.toFixed(2)}%</td>
                     <td className="px-5 py-4 tabular-nums">₹{formatMatricPrefix(coin.market_cap)}</td>

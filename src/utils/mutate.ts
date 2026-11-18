@@ -1,5 +1,6 @@
 import type { CategoryMarkets } from "../types/Dashboard";
 import type MarketCoin from "../types/MarketCoin";
+import type { TrendingResponse } from "../types/TrendingCoin";
 
 export function filterCategory(
   category: string,
@@ -89,6 +90,37 @@ export function filterVolume24h(
       return coins.filter((coin) => coin.total_volume !== null && coin.total_volume >= 100_000_000 && coin.total_volume < 1_000_000_000);
     case "low":
       return coins.filter((coin) => coin.total_volume !== null && coin.total_volume < 100_000_000);
+    default:
+      return coins;
+  }
+}
+
+export function filterTabPill(
+  tab: string,
+  market: MarketCoin[] | undefined,
+  trending?: TrendingResponse | undefined,
+): MarketCoin[] {
+  const coins = market ?? [];
+
+  switch (tab) {
+    case "trending": {
+      if (!trending?.coins) return coins;
+      const trendingIds = new Set(trending.coins.map((c) => c.item.id));
+      return coins.filter((coin) => trendingIds.has(coin.id));
+    }
+    case "gainers":
+      return [...coins]
+        .filter((coin) => (coin.price_change_percentage_24h ?? 0) > 0)
+        .sort((a, b) => (b.price_change_percentage_24h ?? 0) - (a.price_change_percentage_24h ?? 0));
+    case "losers":
+      return [...coins]
+        .filter((coin) => (coin.price_change_percentage_24h ?? 0) < 0)
+        .sort((a, b) => (a.price_change_percentage_24h ?? 0) - (b.price_change_percentage_24h ?? 0));
+    case "new-listings":
+      return [...coins].sort(
+        (a, b) => new Date(b.atl_date ?? 0).getTime() - new Date(a.atl_date ?? 0).getTime(),
+      );
+    case "all":
     default:
       return coins;
   }

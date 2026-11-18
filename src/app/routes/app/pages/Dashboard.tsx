@@ -20,6 +20,7 @@ import {
   filterMarketCap,
 } from "../../../../utils/mutate";
 import MiniChart from "../../../../components/MiniChart";
+import { useMemo } from "react";
 
 export default function Dashboard() {
 
@@ -37,6 +38,12 @@ export default function Dashboard() {
     setChange24h: state.setChange24h,
   })))
 
+  const filteredMarket = useMemo(() => {
+    const filteredCategory = filterCategory(category, categories, market);
+    const filteredByMarketCap = filterMarketCap(marketCap, filteredCategory);
+    return filter24hChange(change24h, filteredByMarketCap);
+  }, [category, categories, market, marketCap, change24h ])
+
 
   if (isPending) {
     return <div className="p-6 text-gray-300">Loading market data...</div>;
@@ -53,10 +60,6 @@ export default function Dashboard() {
   const marketBreadth = getMarketBreadth(market);
   const marketCapChangePercentage = global?.data?.market_cap_change_percentage_24h_usd;
   const fearGreedIndex = global?.data?.fear_and_greed_index;
-
-  const filteredCategory = filterCategory(category, categories, market);
-  const filteredByMarketCap = filterMarketCap(marketCap, filteredCategory);
-  const filteredMarket = filter24hChange(change24h, filteredByMarketCap);
 
   return (
     <div className="font-body min-h-screen bg-canvas text-white">
@@ -225,7 +228,7 @@ export default function Dashboard() {
                     <td className={
                       `px-5 py-4 tabular-nums
                        ${coin.price_change_percentage_24h >= 0 ? "text-gain" : "text-loss"}`
-                    }>+{formatNumber(coin.price_change_percentage_24h)}%</td>
+                    }>{formatNumber(coin.price_change_percentage_24h)}%</td>
                     <td className={
                       `px-5 py-4 tabular-nums
                       ${coin.price_change_percentage_7d_in_currency &&
