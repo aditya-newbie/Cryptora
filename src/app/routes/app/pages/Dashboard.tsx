@@ -14,13 +14,12 @@ import { useShallow } from "zustand/react/shallow";
 import { useFilterStore } from "../../../../stores/dashboard-filter-store";
 import { PrimarySelect } from "../../../../components/select";
 import {
-  convertChartData,
   filter24hChange,
   filterCategory,
   filterMarketCap,
 } from "../../../../utils/mutate";
-import MiniChart from "../../../../components/MiniChart";
 import { useMemo } from "react";
+import AssetTable from "../../../../components/AssetTable";
 
 export default function Dashboard() {
 
@@ -42,7 +41,7 @@ export default function Dashboard() {
     const filteredCategory = filterCategory(category, categories, market);
     const filteredByMarketCap = filterMarketCap(marketCap, filteredCategory);
     return filter24hChange(change24h, filteredByMarketCap);
-  }, [category, categories, market, marketCap, change24h ])
+  }, [category, categories, market, marketCap, change24h])
 
 
   if (isPending) {
@@ -194,63 +193,7 @@ export default function Dashboard() {
         </div>
 
         {/* ── Asset Table ── */}
-        <div className="mt-6 overflow-x-auto rounded-xl border border-card bg-card">
-          <table className="w-full min-w-225 text-sm">
-            <thead>
-              <tr className="border-b border-card text-left text-xs text-gray-100">
-                <th className="px-5 py-4 font-medium">#</th>
-                <th className="px-5 py-4 font-medium">Asset</th>
-                <th className="px-5 py-4 font-medium">Price</th>
-                <th className="px-5 py-4 font-medium">24h %</th>
-                <th className="px-5 py-4 font-medium">7d %</th>
-                <th className="px-5 py-4 font-medium">Market Cap</th>
-                <th className="px-5 py-4 font-medium">Volume (24h)</th>
-                <th className="px-5 py-4 font-medium">Circulating Supply</th>
-                <th className="px-5 py-4 font-medium">Last 7 Days</th>
-              </tr>
-            </thead>
-            <tbody>
-
-              {filteredMarket.slice(0, 10).map(coin => {
-                return (
-                  <tr key={coin.id} className="border-b border-card hover-card">
-                    <td className="px-5 py-4 text-gray-400">{coin.market_cap_rank}</td>
-                    <td className="px-5 py-4">
-                      <div className="flex items-center gap-3">
-                        <img className="flex h-8 w-8 items-center justify-center rounded-full" src={coin.image} />
-                        <div>
-                          <span className="font-medium">{coin.name}</span>
-                          <span className="ml-2 text-xs text-gray-500">{coin.symbol}</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-5 py-4 font-medium tabular-nums">₹{coin.current_price}</td>
-                    <td className={
-                      `px-5 py-4 tabular-nums
-                       ${coin.price_change_percentage_24h >= 0 ? "text-gain" : "text-loss"}`
-                    }>{formatNumber(coin.price_change_percentage_24h)}%</td>
-                    <td className={
-                      `px-5 py-4 tabular-nums
-                      ${coin.price_change_percentage_7d_in_currency &&
-                        coin.price_change_percentage_7d_in_currency >= 0 ? "text-gain" : "text-loss"}`
-                    }>{coin.price_change_percentage_7d_in_currency?.toFixed(2)}%</td>
-                    <td className="px-5 py-4 tabular-nums">₹{formatMatricPrefix(coin.market_cap)}</td>
-                    <td className="px-5 py-4 tabular-nums">₹{formatMatricPrefix(coin.total_volume)}</td>
-                    <td className="px-5 py-4 tabular-nums">{formatMatricPrefix(coin.circulating_supply)} {coin.symbol.toUpperCase()}</td>
-                    <td className="px-5 py-4">
-                      <div className="h-8 w-24 rounded bg-gray-800/50">
-                        <MiniChart
-                          data={convertChartData(coin.sparkline_in_7d?.price)}
-                          gain={(coin?.price_change_percentage_7d_in_currency ?? 1) >= 0}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
+        <AssetTable marketData={filteredMarket} />
       </div>
     </div>
   );
