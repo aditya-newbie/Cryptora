@@ -141,7 +141,14 @@ export default function Dashboard() {
                 <span>24h Volume</span>
               </div>
               <p className="mt-3 text-3xl font-bold tabular-nums">₹{formatMatricPrefix(global?.data?.total_volume?.inr)}</p>
-              <p className="mt-1 text-sm text-gain tabular-nums">{formatNumber(global?.data?.volume_change_percentage_24h_usd)}%</p>
+              <p 
+                className={
+                  `mt-1 text-sm tabular-nums
+                   ${(global?.data?.volume_change_percentage_24h_usd ?? 1) >= 0 
+                    ? "text-gain" 
+                    : "text-loss"}`
+                }
+              >{formatNumber(global?.data?.volume_change_percentage_24h_usd)}%</p>
             </div>
 
             {/* Market Sentiment */}

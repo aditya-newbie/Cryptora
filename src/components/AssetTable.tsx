@@ -4,6 +4,7 @@ import { formatMatricPrefix, formatNumber } from "../utils/format";
 import MiniChart from "./MiniChart";
 import { convertChartData } from "../utils/mutate";
 import type MarketCoin from "../types/MarketCoin";
+import { Link } from "react-router";
 
 interface AssetTableProps {
   marketData: MarketCoin[];
@@ -27,7 +28,7 @@ export default function AssetTable({ marketData }: AssetTableProps) {
   return (
     <div
       ref={scrollContainerRef}
-      className="mt-6 max-h-[70vh] overflow-auto rounded-xl border border-card bg-card"
+      className="mt-6 max-h-[70vh] overflow-auto scrollbar-thumb-slate-700 rounded-xl border border-card bg-card"
     >
       <table className="grid min-w-270 w-full text-sm">
         <thead className="sticky top-0 z-10 grid bg-card">
@@ -67,7 +68,7 @@ export default function AssetTable({ marketData }: AssetTableProps) {
                 <td className="flex items-center px-5 py-4 text-gray-400">
                   {coin.market_cap_rank}
                 </td>
-                <td className="flex min-w-0 items-center px-5 py-4">
+                <Link to={`/market/${coin.id}`} className="flex min-w-0 items-center px-5 py-4">
                   <div className="flex min-w-0 items-center gap-3">
                     <img
                       className="h-8 w-8 shrink-0 rounded-full"
@@ -81,7 +82,7 @@ export default function AssetTable({ marketData }: AssetTableProps) {
                       </span>
                     </div>
                   </div>
-                </td>
+                </Link>
                 <td className="flex items-center px-5 py-4 font-medium tabular-nums">
                   ₹{coin.current_price}
                 </td>
