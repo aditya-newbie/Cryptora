@@ -4,7 +4,6 @@ import {
   Rocket,
   TrendingDown,
   Sparkles,
-  Filter,
 } from "lucide-react";
 
 import { filter24hChange, filterCategory, filterMarketCap, filterTabPill, filterVolume24h } from "../../../../utils/mutate";
@@ -19,6 +18,7 @@ export default function Market() {
   const { market, trending, categories } = useMarket();
 
   const [selectedTabPill, setSelectedTabPill] = useState("all")
+  const [search, setSearch] = useState("");
 
   const category = useFilterStore((state) => state.category);
   const setCategory = useFilterStore((state) => state.setCategory);
@@ -33,19 +33,34 @@ export default function Market() {
   const setVolume24h = useFilterStore((state) => state.setVolume24h);
   const volume24hFilters = useFilterStore((state) => state.volume24hFilters);
 
-  const filteredMarket = useMemo(() => {
-    const filterdTab = filterTabPill(selectedTabPill, market, trending)
-    const filteredCategory = filterCategory(category, categories, filterdTab);
+  const filteredSelected = useMemo(() => {
+    const filteredTab = filterTabPill(selectedTabPill, market, trending)
+    const filteredCategory = filterCategory(category, categories, filteredTab);
     const filteredMarketCap = filterMarketCap(marketCap, filteredCategory);
-    const fileteredVolume24h = filterVolume24h(volume24h, filteredMarketCap);
-    return filter24hChange(change24h, fileteredVolume24h);
+    const filteredVolume24h = filterVolume24h(volume24h, filteredMarketCap);
+    return filter24hChange(change24h, filteredVolume24h);
   }, [selectedTabPill, trending, market, categories, category, marketCap, volume24h, change24h])
+
+  function filterSearch(search: string,) {
+    return filteredSelected.filter((coin) => {
+      const searchLower = search.toLowerCase();
+      return (
+        coin.name.toLowerCase().includes(searchLower) ||
+        coin.symbol.toLowerCase().includes(searchLower)
+      );
+    })
+  }
+
+  const filteredMarket = filterSearch(search);
 
 
   function handleTabPillChange(event: React.ChangeEvent<HTMLInputElement>) {
     setSelectedTabPill(event.target.value)
   }
 
+  function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setSearch(event.target.value)
+  }
 
   return (
     <div className="font-body min-h-screen bg-canvas text-white">
@@ -130,7 +145,14 @@ export default function Market() {
           {/* Search Input */}
           <div className="flex flex-1 items-center gap-3 rounded-lg border border-card bg-card px-4 py-2.5">
             <Search className="h-4 w-4 text-gray-500" />
-            <span className="text-sm text-gray-500">Search assets (BTC, ETH, SOL...)</span>
+            <input
+              type="search"
+              aria-label="Search assets"
+              placeholder="Search assets (BTC, ETH, SOL...)"
+              value={search}
+              onChange={handleSearchChange}
+              className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-gray-500"
+            />
             <span className="ml-auto rounded border border-card px-2 py-0.5 text-xs text-gray-500">Ctrl K</span>
           </div>
 
@@ -143,10 +165,7 @@ export default function Market() {
           {/* 24h Change Dropdown */}
           <PrimarySelect value={change24h} onChange={setChange24h} values={change24hFilters} placeholder="24h Change" />
 
-          {/* Filter Button */}
-          <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent text-white cursor-pointer">
-            <Filter className="h-4 w-4" />
-          </button>
+
         </div>
 
         <AssetTable marketData={filteredMarket} />

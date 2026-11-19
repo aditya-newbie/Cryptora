@@ -193,7 +193,7 @@ export default function Dashboard() {
         </div>
 
         {/* ── Asset Table ── */}
-        <AssetTable marketData={filteredMarket} />
+        <AssetTable marketData={filteredMarket.slice(0, 10)} />
       </div>
     </div>
   );
