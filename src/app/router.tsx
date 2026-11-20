@@ -34,7 +34,7 @@ const router = createBrowserRouter([
                 Component: Market,
               },
               {
-                path: "/market/:currencyId",
+                path: "/market/:coinId",
                 Component: AssetDetails,
               },
             ]

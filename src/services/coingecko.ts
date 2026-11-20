@@ -2,6 +2,7 @@ import type { TrendingResponse } from "../types/TrendingCoin";
 import type { CategoryMarkets } from "../types/Dashboard";
 import type GlobalMarketResponse from "../types/GlobalMarket";
 import type MarketCoin from "../types/MarketCoin";
+import type { CoinDetail, MarketDataType } from "../types/Coin";
 
 
 const API_KEY = import.meta.env.VITE_COINGECKO_API_KEY
@@ -84,4 +85,34 @@ export async function fetchTrending(): Promise<TrendingResponse> {
   }
 
   return res.json();
+}
+
+export async function fetchCoinMarket(coinId: string | undefined):
+  Promise<Record<string, MarketDataType>> {
+  if (!coinId) {
+    throw new Error("Coin id is not defined")
+  }
+
+  const coinMarketData = await fetchCoinGecko(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=inr&days=120`)
+  
+
+  if (!coinMarketData.ok) {
+    throw new Error("Failed to fetch asset market")
+  }
+
+  return coinMarketData.json()
+}
+
+export async function fetchCoinDetail(coinId: string | undefined): Promise<CoinDetail> {
+  if (!coinId) {
+    throw new Error("Coin id is not defined")
+  }
+
+  const coinData = await fetchCoinGecko(`https://api.coingecko.com/api/v3/coins/${coinId}?vs_currency=inr`)
+
+  if(!coinData.ok) {
+    throw new Error("Failed to fetch asset details")
+  }
+
+  return coinData.json()
 }
