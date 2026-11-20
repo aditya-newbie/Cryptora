@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import fetchMarket, { fetchCategory } from "../services/coingecko/market"
-import fetchTrending from "../services/coingecko/trending"
+import { fetchMarket, fetchTrending, fetchCategory } from "../services/coingecko";
 
 
 export default function useMarket() {

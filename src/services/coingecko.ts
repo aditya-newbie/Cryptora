@@ -1,5 +1,8 @@
-import type MarketCoin from "../../types/MarketCoin"
-import type { CategoryMarkets } from "../../types/Dashboard";
+import type { TrendingResponse } from "../types/TrendingCoin";
+import type { CategoryMarkets } from "../types/Dashboard";
+import type GlobalMarketResponse from "../types/GlobalMarket";
+import type MarketCoin from "../types/MarketCoin";
+
 
 const API_KEY = import.meta.env.VITE_COINGECKO_API_KEY
 
@@ -11,7 +14,18 @@ function fetchCoinGecko(url: string) {
   });
 }
 
-export default async function fetchMarket(): Promise<MarketCoin[]> {
+export async function fetchGlobal(): Promise<GlobalMarketResponse> {
+  const res = await fetchCoinGecko("https://api.coingecko.com/api/v3/global?vs_currency=inr");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch global data")
+  }
+
+
+  return res.json();
+}
+
+export async function fetchMarket(): Promise<MarketCoin[]> {
 
   const res = await fetchCoinGecko("https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h,24h,7d");
 
@@ -58,4 +72,16 @@ export async function fetchCategory(): Promise<CategoryMarkets> {
     rwa: await rwa.json(),
     privacyCoins: await privacyCoins.json(),
   };
+}
+
+
+
+export async function fetchTrending(): Promise<TrendingResponse> {
+  const res = await fetchCoinGecko("https://api.coingecko.com/api/v3/search/trending?vs_currency=inr");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch trending data")
+  }
+
+  return res.json();
 }
