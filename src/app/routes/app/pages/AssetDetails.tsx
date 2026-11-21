@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import {
   ArrowDownRight,
   ArrowUpRight,
-  Bitcoin,
   Blocks,
   CalendarDays,
   ChevronDown,
@@ -19,6 +18,8 @@ import {
 import { useParams } from "react-router";
 import { fetchCoinDetail } from "../../../../services/coingecko";
 import { formatMatricPrefix, formatNumber } from "../../../../utils/format";
+import { changeTextClass } from "../../../../utils/other";
+import Description from "../../../../components/Description";
 
 function GraphPlaceholder({ label }: { label: string }) {
   return (
@@ -28,14 +29,6 @@ function GraphPlaceholder({ label }: { label: string }) {
       className="h-full w-full rounded-md bg-gray-800"
     />
   );
-}
-
-function changeTextClass(change: number | null | undefined) {
-  if (change == null) {
-    return "text-gray-400";
-  }
-
-  return change < 0 ? "text-loss" : "text-gain";
 }
 
 export default function AssetDetails() {
@@ -62,11 +55,9 @@ export default function AssetDetails() {
           </span>
         </div>
 
-        <section className="flex min-h-[72px] items-center justify-between rounded-xl border border-card-border bg-card px-3 py-2.5 sm:px-4">
+        <section className="flex min-h-18 items-center justify-between rounded-xl border border-card-border bg-card px-3 py-2.5 sm:px-4">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-500 text-white">
-              <Bitcoin className="h-9 w-9" />
-            </div>
+            <img className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full" src={coinDetailQuery?.data?.image.large} />
 
             <div className="min-w-0">
               <h1 className="text-lg font-bold">{coin?.name}</h1>
@@ -203,7 +194,7 @@ export default function AssetDetails() {
               </div>
             </div>
 
-            <div className="mt-1 h-[190px] sm:h-[205px]">
+            <div className="mt-1 h-50 sm:h-[205px]">
               <GraphPlaceholder label="Price graph placeholder" />
             </div>
           </div>
@@ -333,51 +324,38 @@ export default function AssetDetails() {
         <section className="mt-2.5 rounded-xl border border-card-border bg-card p-3 sm:p-4">
           <h2 className="text-base font-bold">About Bitcoin</h2>
           <div className="mt-1.5 grid gap-4 text-[10px] sm:grid-cols-[1.15fr_1fr_0.7fr]">
-            <div className="sm:border-r sm:border-card-border sm:pr-4">
-              <p className="leading-relaxed text-gray-200">
-                Bitcoin is a decentralized digital currency that operates without a
-                central authority. It enables peer-to-peer transactions, is secured
-                by a proof-of-work network and has a fixed supply of 21 million
-                coins.
-              </p>
-              <button
-                type="button"
-                className="mt-2 flex items-center gap-1 text-purple-300 underline"
-              >
-                Read more <ChevronDown className="h-3 w-3" />
-              </button>
-            </div>
+            <Description description={coinDetailQuery?.data?.description.en ?? ''} />
 
             <div className="space-y-0.5 sm:border-r sm:border-card-border sm:pr-4">
               <div className="flex min-h-5 items-center gap-2 border-b border-card-border/70">
                 <Globe className="h-3 w-3 shrink-0 text-gray-400" />
                 <span className="w-20 shrink-0 text-gray-200">Website</span>
                 <span className="truncate text-purple-300 underline">
-                  https://bitcoin.org
+                  {coinDetailQuery?.data?.links.homepage}
                 </span>
               </div>
               <div className="flex min-h-5 items-center gap-2 border-b border-card-border/70">
                 <Blocks className="h-3 w-3 shrink-0 text-gray-400" />
                 <span className="w-20 shrink-0 text-gray-200">Whitepaper</span>
-                <span className="truncate text-purple-300 underline">
-                  Bitcoin Whitepaper
+                <span className="w-70 truncate text-purple-300 underline whitespace-nowrap overflow-hidden text-elliipsis">
+                  {coinDetailQuery?.data?.links?.whitepaper}
                 </span>
               </div>
               <div className="flex min-h-5 items-center gap-2 border-b border-card-border/70">
                 <CircleDot className="h-3 w-3 shrink-0 text-gray-400" />
                 <span className="w-20 shrink-0 text-gray-200">Blockchain</span>
-                <span className="truncate text-purple-300 underline">Bitcoin</span>
+                <span className="w-70 truncate text-purple-300 underline whitespace-nowrap overflow-hidden text-elliipsis">{coinDetailQuery?.data?.links?.blockchain_site}</span>
               </div>
               <div className="flex min-h-5 items-center gap-2 border-b border-card-border/70">
                 <CalendarDays className="h-3 w-3 shrink-0 text-gray-400" />
                 <span className="w-20 shrink-0 text-gray-200">Genesis Date</span>
-                <span className="truncate text-purple-300">Jan 3, 2009</span>
+                <span className="truncate text-purple-300">{coinDetailQuery?.data?.genesis_date}</span>
               </div>
               <div className="flex min-h-5 items-center gap-2">
                 <Link2 className="h-3 w-3 shrink-0 text-gray-400" />
                 <span className="w-20 shrink-0 text-gray-200">Categories</span>
-                <span className="rounded-full border border-card-border px-2 py-0.5 text-[9px]">
-                  Layer 1
+                <span className="min-h-[18px] min-w-10 rounded-full border border-card-border px-2 py-0.5 text-[9px]">
+                  {coinDetailQuery?.data?.categories[2]}
                 </span>
                 <span className="rounded-full border border-card-border px-2 py-0.5 text-[9px]">
                   Store of Value

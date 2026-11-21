@@ -1,4 +1,4 @@
-export type MarketDataType = string[][] ;
+export type MarketDataType = string[][];
 
 
 
@@ -18,6 +18,7 @@ export interface CoinDetail {
 
   links: {
     homepage: string[];
+    whitepaper: string;
     blockchain_site: string[];
     official_forum_url: string[];
     chat_url: string[];

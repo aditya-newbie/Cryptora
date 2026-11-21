@@ -5,8 +5,6 @@ interface MarketBreadth {
   declining: number,
 }
 
-type PriceType = number[][]
-
 export function getMarketBreadth(market: MarketCoin[] | undefined): MarketBreadth {
 
   if (!market) {
@@ -25,14 +23,4 @@ export function getMarketBreadth(market: MarketCoin[] | undefined): MarketBreadt
     advancing,
     declining
   }
-}
-
-export function getRsi(prices: PriceType) {
-  const extractedPrices: number[] = prices.map(price => price[1]);
-  let ref;
-
-  extractedPrices.map(price => {
-
-  })
-
 }
