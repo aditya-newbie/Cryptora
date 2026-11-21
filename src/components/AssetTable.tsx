@@ -68,21 +68,26 @@ export default function AssetTable({ marketData }: AssetTableProps) {
                 <td className="flex items-center px-5 py-4 text-gray-400">
                   {coin.market_cap_rank}
                 </td>
-                <Link to={`/market/${coin.id}`} className="flex min-w-0 items-center px-5 py-4">
-                  <div className="flex min-w-0 items-center gap-3">
-                    <img
-                      className="h-8 w-8 shrink-0 rounded-full"
-                      src={coin.image}
-                      alt=""
-                    />
-                    <div className="min-w-0 truncate">
-                      <span className="font-medium">{coin.name}</span>
-                      <span className="ml-2 text-xs text-gray-500">
-                        {coin.symbol}
-                      </span>
+                <td className="flex min-w-0 items-center">
+                  <Link
+                    to={`/market/${coin.id}`}
+                    className="flex min-w-0 items-center px-5 py-4"
+                  >
+                    <div className="flex min-w-0 items-center gap-3">
+                      <img
+                        className="h-8 w-8 shrink-0 rounded-full"
+                        src={coin.image}
+                        alt=""
+                      />
+                      <div className="min-w-0 truncate">
+                        <span className="font-medium">{coin.name}</span>
+                        <span className="ml-2 text-xs text-gray-500">
+                          {coin.symbol}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </td>
                 <td className="flex items-center px-5 py-4 font-medium tabular-nums">
                   ₹{coin.current_price}
                 </td>

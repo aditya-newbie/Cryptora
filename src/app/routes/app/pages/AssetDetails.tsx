@@ -39,7 +39,7 @@ export default function AssetDetails() {
     queryKey: ["coinDetail", coinId],
     queryFn: () => fetchCoinDetail(coinId),
   });
-  
+
   const MarketChartQuery = useQuery({
     queryKey: ["MarketChart", coinId],
     queryFn: () => fetchCoinMarket(coinId),
@@ -176,7 +176,7 @@ export default function AssetDetails() {
             </div>
 
             <div className="mt-1 h-50 sm:h-[205px]">
-              <PriceMarCapChart priceChartData={MarketChartQuery?.data?.price} timeSpan="24h" gain={(coinDetailQuery?.data?.market_data?.price_change_24h ?? 0) >= 0} />
+              <PriceMarCapChart priceChartData={MarketChartQuery?.data?.price} timeSpan="24h" />
             </div>
           </div>
 

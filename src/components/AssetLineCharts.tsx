@@ -1,27 +1,35 @@
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, YAxis, XAxis } from "recharts";
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, YAxis, XAxis, Tooltip } from "recharts";
 import dayjs from "dayjs"
 import type { ChartData } from "../types/Coin";
-import { getPriceTicks, getTimeTicks } from "../utils/format";
+import { formatNumber, getPriceTicks, getTimeTicks } from "../utils/format";
 
 interface PriceChartProp {
   priceChartData: ChartData[] | undefined;
   timeSpan: string;
-  gain: boolean;
 }
 
-export default function PriceMarCapChart({ priceChartData, timeSpan, gain }: PriceChartProp) {
+export default function PriceMarCapChart({ priceChartData, timeSpan }: PriceChartProp) {
 
   if (!priceChartData) {
     return null
   }
 
+  const gain = priceChartData[0].price < priceChartData[priceChartData.length - 1].price
+
+
   return (
     <ResponsiveContainer>
       <LineChart data={priceChartData}>
-        <CartesianGrid />
+        <CartesianGrid
+          vertical={false}
+          stroke="#64748b"
+          strokeOpacity={0.2}
+          strokeDasharray="3 3"
+        />
         <XAxis
           dataKey="time"
           type="number"
+          tick={{ fill: "#64748B", fontSize: 12 }}
           ticks={getTimeTicks(priceChartData)}
           tickFormatter={(timeMs) => {
             switch (timeSpan) {
@@ -42,6 +50,7 @@ export default function PriceMarCapChart({ priceChartData, timeSpan, gain }: Pri
         />
         <YAxis
           type="number"
+          tick={{ fill: "#64748B", fontSize: 12 }}
           ticks={getPriceTicks(priceChartData)}
           tickFormatter={(price) => {
             if (price < 1) {
@@ -61,13 +70,23 @@ export default function PriceMarCapChart({ priceChartData, timeSpan, gain }: Pri
             }
           }}
         />
+
         <Line
           type="linear"
           dataKey="price"
+
           stroke={
             gain ? "#059669" : "#E11D48"
           }
           strokeWidth={2}
+          dot={false}
+          activeDot={{
+            r: 5,
+            fill: "#241e41",
+            stroke: "#afafaf",
+            strokeWidth: 2,
+          }}
+          isAnimationActive={false}
         />
       </LineChart>
     </ResponsiveContainer>

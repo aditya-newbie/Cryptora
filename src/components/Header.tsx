@@ -79,6 +79,7 @@ export function Header() {
             {navLinks.map((navLink) => {
               return (
                 <NavLink
+                  key={navLink.lable}
                   to={navLink.to}
                   end={navLink.end}
                   className={({ isActive }) =>
