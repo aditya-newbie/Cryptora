@@ -1,4 +1,4 @@
-import dayjs from "dayjs"
+import type { ChartData } from "../types/Coin";
 
 export function formatNumber(num: number | undefined | null): number | null {
   if (!num) {
@@ -32,39 +32,38 @@ export function capitalise(str: string | undefined): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function formatChartPrice(price: number): string {
 
-  if (price < 1) {
-    return String(price.toFixed(6))
-  } else if (price < 10) {
-    return String(price.toFixed(4))
-  } else if (price < 1000) {
-    return String(price.toFixed(2))
-  } else if (price < 10 ** 6) {
-    return `${(price / 1000).toFixed(1)}k`
-  } else if (price < 10 ** 9) {
-    return `${(price / 10 ** 6).toFixed(2)}M`
-  } else if (price < 10 ** 12) {
-    return `${(price / 10 ** 9).toFixed(2)}B`
-  } else {
-    return `${(price / 10 ** 12).toFixed(2)}T`
+export function getTimeTicks(data: ChartData[]): number[] {
+  const tickCount = 7;
+
+  if (data.length === 0) return [];
+
+  if (data.length <= tickCount) {
+    return data.map(point => point.time);
   }
+
+  const step = (data.length - 1) / (tickCount - 1);
+
+  return Array.from({ length: tickCount }, (_, i) => {
+    const index = Math.round(i * step);
+    return data[index].time;
+  });
+
 }
 
-export function formatChartTime(timeMs: number, timeSpan: string): string {
+export function getPriceTicks(data: ChartData[], tickCount = 5): number[] {
+  if (data.length === 0) return [];
 
-  switch (timeSpan) {
-    case "24h":
-      return dayjs(timeMs).format("ha");
-    case "7d":
-      return dayjs(timeMs).format("dddd");
-    case "1m":
-      return dayjs(timeMs).format("D MMM");
-    case "3m":
-      return dayjs(timeMs).format("D MMM");
-    case "1y":
-      return dayjs(timeMs).format("MMM");
-    default:
-      return dayjs(timeMs).format("DD MMM YYYY")
-  }
+  const prices = data.map(point => point.price);
+
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+
+  if (min === max) return [min];
+
+  const step = (max - min) / (tickCount - 1);
+
+  return Array.from({ length: tickCount }, (_, i) => {
+    return min + step * i;
+  });
 }

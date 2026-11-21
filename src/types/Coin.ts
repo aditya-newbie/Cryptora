@@ -1,5 +1,11 @@
-export type MarketDataType = string[][];
+export type ApiMarketData = number[][];
 
+export interface ChartData {
+  time: number,
+  price: number
+}
+
+export type MarketChartData = Record<string, ChartData[]>
 
 
 export interface CoinDetail {

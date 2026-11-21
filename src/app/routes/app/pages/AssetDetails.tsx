@@ -16,10 +16,11 @@ import {
   Wallet,
 } from "lucide-react";
 import { useParams } from "react-router";
-import { fetchCoinDetail } from "../../../../services/coingecko";
+import { fetchCoinDetail, fetchCoinMarket } from "../../../../services/coingecko";
 import { formatMatricPrefix, formatNumber } from "../../../../utils/format";
 import { changeTextClass } from "../../../../utils/other";
 import Description from "../../../../components/Description";
+import PriceMarCapChart from "../../../../components/AssetLineCharts";
 
 function GraphPlaceholder({ label }: { label: string }) {
   return (
@@ -37,6 +38,11 @@ export default function AssetDetails() {
   const coinDetailQuery = useQuery({
     queryKey: ["coinDetail", coinId],
     queryFn: () => fetchCoinDetail(coinId),
+  });
+  
+  const MarketChartQuery = useQuery({
+    queryKey: ["MarketChart", coinId],
+    queryFn: () => fetchCoinMarket(coinId),
   });
 
   const coin = coinDetailQuery.data;
@@ -135,7 +141,7 @@ export default function AssetDetails() {
 
         <section className="mt-2.5 grid grid-cols-1 gap-2.5 lg:grid-cols-[minmax(0,2fr)_minmax(245px,1fr)]">
           <div className="rounded-xl border border-card-border bg-card p-3 sm:p-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between pb-1">
               <div className="flex items-center gap-1.5">
                 <button
                   type="button"
@@ -150,29 +156,7 @@ export default function AssetDetails() {
                   Market Cap
                 </button>
               </div>
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  aria-label="Price chart"
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-accent bg-accent/20 text-accent"
-                >
-                  <ArrowUpRight className="h-4 w-4" />
-                </button>
-                <button
-                  type="button"
-                  aria-label="Candlestick chart"
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-card-border text-gray-300"
-                >
-                  <Blocks className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-2 flex justify-end">
               <div className="flex items-center rounded-full border border-card-border p-0.5">
-                <button type="button" className="rounded-full px-2 py-0.5 text-[9px] text-gray-400">
-                  1H
-                </button>
                 <button type="button" className="rounded-full bg-accent px-2 py-0.5 text-[9px] text-white">
                   24H
                 </button>
@@ -188,14 +172,11 @@ export default function AssetDetails() {
                 <button type="button" className="rounded-full px-2 py-0.5 text-[9px] text-gray-400">
                   1Y
                 </button>
-                <button type="button" className="rounded-full px-2 py-0.5 text-[9px] text-gray-400">
-                  ALL
-                </button>
               </div>
             </div>
 
             <div className="mt-1 h-50 sm:h-[205px]">
-              <GraphPlaceholder label="Price graph placeholder" />
+              <PriceMarCapChart priceChartData={MarketChartQuery?.data?.price} timeSpan="24h" gain={(coinDetailQuery?.data?.market_data?.price_change_24h ?? 0) >= 0} />
             </div>
           </div>
 

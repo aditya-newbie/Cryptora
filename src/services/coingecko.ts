@@ -2,7 +2,7 @@ import type { TrendingResponse } from "../types/TrendingCoin";
 import type { CategoryMarkets } from "../types/Dashboard";
 import type GlobalMarketResponse from "../types/GlobalMarket";
 import type MarketCoin from "../types/MarketCoin";
-import type { CoinDetail, MarketDataType } from "../types/Coin";
+import type { ApiMarketData, CoinDetail, MarketChartData } from "../types/Coin";
 
 
 const API_KEY = import.meta.env.VITE_COINGECKO_API_KEY
@@ -88,19 +88,24 @@ export async function fetchTrending(): Promise<TrendingResponse> {
 }
 
 export async function fetchCoinMarket(coinId: string | undefined):
-  Promise<Record<string, MarketDataType>> {
+  Promise<MarketChartData> {
   if (!coinId) {
     throw new Error("Coin id is not defined")
   }
-
-  const coinMarketData = await fetchCoinGecko(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=inr&days=120`)
-  
-
+  const coinMarketData = await fetchCoinGecko(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=inr&days=1`)
   if (!coinMarketData.ok) {
     throw new Error("Failed to fetch asset market")
   }
+  const data: Record<string, ApiMarketData> = await coinMarketData.json()
 
-  return coinMarketData.json()
+  const updatedData = Object.fromEntries(
+    Object.entries(data).map(([key, value])=> [key, (
+      value.map(([time, price]) => ({time: time, price: price}))
+    )]).map(([key, value]) => [key === "prices" ? "price" : key, value])
+  )
+
+  return updatedData
+
 }
 
 export async function fetchCoinDetail(coinId: string | undefined): Promise<CoinDetail> {
