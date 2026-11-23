@@ -20,7 +20,7 @@ import { fetchCoinDetail, fetchCoinMarket } from "../../../../services/coingecko
 import { formatMatricPrefix, formatNumber } from "../../../../utils/format";
 import { changeTextClass } from "../../../../utils/other";
 import Description from "../../../../components/Description";
-import PriceMarCapChart from "../../../../components/AssetLineCharts";
+import { MarketTrend, TreadingVolume } from "../../../../components/AssetCharts";
 import { useState } from "react";
 
 function GraphPlaceholder({ label }: { label: string }) {
@@ -46,9 +46,12 @@ const timeSpans: TimeSpan[] = [
   { time: "1Y", days: "365" },
 ]
 
+const primaryChartOptions = ["Price", "Market Cap"]
+
 export default function AssetDetails() {
   const { coinId } = useParams();
-  const [activeDays, setActiveDays] = useState(timeSpans[0].days)
+  const [activeTimeSpan, setActiveTimeSpan] = useState(timeSpans[0].days);
+  const [activePrimaryChart, setActivePrimaryChart] = useState("Price")
 
 
   const coinDetailQuery = useQuery({
@@ -57,15 +60,15 @@ export default function AssetDetails() {
   });
 
   const MarketChartQuery = useQuery({
-    queryKey: ["MarketChart", coinId, activeDays],
-    queryFn: () => fetchCoinMarket(coinId, activeDays),
+    queryKey: ["MarketChart", coinId, activeTimeSpan],
+    queryFn: () => fetchCoinMarket(coinId, activeTimeSpan),
   });
 
   const coin = coinDetailQuery.data;
   const marketData = coin?.market_data;
   const athChange = marketData?.ath_change_percentage.inr;
   const atlChange = marketData?.atl_change_percentage.inr;
-  const selectedTime = timeSpans.find(timeSpan => timeSpan.days === activeDays)
+  const activeTime = timeSpans.find(timeSpan => timeSpan.days === activeTimeSpan)
 
   return (
     <main className="min-h-screen bg-canvas px-3 pb-7 text-white sm:px-6">
@@ -160,27 +163,35 @@ export default function AssetDetails() {
           <div className="rounded-xl border border-card-border bg-card p-3 sm:p-4">
             <div className="flex items-center justify-between pb-1">
               <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  className="rounded-lg border border-accent bg-accent/20 px-3.5 py-1 text-[10px]"
-                >
-                  Price
-                </button>
-                <button
-                  type="button"
-                  className="rounded-lg border border-card-border px-3.5 py-1 text-[10px] text-gray-300"
-                >
-                  Market Cap
-                </button>
+
+                {primaryChartOptions.map(option => {
+                  return (
+                    <label key={option} className={`rounded-lg border bg-accent/20 px-3.5 py-1 ${activePrimaryChart === option
+                        ? "border-accent bg-accent/20"
+                        : "border-card-border text-gray-300"
+                      }`} >
+                      <span className="text-xs">{option}</span>
+                      <input
+                        type="radio"
+                        name="primary-chart-option"
+                        className="hidden"
+                        value={option}
+                        onChange={e => { setActivePrimaryChart(e.target.value) }}
+                      />
+
+                    </label>
+                  )
+                })}
+
               </div>
               <div className="flex items-center rounded-xl border-2 border-card-border">
                 {timeSpans.map(timeSpan => {
                   return (
-                    <label key={timeSpan.time} className={`px-1.5 rounded-lg ${timeSpan.days === activeDays
+                    <label key={timeSpan.time} className={`px-1.5 rounded-lg ${timeSpan.days === activeTimeSpan
                       ? "bg-violet-500"
                       : ""
                       }`}>
-                      <span className="text-sm text-gray-300">
+                      <span className="text-xs text-gray-300">
                         {timeSpan.time}
                       </span>
                       <input
@@ -188,7 +199,7 @@ export default function AssetDetails() {
                         name="time-span"
                         className="hidden"
                         value={timeSpan.days}
-                        onChange={(e) => setActiveDays(e.target.value)}
+                        onChange={(e) => setActiveTimeSpan(e.target.value)}
                       />
                     </label>
                   )
@@ -196,30 +207,37 @@ export default function AssetDetails() {
               </div>
             </div>
 
-            <div className="mt-1 h-50 sm:h-[205px]">
-              <PriceMarCapChart priceChartData={MarketChartQuery?.data?.price} timeSpan={selectedTime} />
+            <div className="mt-1 h-50 sm:h-[250px]">
+              <MarketTrend
+                marketTrendData={
+                  activePrimaryChart === "Price" 
+                    ? MarketChartQuery?.data?.price
+                    : MarketChartQuery?.data?.market_caps
+                  }
+                timeSpan={activeTime}
+              />
             </div>
           </div>
 
           <aside className="rounded-xl border border-card-border bg-card p-3 sm:p-4">
             <h2 className="text-sm font-bold">Market Statistics</h2>
             <div className="mt-1.5">
-              <div className="flex min-h-[22px] items-center justify-between gap-2 border-b border-card-border/70 text-[10px]">
+              <div className="flex mb-1 min-h-[22px] items-center justify-between gap-2 border-b border-card-border/70 text-[12px]">
                 <span className="flex items-center gap-2 text-gray-200">
-                  <CircleDot className="h-3 w-3 shrink-0" />
+                  <CircleDot className="size-3 shrink-0" />
                   Market Cap
                   <Info className="h-2.5 w-2.5 text-gray-500" />
                 </span>
                 <span className="shrink-0">₹{formatMatricPrefix(coinDetailQuery?.data?.market_data.market_cap.inr)}</span>
               </div>
-              <div className="flex min-h-[22px] items-center justify-between gap-2 border-b border-card-border/70 text-[10px]">
+              <div className="flex mb-1 min-h-[22px] items-center justify-between gap-2 border-b border-card-border/70 text-[12px]">
                 <span className="flex items-center gap-2 text-gray-200">
-                  <Coins className="h-3 w-3 shrink-0" />
+                  <Coins className="size-3 shrink-0" />
                   Fully Diluted Valuation
                 </span>
                 <span className="shrink-0">₹{formatMatricPrefix(coinDetailQuery?.data?.market_data.fully_diluted_valuation.inr)}</span>
               </div>
-              <div className="flex min-h-[22px] items-center justify-between gap-2 border-b border-card-border/70 text-[10px]">
+              <div className="flex mb-1 min-h-[22px] items-center justify-between gap-2 border-b border-card-border/70 text-[12px]">
                 <span className="flex items-center gap-2 text-gray-200">
                   <Wallet className="h-3 w-3 shrink-0" />
                   24h Volume
@@ -229,21 +247,21 @@ export default function AssetDetails() {
 
               <div className="my-1 border-t border-card-border" />
 
-              <div className="flex min-h-[22px] items-center justify-between gap-2 border-b border-card-border/70 text-[10px]">
+              <div className="flex mb-1 min-h-[22px] items-center justify-between gap-2 border-b border-card-border/70 text-[12px]">
                 <span className="flex items-center gap-2 text-gray-200">
                   <CircleDot className="h-3 w-3 shrink-0" />
                   Circulating Supply
                 </span>
                 <span className="shrink-0">{formatMatricPrefix(coinDetailQuery?.data?.market_data.circulating_supply)} {coinDetailQuery?.data?.symbol.toUpperCase()}</span>
               </div>
-              <div className="flex min-h-[22px] items-center justify-between gap-2 border-b border-card-border/70 text-[10px]">
+              <div className="flex mb-1 min-h-[22px] items-center justify-between gap-2 border-b border-card-border/70 text-[12px]">
                 <span className="flex items-center gap-2 text-gray-200">
                   <CircleDot className="h-3 w-3 shrink-0" />
                   Total Supply
                 </span>
                 <span>{formatMatricPrefix(coinDetailQuery?.data?.market_data.total_supply)} {coinDetailQuery?.data?.symbol.toUpperCase()}</span>
               </div>
-              <div className="flex min-h-[22px] items-center justify-between gap-2 border-b border-card-border/70 text-[10px]">
+              <div className="flex mb-1 min-h-[22px] items-center justify-between gap-2 border-b border-card-border/70 text-[12px]">
                 <span className="flex items-center gap-2 text-gray-200">
                   <Coins className="h-3 w-3 shrink-0" />
                   Max Supply
@@ -251,9 +269,9 @@ export default function AssetDetails() {
                 <span>{formatMatricPrefix(coinDetailQuery?.data?.market_data.max_supply)} {coinDetailQuery?.data?.symbol.toUpperCase()}</span>
               </div>
 
-              <div className="my-1 border-t border-card-border" />
+              <div className="my-2 border-t border-card-border" />
 
-              <div className="flex min-h-[22px] items-center justify-between gap-2 text-[10px]">
+              <div className="flex mb-1.5 min-h-[22px] items-center justify-between gap-2 text-[14px]">
                 <span className="flex items-center gap-2 text-gray-200">
                   <ArrowUpRight className="h-3 w-3" />
                   All-Time High
@@ -266,7 +284,7 @@ export default function AssetDetails() {
                   </span>
                 </span>
               </div>
-              <div className="flex min-h-[22px] items-center justify-between gap-2 text-[10px]">
+              <div className="flex mb-1 min-h-[22px] items-center justify-between gap-2 text-[14px]">
                 <span className="flex items-center gap-2 text-gray-200">
                   <ArrowDownRight className="h-3 w-3" />
                   All-Time Low
@@ -299,7 +317,7 @@ export default function AssetDetails() {
                 </button>
               </div>
               <div className="h-[105px]">
-                <GraphPlaceholder label="Trading volume graph placeholder" />
+                <TreadingVolume volumeData={MarketChartQuery?.data?.total_volumes} timeSpan={activeTime} />
               </div>
             </div>
 

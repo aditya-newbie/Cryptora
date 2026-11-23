@@ -1,25 +1,31 @@
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, YAxis, XAxis, Tooltip } from "recharts";
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, YAxis, XAxis, Tooltip, Bar, BarChart } from "recharts";
 import dayjs from "dayjs"
 import type { ChartData } from "../types/Coin";
 import { getPriceTicks, getTimeTicks } from "../utils/format";
 import type { TimeSpan } from "../app/routes/app/pages/AssetDetails";
+import { getBarChartData } from "../utils/mutate";
 
-interface PriceChartProp {
-  priceChartData: ChartData[] | undefined;
+interface MarketTrendProp {
+  marketTrendData: ChartData[] | undefined;
   timeSpan: TimeSpan | undefined;
 }
 
-export default function PriceMarCapChart({ priceChartData, timeSpan }: PriceChartProp) {
+interface TreadingVolumeProp {
+  volumeData: ChartData[] | undefined;
+  timeSpan: TimeSpan | undefined;
+}
 
-  if (!priceChartData || !timeSpan) {
+export function MarketTrend({ marketTrendData, timeSpan }: MarketTrendProp) {
+
+  if (!marketTrendData?.length || !timeSpan) {
     return null
   }
   const time = timeSpan.time
-  const gain = priceChartData[0].price < priceChartData[priceChartData.length - 1].price
-  console.log(time)
+  const gain = marketTrendData[0].price < marketTrendData[marketTrendData.length - 1].price
+
   return (
     <ResponsiveContainer>
-      <LineChart data={priceChartData}>
+      <LineChart data={marketTrendData}>
         <CartesianGrid
           vertical={false}
           stroke="#64748b"
@@ -60,7 +66,7 @@ export default function PriceMarCapChart({ priceChartData, timeSpan }: PriceChar
           dataKey="time"
           type="number"
           tick={{ fill: "#64748B", fontSize: 12 }}
-          ticks={getTimeTicks(priceChartData)}
+          ticks={getTimeTicks(marketTrendData)}
           tickFormatter={(timeMs) => {
             switch (time) {
               case "24H":
@@ -81,7 +87,7 @@ export default function PriceMarCapChart({ priceChartData, timeSpan }: PriceChar
         <YAxis
           type="number"
           tick={{ fill: "#64748B", fontSize: 12 }}
-          ticks={getPriceTicks(priceChartData)}
+          ticks={getPriceTicks(marketTrendData)}
           tickFormatter={(price) => {
             if (price < 1) {
               return String(price.toFixed(6))
@@ -121,6 +127,68 @@ export default function PriceMarCapChart({ priceChartData, timeSpan }: PriceChar
           animationDuration={600}
         />
       </LineChart>
+    </ResponsiveContainer>
+  )
+}
+
+export function TreadingVolume({ volumeData, timeSpan }: TreadingVolumeProp) {
+  if (!volumeData?.length || !timeSpan) return null
+
+  const aggregatedData = getBarChartData(volumeData);
+  const time = timeSpan.time
+  console.log(aggregatedData)
+  return (
+    <ResponsiveContainer>
+      <BarChart data={aggregatedData}>
+        <XAxis
+          dataKey="time"
+          tick={{ fill: "#64748B", fontSize: 12 }}
+          tickFormatter={(timeMs) => {
+            switch (time) {
+              case "24H":
+                return dayjs(timeMs).format("ha");
+              case "7D":
+                return dayjs(timeMs).format("ddd");
+              case "1M":
+                return dayjs(timeMs).format("D MMM");
+              case "3M":
+                return dayjs(timeMs).format("D MMM");
+              case "1Y":
+                return dayjs(timeMs).format("MMM");
+              default:
+                return dayjs(timeMs).format("DD MMM YYYY")
+            }
+          }}
+        />
+        <YAxis
+          type="number"
+          tick={{ fill: "#64748B", fontSize: 12 }}
+          ticks={getPriceTicks(volumeData)}
+          tickFormatter={(price) => {
+            if (price < 1) {
+              return String(price.toFixed(6))
+            } else if (price < 10) {
+              return String(price.toFixed(4))
+            } else if (price < 1000) {
+              return String(price.toFixed(2))
+            } else if (price < 10 ** 6) {
+              return `${(price / 1000).toFixed(1)}k`
+            } else if (price < 10 ** 9) {
+              return `${(price / 10 ** 6).toFixed(2)}M`
+            } else if (price < 10 ** 12) {
+              return `${(price / 10 ** 9).toFixed(2)}B`
+            } else {
+              return `${(price / 10 ** 12).toFixed(2)}T`
+            }
+          }}
+        />
+        <Bar
+          dataKey="price"
+          fill="#8B5CF6"
+          radius={[3, 3, 0, 0]}
+          maxBarSize={16}
+        />
+      </BarChart>
     </ResponsiveContainer>
   )
 }

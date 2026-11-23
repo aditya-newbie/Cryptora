@@ -100,7 +100,7 @@ export async function fetchCoinMarket(coinId: string | undefined, days: string):
 
   const updatedData = Object.fromEntries(
     Object.entries(data).map(([key, value]) => [key, (
-      value.map(([time, price]) => ({ time: time, price: price }))
+      value.map(([time, price]) => ({ time, price }))
     )]).map(([key, value]) => [key === "prices" ? "price" : key, value])
   )
 

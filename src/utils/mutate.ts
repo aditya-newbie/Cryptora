@@ -1,3 +1,4 @@
+import type { ChartData } from "../types/Coin";
 import type { CategoryMarkets } from "../types/Dashboard";
 import type MarketCoin from "../types/MarketCoin";
 import type { TrendingResponse } from "../types/TrendingCoin";
@@ -133,3 +134,20 @@ export function convertChartData(data: number[] | undefined | null) {
   return data.map((value, i) => ({ price: value, time: i }));
 }
 
+export function getBarChartData(data: ChartData[]) {
+  const barSize = Math.round(data.length/60); 
+  const barChartData = [];
+  let barPrice:number =  0;
+
+  for (let i = 0; i < data.length; i++) {
+    barPrice += data[i].price
+
+    if ((i+1) % barSize === 0) {
+      const price = barPrice/barSize;
+      barChartData.push({time: data[i].time, price})
+      barPrice = 0;
+    }
+  }
+
+  return barChartData;
+}
