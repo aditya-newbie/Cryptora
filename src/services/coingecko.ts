@@ -87,20 +87,20 @@ export async function fetchTrending(): Promise<TrendingResponse> {
   return res.json();
 }
 
-export async function fetchCoinMarket(coinId: string | undefined):
+export async function fetchCoinMarket(coinId: string | undefined, days: string):
   Promise<MarketChartData> {
   if (!coinId) {
     throw new Error("Coin id is not defined")
   }
-  const coinMarketData = await fetchCoinGecko(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=inr&days=1`)
+  const coinMarketData = await fetchCoinGecko(`https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=inr&days=${days}`)
   if (!coinMarketData.ok) {
     throw new Error("Failed to fetch asset market")
   }
   const data: Record<string, ApiMarketData> = await coinMarketData.json()
 
   const updatedData = Object.fromEntries(
-    Object.entries(data).map(([key, value])=> [key, (
-      value.map(([time, price]) => ({time: time, price: price}))
+    Object.entries(data).map(([key, value]) => [key, (
+      value.map(([time, price]) => ({ time: time, price: price }))
     )]).map(([key, value]) => [key === "prices" ? "price" : key, value])
   )
 
@@ -115,7 +115,7 @@ export async function fetchCoinDetail(coinId: string | undefined): Promise<CoinD
 
   const coinData = await fetchCoinGecko(`https://api.coingecko.com/api/v3/coins/${coinId}?vs_currency=inr`)
 
-  if(!coinData.ok) {
+  if (!coinData.ok) {
     throw new Error("Failed to fetch asset details")
   }
 

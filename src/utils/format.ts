@@ -1,4 +1,5 @@
 import type { ChartData } from "../types/Coin";
+import dayjs from "dayjs";
 
 export function formatNumber(num: number | undefined | null): number | null {
   if (!num) {
@@ -66,4 +67,22 @@ export function getPriceTicks(data: ChartData[], tickCount = 5): number[] {
   return Array.from({ length: tickCount }, (_, i) => {
     return min + step * i;
   });
+}
+
+export function formatChartPrice(timeSpan: string, timeMs: number) {
+  switch (timeSpan) {
+    case "24H":
+      return dayjs(timeMs).format("ha");
+    case "7D":
+      return dayjs(timeMs).format("dddd");
+    case "1M":
+      return dayjs(timeMs).format("D MMM");
+    case "3M":
+      return dayjs(timeMs).format("D MMM");
+    case "1Y":
+      return dayjs(timeMs).format("MMM");
+    default:
+      return dayjs(timeMs).format("DD MMM YYYY")
+
+  }
 }

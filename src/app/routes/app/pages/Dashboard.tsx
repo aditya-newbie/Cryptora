@@ -107,9 +107,9 @@ export default function Dashboard() {
                 <span>Market Breadth</span>
                 <Info className="h-3.5 w-3.5 text-gray-500" />
                 <span className="ml-4 text-gray-400">
-                  <span className="text-gain text-xs">{marketBreadth.advancing}%</span>
+                  <span className="text-gain text-xs">{formatNumber(marketBreadth.advancing)}%</span>
                   <span className="mx-1">·</span>
-                  <span className="text-loss text-xs">{marketBreadth.declining}%</span>
+                  <span className="text-loss text-xs">{formatNumber(marketBreadth.declining)}%</span>
                 </span>
               </div>
               <div className="mt-2.5 flex h-2 w-64 overflow-hidden rounded-full">
@@ -141,11 +141,11 @@ export default function Dashboard() {
                 <span>24h Volume</span>
               </div>
               <p className="mt-3 text-3xl font-bold tabular-nums">₹{formatMatricPrefix(global?.data?.total_volume?.inr)}</p>
-              <p 
+              <p
                 className={
                   `mt-1 text-sm tabular-nums
-                   ${(global?.data?.volume_change_percentage_24h_usd ?? 1) >= 0 
-                    ? "text-gain" 
+                   ${(global?.data?.volume_change_percentage_24h_usd ?? 1) >= 0
+                    ? "text-gain"
                     : "text-loss"}`
                 }
               >{formatNumber(global?.data?.volume_change_percentage_24h_usd)}%</p>

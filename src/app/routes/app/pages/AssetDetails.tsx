@@ -21,6 +21,7 @@ import { formatMatricPrefix, formatNumber } from "../../../../utils/format";
 import { changeTextClass } from "../../../../utils/other";
 import Description from "../../../../components/Description";
 import PriceMarCapChart from "../../../../components/AssetLineCharts";
+import { useState } from "react";
 
 function GraphPlaceholder({ label }: { label: string }) {
   return (
@@ -32,8 +33,23 @@ function GraphPlaceholder({ label }: { label: string }) {
   );
 }
 
+export interface TimeSpan {
+  time: string,
+  days: string
+}
+
+const timeSpans: TimeSpan[] = [
+  { time: "24H", days: "1" },
+  { time: "7D", days: "7" },
+  { time: "1M", days: "30" },
+  { time: "3M", days: "90" },
+  { time: "1Y", days: "365" },
+]
+
 export default function AssetDetails() {
   const { coinId } = useParams();
+  const [activeDays, setActiveDays] = useState(timeSpans[0].days)
+
 
   const coinDetailQuery = useQuery({
     queryKey: ["coinDetail", coinId],
@@ -41,14 +57,15 @@ export default function AssetDetails() {
   });
 
   const MarketChartQuery = useQuery({
-    queryKey: ["MarketChart", coinId],
-    queryFn: () => fetchCoinMarket(coinId),
+    queryKey: ["MarketChart", coinId, activeDays],
+    queryFn: () => fetchCoinMarket(coinId, activeDays),
   });
 
   const coin = coinDetailQuery.data;
   const marketData = coin?.market_data;
   const athChange = marketData?.ath_change_percentage.inr;
   const atlChange = marketData?.atl_change_percentage.inr;
+  const selectedTime = timeSpans.find(timeSpan => timeSpan.days === activeDays)
 
   return (
     <main className="min-h-screen bg-canvas px-3 pb-7 text-white sm:px-6">
@@ -156,27 +173,31 @@ export default function AssetDetails() {
                   Market Cap
                 </button>
               </div>
-              <div className="flex items-center rounded-full border border-card-border p-0.5">
-                <button type="button" className="rounded-full bg-accent px-2 py-0.5 text-[9px] text-white">
-                  24H
-                </button>
-                <button type="button" className="rounded-full px-2 py-0.5 text-[9px] text-gray-400">
-                  7D
-                </button>
-                <button type="button" className="rounded-full px-2 py-0.5 text-[9px] text-gray-400">
-                  1M
-                </button>
-                <button type="button" className="rounded-full px-2 py-0.5 text-[9px] text-gray-400">
-                  3M
-                </button>
-                <button type="button" className="rounded-full px-2 py-0.5 text-[9px] text-gray-400">
-                  1Y
-                </button>
+              <div className="flex items-center rounded-xl border-2 border-card-border">
+                {timeSpans.map(timeSpan => {
+                  return (
+                    <label key={timeSpan.time} className={`px-1.5 rounded-lg ${timeSpan.days === activeDays
+                      ? "bg-violet-500"
+                      : ""
+                      }`}>
+                      <span className="text-sm text-gray-300">
+                        {timeSpan.time}
+                      </span>
+                      <input
+                        type="radio"
+                        name="time-span"
+                        className="hidden"
+                        value={timeSpan.days}
+                        onChange={(e) => setActiveDays(e.target.value)}
+                      />
+                    </label>
+                  )
+                })}
               </div>
             </div>
 
             <div className="mt-1 h-50 sm:h-[205px]">
-              <PriceMarCapChart priceChartData={MarketChartQuery?.data?.price} timeSpan="24h" />
+              <PriceMarCapChart priceChartData={MarketChartQuery?.data?.price} timeSpan={selectedTime} />
             </div>
           </div>
 

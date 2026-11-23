@@ -1,22 +1,22 @@
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, YAxis, XAxis, Tooltip } from "recharts";
 import dayjs from "dayjs"
 import type { ChartData } from "../types/Coin";
-import { formatNumber, getPriceTicks, getTimeTicks } from "../utils/format";
+import { getPriceTicks, getTimeTicks } from "../utils/format";
+import type { TimeSpan } from "../app/routes/app/pages/AssetDetails";
 
 interface PriceChartProp {
   priceChartData: ChartData[] | undefined;
-  timeSpan: string;
+  timeSpan: TimeSpan | undefined;
 }
 
 export default function PriceMarCapChart({ priceChartData, timeSpan }: PriceChartProp) {
 
-  if (!priceChartData) {
+  if (!priceChartData || !timeSpan) {
     return null
   }
-
+  const time = timeSpan.time
   const gain = priceChartData[0].price < priceChartData[priceChartData.length - 1].price
-
-
+  console.log(time)
   return (
     <ResponsiveContainer>
       <LineChart data={priceChartData}>
@@ -26,22 +26,52 @@ export default function PriceMarCapChart({ priceChartData, timeSpan }: PriceChar
           strokeOpacity={0.2}
           strokeDasharray="3 3"
         />
+        <Tooltip
+          cursor={{ stroke: "#94A3B8", strokeWidth: 1, strokeDasharray: "3 3" }}
+          content={({ active, payload, label }) => {
+            if (!active || !payload?.length) {
+              return null
+            }
+
+            const point = payload[0]
+            const price = typeof point.value === "number"
+              ? point.value
+              : Number(point.value)
+
+            if (!Number.isFinite(price)) {
+              return null
+            }
+
+            return (
+              <div className="rounded-lg border border-card-border bg-canvas px-3 py-2 text-xs shadow-lg">
+                <p className="mb-1 text-gray-400">
+                  {dayjs(label).format(time === "24H" ? "DD MMM, ha" : "DD MMM YYYY, h:mm A")}
+                </p>
+                <p className="font-semibold tabular-nums text-white">
+                  ₹{price.toLocaleString("en-IN", {
+                    maximumFractionDigits: price < 1 ? 6 : 2,
+                  })}
+                </p>
+              </div>
+            )
+          }}
+        />
         <XAxis
           dataKey="time"
           type="number"
           tick={{ fill: "#64748B", fontSize: 12 }}
           ticks={getTimeTicks(priceChartData)}
           tickFormatter={(timeMs) => {
-            switch (timeSpan) {
-              case "24h":
+            switch (time) {
+              case "24H":
                 return dayjs(timeMs).format("ha");
-              case "7d":
-                return dayjs(timeMs).format("dddd");
-              case "1m":
+              case "7D":
+                return dayjs(timeMs).format("ddd");
+              case "1M":
                 return dayjs(timeMs).format("D MMM");
-              case "3m":
+              case "3M":
                 return dayjs(timeMs).format("D MMM");
-              case "1y":
+              case "1Y":
                 return dayjs(timeMs).format("MMM");
               default:
                 return dayjs(timeMs).format("DD MMM YYYY")
@@ -71,6 +101,7 @@ export default function PriceMarCapChart({ priceChartData, timeSpan }: PriceChar
           }}
         />
 
+
         <Line
           type="linear"
           dataKey="price"
@@ -86,7 +117,8 @@ export default function PriceMarCapChart({ priceChartData, timeSpan }: PriceChar
             stroke: "#afafaf",
             strokeWidth: 2,
           }}
-          isAnimationActive={false}
+          isAnimationActive={true}
+          animationDuration={600}
         />
       </LineChart>
     </ResponsiveContainer>
