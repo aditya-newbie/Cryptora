@@ -1,374 +1,581 @@
 import {
+  ArrowUpDown,
+  Camera,
+  CandlestickChart,
+  Check,
   ChevronDown,
-  Star,
-  Settings,
-  Maximize2,
-  TrendingUp,
-  Pencil,
-  RotateCcw,
+  CircleDollarSign,
+  Coins,
+  Copy,
+  ExternalLink,
   Info,
-  MoreHorizontal,
+  Maximize2,
+  SlidersHorizontal,
+  Star,
+  TrendingUp,
+  X,
 } from "lucide-react";
 
-export default function Trading() {
+export default function TrendingTerminal() {
   return (
-    <div className="font-body min-h-screen bg-canvas text-white">
-      {/* ── Top Ticker Bar ── */}
-      <div className="border-b border-card bg-card">
-        <div className="mx-auto flex max-w-350 items-center justify-between px-6 py-3">
-          {/* Left: Pair selector + Price */}
-          <div className="flex items-center gap-6">
-            {/* Pair Selector */}
-            <button className="flex items-center gap-2 rounded-full border border-card bg-canvas px-4 py-2 cursor-pointer">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold">₿</span>
-              <span className="text-sm font-medium">BTC / USD</span>
-              <ChevronDown className="h-4 w-4 text-gray-500" />
-            </button>
-
-            <button className="text-gray-500 hover:text-yellow-400 cursor-pointer">
-              <Star className="h-5 w-5" />
-            </button>
-
-            {/* Price + Change */}
-            <div className="flex items-center gap-3">
-              <span className="text-2xl font-bold tabular-nums">₹67,432.50</span>
-              <span className="text-sm text-gain tabular-nums">+1,612.40 (+2.45%)</span>
-            </div>
-          </div>
-
-          {/* Center: Stats */}
-          <div className="flex items-center gap-8">
-            <div>
-              <p className="text-[10px] text-gray-500">24h High</p>
-              <p className="text-sm font-medium tabular-nums">₹68,750.07</p>
-            </div>
-            <div>
-              <p className="text-[10px] text-gray-500">24h Low</p>
-              <p className="text-sm font-medium tabular-nums">₹65,781.20</p>
-            </div>
-            <div>
-              <p className="text-[10px] text-gray-500">24h Volume</p>
-              <p className="text-sm font-medium tabular-nums">₹28.42B</p>
-            </div>
-            <div>
-              <p className="text-[10px] text-gray-500">Market Cap</p>
-              <p className="text-sm font-medium tabular-nums">₹1.33T</p>
-            </div>
-          </div>
-
-          {/* Right: Paper Trading Button */}
-          <button className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white cursor-pointer">
-            Paper Trading
-          </button>
-        </div>
-      </div>
-
-      {/* ── Main Content ── */}
-      <div className="mx-auto max-w-350 px-6 py-4">
-        <div className="grid grid-cols-3 gap-4">
-          {/* ════════════════════════════════════════
-              LEFT COLUMN (2/3) - Chart + Orders
-              ════════════════════════════════════════ */}
-          <div className="col-span-2 flex flex-col gap-4">
-            {/* ── Chart Card ── */}
-            <div className="rounded-xl border border-card bg-card p-4">
-              {/* Chart Toolbar */}
-              <div className="flex items-center justify-between">
-                {/* Left: Chart / Indicators / Drawing */}
-                <div className="flex items-center gap-2">
-                  <button className="flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-white cursor-pointer">
-                    Chart
-                  </button>
-                  <button className="flex items-center gap-1.5 rounded-lg border border-card px-3 py-1.5 text-xs text-gray-400 hover:text-white cursor-pointer">
-                    <Settings className="h-3 w-3" />
-                    Indicators
-                  </button>
-                  <button className="flex items-center gap-1.5 rounded-lg border border-card px-3 py-1.5 text-xs text-gray-400 hover:text-white cursor-pointer">
-                    <Pencil className="h-3 w-3" />
-                    Drawing
-                  </button>
-                </div>
-
-                {/* Right: Timeframes + chart type + fullscreen */}
-                <div className="flex items-center gap-3">
-                  {/* Time periods */}
-                  <div className="flex items-center gap-0.5 rounded-lg border border-card p-0.5">
-                    <button className="rounded px-2.5 py-1 text-xs text-gray-500 hover:text-white cursor-pointer">1m</button>
-                    <button className="rounded px-2.5 py-1 text-xs text-gray-500 hover:text-white cursor-pointer">5m</button>
-                    <button className="rounded px-2.5 py-1 text-xs text-gray-500 hover:text-white cursor-pointer">15m</button>
-                    <button className="rounded bg-accent px-2.5 py-1 text-xs font-medium text-white cursor-pointer">1H</button>
-                    <button className="rounded px-2.5 py-1 text-xs text-gray-500 hover:text-white cursor-pointer">4H</button>
-                    <button className="rounded px-2.5 py-1 text-xs text-gray-500 hover:text-white cursor-pointer">1D</button>
-                    <button className="rounded px-2.5 py-1 text-xs text-gray-500 hover:text-white cursor-pointer">1W</button>
+    <div className="min-h-screen bg-canvas text-white font-body p-4 md:p-6">
+      <div className="max-w-[1440px] mx-auto space-y-4">
+        {/* Top Selector Bar */}
+        <div className="bg-card border border-card rounded-xl p-3">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+            {/* 01 Network */}
+            <div className="md:col-span-3">
+              <p className="text-xs text-slate-400 mb-1.5">01 Network</p>
+              <div className="bg-canvas/70 border border-card rounded-lg px-3 py-2.5 flex items-center justify-between hover-card">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-6 h-6 rounded-full bg-accent/20 text-accent flex items-center justify-center">
+                    <Coins className="w-3.5 h-3.5" />
                   </div>
-
-                  {/* Chart type icons */}
-                  <div className="flex items-center gap-1">
-                    <button className="flex h-7 w-7 items-center justify-center rounded text-accent cursor-pointer">
-                      <TrendingUp className="h-4 w-4" />
-                    </button>
-                    <button className="flex h-7 w-7 items-center justify-center rounded text-gray-500 hover:text-white cursor-pointer">
-                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <rect x="3" y="8" width="4" height="12" rx="1" />
-                        <rect x="10" y="4" width="4" height="16" rx="1" />
-                        <rect x="17" y="6" width="4" height="14" rx="1" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  <button className="flex h-7 w-7 items-center justify-center rounded text-gray-500 hover:text-white cursor-pointer">
-                    <Maximize2 className="h-4 w-4" />
-                  </button>
+                  <span className="text-sm font-medium">Ethereum</span>
                 </div>
-              </div>
-
-              {/* OHLC Info Bar */}
-              <div className="mt-3 flex items-center gap-3 text-xs text-gray-500">
-                <span className="font-medium text-gray-300">BTC / USD · 1H</span>
-                <span>O:<span className="tabular-nums text-gray-300">66,981.20</span></span>
-                <span>H:<span className="tabular-nums text-gray-300">67,512.80</span></span>
-                <span>L:<span className="tabular-nums text-gray-300">66,928.40</span></span>
-                <span>C:<span className="tabular-nums text-gray-300">67,432.50</span></span>
-                <span className="text-gain tabular-nums">+451.30 (+0.67%)</span>
-              </div>
-
-              {/* Main Chart Placeholder */}
-              <div className="mt-3 flex h-64 items-center justify-center rounded-lg bg-gray-800/30">
-                <span className="text-sm text-gray-600">Candlestick Chart Area</span>
-              </div>
-
-              {/* RSI Indicator Placeholder */}
-              <div className="mt-2 rounded-lg bg-gray-800/30 px-3 py-2">
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <span className="font-medium text-gray-400">RSI (14)</span>
-                  <span className="tabular-nums text-accent">56.24</span>
-                </div>
-                <div className="mt-1 h-14"></div>
-              </div>
-
-              {/* MACD Indicator Placeholder */}
-              <div className="mt-2 rounded-lg bg-gray-800/30 px-3 py-2">
-                <div className="flex items-center gap-3 text-xs text-gray-500">
-                  <span className="font-medium text-gray-400">MACD (12, 26, 9)</span>
-                  <span className="tabular-nums text-blue-400">134.21</span>
-                  <span className="tabular-nums text-gain">221.37</span>
-                  <span className="tabular-nums text-loss">87.16</span>
-                </div>
-                <div className="mt-1 h-14"></div>
+                <ChevronDown className="w-4 h-4 text-slate-400" />
               </div>
             </div>
 
-            {/* ── Open Orders / Trade History / Positions ── */}
-            <div className="rounded-xl border border-card bg-card p-4">
-              {/* Tabs */}
-              <div className="flex items-center gap-2">
-                <button className="rounded-lg bg-accent px-4 py-1.5 text-xs font-medium text-white cursor-pointer">
-                  Open Orders (1)
-                </button>
-                <button className="rounded-lg border border-card px-4 py-1.5 text-xs text-gray-400 hover:text-white cursor-pointer">
-                  Trade History
-                </button>
-                <button className="rounded-lg border border-card px-4 py-1.5 text-xs text-gray-400 hover:text-white cursor-pointer">
-                  Positions
-                </button>
-              </div>
-
-              {/* Orders Table */}
-              <table className="mt-4 w-full text-xs">
-                <thead>
-                  <tr className="text-left text-gray-500">
-                    <th className="pb-3 font-medium">#</th>
-                    <th className="pb-3 font-medium">Asset</th>
-                    <th className="pb-3 font-medium">Type</th>
-                    <th className="pb-3 font-medium">Amount</th>
-                    <th className="pb-3 font-medium">Price</th>
-                    <th className="pb-3 font-medium">Total</th>
-                    <th className="pb-3 font-medium">Status</th>
-                    <th className="pb-3 font-medium">Created At</th>
-                    <th className="pb-3"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-t border-card">
-                    <td className="py-3 text-gray-400">1</td>
-                    <td className="py-3">
-                      <div className="flex items-center gap-2">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-500 text-[9px] font-bold">₿</span>
-                        <span className="font-medium">BTC</span>
-                      </div>
-                    </td>
-                    <td className="py-3">
-                      <span className="rounded bg-gain/20 px-2 py-0.5 text-gain">Buy (Limit)</span>
-                    </td>
-                    <td className="py-3 tabular-nums">0.0100 BTC</td>
-                    <td className="py-3 tabular-nums">₹66,500.00</td>
-                    <td className="py-3 tabular-nums">₹665.00</td>
-                    <td className="py-3">
-                      <span className="rounded bg-accent/20 px-2 py-0.5 text-accent">Open</span>
-                    </td>
-                    <td className="py-3 tabular-nums text-gray-400">Oct 28, 21:32</td>
-                    <td className="py-3">
-                      <button className="text-gray-500 hover:text-white cursor-pointer">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* ════════════════════════════════════════
-              RIGHT COLUMN (1/3) - Order Form + Trades
-              ════════════════════════════════════════ */}
-          <div className="flex flex-col gap-4">
-            {/* ── Paper Trading Account Card ── */}
-            <div className="rounded-xl border border-card bg-card p-5">
-              {/* Header */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-sm font-bold">Paper Trading Account</h2>
-                  <Info className="h-3.5 w-3.5 text-gray-500" />
-                </div>
-                <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-white cursor-pointer">
-                  <RotateCcw className="h-3 w-3" />
-                  Reset
-                </button>
-              </div>
-
-              {/* Account Value */}
-              <div className="mt-3">
-                <p className="text-[10px] text-gray-500">Account Value</p>
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl font-bold tabular-nums">₹10,428.75</span>
-                  <span className="text-sm text-gain tabular-nums">+4.29%</span>
-                </div>
-              </div>
-
-              {/* Available Cash / Invested */}
-              <div className="mt-2 flex items-center justify-between text-xs text-gray-400">
-                <div>
-                  <span>Available Cash</span>
-                  <p className="mt-0.5 font-medium text-white tabular-nums">₹7,530.20</p>
-                </div>
-                <div className="text-right">
-                  <span>Invested</span>
-                  <p className="mt-0.5 font-medium text-white tabular-nums">₹2,898.55</p>
-                </div>
-              </div>
-
-              {/* Buy / Sell Toggle */}
-              <div className="mt-4 grid grid-cols-2 gap-2">
-                <button className="rounded-lg bg-gain py-2.5 text-sm font-medium text-white cursor-pointer">
-                  Buy
-                </button>
-                <button className="rounded-lg border border-loss py-2.5 text-sm font-medium text-loss cursor-pointer">
-                  Sell
-                </button>
-              </div>
-
-              {/* Order Type */}
-              <div className="mt-4 flex items-center justify-between">
-                <span className="text-xs text-gray-400">Order Type</span>
-                <button className="flex items-center gap-1.5 rounded border border-card px-3 py-1.5 text-xs text-white cursor-pointer">
-                  Market
-                  <ChevronDown className="h-3 w-3 text-gray-500" />
-                </button>
-              </div>
-
-              {/* Amount */}
-              <div className="mt-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-400">Amount (USD)</span>
-                </div>
-                <div className="mt-1.5 flex items-center gap-2">
-                  <div className="flex-1 rounded border border-card bg-canvas px-3 py-2 text-sm tabular-nums text-white">
-                    1000
+            {/* 02 Token */}
+            <div className="md:col-span-3">
+              <p className="text-xs text-slate-400 mb-1.5">02 Token</p>
+              <div className="bg-canvas/70 border border-card rounded-lg px-3 py-2 flex items-center justify-between hover-card">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-6 h-6 rounded-full bg-accent/20 text-accent flex items-center justify-center shrink-0">
+                    <Coins className="w-3.5 h-3.5" />
                   </div>
-                  <div className="flex items-center gap-1">
-                    <button className="rounded border border-card px-2 py-1.5 text-[10px] text-gray-400 hover:text-white cursor-pointer">25%</button>
-                    <button className="rounded border border-card px-2 py-1.5 text-[10px] text-gray-400 hover:text-white cursor-pointer">50%</button>
-                    <button className="rounded border border-card px-2 py-1.5 text-[10px] text-gray-400 hover:text-white cursor-pointer">75%</button>
-                    <button className="rounded border border-card px-2 py-1.5 text-[10px] text-gray-400 hover:text-white cursor-pointer">100%</button>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium truncate">Wrapped Ether (WETH)</p>
+                    <p className="text-[11px] text-slate-400 tabular-nums truncate">
+                      0xC02a...6Cc2
+                    </p>
                   </div>
                 </div>
+                <X className="w-4 h-4 text-slate-400 shrink-0" />
               </div>
+            </div>
 
-              {/* Est. Quantity */}
-              <div className="mt-3 flex items-center justify-between text-xs">
-                <span className="text-gray-400">Est. Quantity</span>
-                <span className="tabular-nums text-gray-300">≈ 0.01483 BTC</span>
+            {/* 03 Confirm Pool */}
+            <div className="md:col-span-4">
+              <p className="text-xs text-slate-400 mb-1.5">03 Confirm Pool</p>
+              <div className="bg-canvas/70 border border-card rounded-lg px-3 py-2 flex items-center justify-between gap-2 hover-card">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-6 h-6 rounded-full bg-accent/20 text-accent flex items-center justify-center shrink-0">
+                    <CircleDollarSign className="w-3.5 h-3.5" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium whitespace-nowrap">
+                        WETH / USDC
+                      </span>
+                      <span className="bg-gain/20 text-gain text-[10px] font-medium px-2 py-0.5 rounded-full">
+                        Recommended
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-400">Uniswap V3</p>
+                  </div>
+                </div>
+
+                <div className="hidden sm:flex items-center gap-4 text-right shrink-0">
+                  <div>
+                    <p className="text-[10px] text-slate-400">Liquidity</p>
+                    <p className="text-xs font-medium tabular-nums">$12.4M</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-slate-400">24h Vol</p>
+                    <p className="text-xs font-medium tabular-nums">$8.7M</p>
+                  </div>
+                </div>
+
+                <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
               </div>
+            </div>
 
-              {/* Place Order Button */}
-              <button className="mt-4 w-full rounded-lg bg-gain py-3 text-sm font-medium text-white cursor-pointer">
-                Place Buy Order (Paper)
+            {/* Confirm Pool Button */}
+            <div className="md:col-span-2">
+              <button
+                type="button"
+                className="w-full bg-accent hover:opacity-90 text-white text-sm font-medium px-4 py-3 rounded-xl flex items-center justify-center gap-2 transition"
+              >
+                <span>Confirm Pool</span>
+                <Check className="w-4 h-4" />
               </button>
             </div>
+          </div>
+        </div>
 
-            {/* ── Recent Trades Card ── */}
-            <div className="rounded-xl border border-card bg-card p-5">
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-bold">Recent Trades</h2>
-                <div className="flex items-center gap-1.5 text-[10px] text-gray-500">
-                  <span className="h-1.5 w-1.5 rounded-full bg-gain"></span>
-                  From GeckoTerminal
-                  <Info className="h-3 w-3" />
+        {/* Main Workspace Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          {/* Left Sidebar */}
+          <div className="lg:col-span-4 xl:col-span-3 flex flex-col gap-4">
+            {/* Token Pair & Stats Card */}
+            <div className="bg-card border border-card rounded-xl p-4">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-3">
+                  <div className="flex -space-x-2">
+                    <div className="w-8 h-8 rounded-full bg-accent/25 border border-card flex items-center justify-center text-accent">
+                      <Coins className="w-4 h-4" />
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-sky-500/20 border border-card flex items-center justify-center text-sky-400">
+                      <CircleDollarSign className="w-4 h-4" />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <h1 className="text-sm font-semibold">WETH / USDC</h1>
+                      <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                    </div>
+                    <p className="text-xs text-slate-400">Uniswap V3 · Ethereum</p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="p-2 rounded-lg border border-card hover-card text-slate-300"
+                >
+                  <Star className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="mt-4 flex items-center gap-2.5 flex-wrap">
+                <span className="text-2xl font-bold tabular-nums">$2,000.34</span>
+                <span className="bg-gain/15 text-gain text-xs font-medium px-2.5 py-0.5 rounded-full tabular-nums">
+                  +3.42% (24h)
+                </span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 pt-4 mt-4 border-t border-card">
+                <div>
+                  <p className="text-[11px] text-slate-400">24h Volume</p>
+                  <p className="text-sm font-semibold tabular-nums mt-0.5">$8.70M</p>
+                </div>
+                <div>
+                  <p className="text-[11px] text-slate-400">Liquidity</p>
+                  <p className="text-sm font-semibold tabular-nums mt-0.5">$12.40M</p>
+                </div>
+                <div>
+                  <p className="text-[11px] text-slate-400">24h Txns</p>
+                  <p className="text-sm font-semibold tabular-nums mt-0.5">4,821</p>
+                </div>
+                <div>
+                  <p className="text-[11px] text-slate-400">Market Cap</p>
+                  <p className="text-sm font-semibold tabular-nums mt-0.5">$238.4B</p>
+                </div>
+                <div>
+                  <p className="text-[11px] text-slate-400">FDV</p>
+                  <p className="text-sm font-semibold tabular-nums mt-0.5">$238.4B</p>
+                </div>
+                <div>
+                  <p className="text-[11px] text-slate-400">Pool Fee</p>
+                  <p className="text-sm font-semibold tabular-nums mt-0.5">0.30%</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Buy / Sell Swap Card */}
+            <div className="bg-card border border-card rounded-xl p-4 flex-1 flex flex-col justify-between">
+              <div>
+                {/* Buy / Sell Tabs */}
+                <div className="grid grid-cols-2 bg-canvas/70 border border-card rounded-lg p-1 mb-4">
+                  <button
+                    type="button"
+                    className="bg-gain text-white text-sm font-medium py-2 rounded-md"
+                  >
+                    Buy
+                  </button>
+                  <button
+                    type="button"
+                    className="text-slate-400 hover:text-white text-sm font-medium py-2 rounded-md"
+                  >
+                    Sell
+                  </button>
+                </div>
+
+                {/* Amount Input */}
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1.5">
+                    Amount
+                  </label>
+                  <div className="bg-canvas/70 border border-card rounded-lg px-3 py-2.5 flex items-center justify-between">
+                    <span className="text-sm font-medium tabular-nums text-slate-200">
+                      0.00
+                    </span>
+                    <button
+                      type="button"
+                      className="flex items-center gap-1.5 text-sm font-medium"
+                    >
+                      <Coins className="w-4 h-4 text-accent" />
+                      <span>WETH</span>
+                      <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Swap Direction Divider */}
+                <div className="flex justify-center -my-2 relative z-10">
+                  <button
+                    type="button"
+                    className="bg-card border border-card hover-card rounded-full p-1.5 text-slate-300"
+                  >
+                    <ArrowUpDown className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {/* Estimated Output */}
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1.5">
+                    Estimated Output
+                  </label>
+                  <div className="bg-canvas/70 border border-card rounded-lg px-3 py-2.5 flex items-center justify-between">
+                    <span className="text-sm font-medium tabular-nums text-slate-200">
+                      0.00
+                    </span>
+                    <button
+                      type="button"
+                      className="flex items-center gap-1.5 text-sm font-medium"
+                    >
+                      <CircleDollarSign className="w-4 h-4 text-sky-400" />
+                      <span>USDC</span>
+                      <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Order Details */}
+                <div className="space-y-2.5 text-xs mt-4 pt-4 border-t border-card">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-400">Price</span>
+                    <span className="font-medium tabular-nums">
+                      1 WETH = 2,000.34 USDC
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-400">Price Impact</span>
+                    <span className="text-gain font-medium tabular-nums">
+                      &lt; 0.01%
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-400">Trading Fee (0.30%)</span>
+                    <span className="font-medium tabular-nums">≈ 0.00 USDC</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-400">Slippage Tolerance</span>
+                    <button
+                      type="button"
+                      className="bg-canvas/70 border border-card rounded-md px-2 py-1 flex items-center gap-1 font-medium tabular-nums hover-card"
+                    >
+                      <span>0.50%</span>
+                      <ChevronDown className="w-3 h-3 text-slate-400" />
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <table className="mt-3 w-full text-xs">
-                <thead>
-                  <tr className="text-left text-gray-500">
-                    <th className="pb-2 font-medium">Time</th>
-                    <th className="pb-2 font-medium">Price (USD)</th>
-                    <th className="pb-2 font-medium">Amount (BTC)</th>
-                    <th className="pb-2 text-right font-medium">Side</th>
-                  </tr>
-                </thead>
-                <tbody className="text-gray-300">
-                  <tr className="border-t border-card">
-                    <td className="py-2 tabular-nums">21:34:12</td>
-                    <td className="py-2 tabular-nums">₹67,432.50</td>
-                    <td className="py-2 tabular-nums">0.1250</td>
-                    <td className="py-2 text-right">
-                      <span className="rounded bg-gain/20 px-2 py-0.5 text-gain">Buy</span>
-                    </td>
-                  </tr>
-                  <tr className="border-t border-card">
-                    <td className="py-2 tabular-nums">21:33:58</td>
-                    <td className="py-2 tabular-nums">₹67,429.00</td>
-                    <td className="py-2 tabular-nums">0.2100</td>
-                    <td className="py-2 text-right">
-                      <span className="rounded bg-gain/20 px-2 py-0.5 text-gain">Buy</span>
-                    </td>
-                  </tr>
-                  <tr className="border-t border-card">
-                    <td className="py-2 tabular-nums">21:33:46</td>
-                    <td className="py-2 tabular-nums">₹67,415.20</td>
-                    <td className="py-2 tabular-nums">0.0750</td>
-                    <td className="py-2 text-right">
-                      <span className="rounded bg-loss/20 px-2 py-0.5 text-loss">Sell</span>
-                    </td>
-                  </tr>
-                  <tr className="border-t border-card">
-                    <td className="py-2 tabular-nums">21:33:40</td>
-                    <td className="py-2 tabular-nums">₹67,413.70</td>
-                    <td className="py-2 tabular-nums">0.3200</td>
-                    <td className="py-2 text-right">
-                      <span className="rounded bg-gain/20 px-2 py-0.5 text-gain">Buy</span>
-                    </td>
-                  </tr>
-                  <tr className="border-t border-card">
-                    <td className="py-2 tabular-nums">21:33:21</td>
-                    <td className="py-2 tabular-nums">₹67,398.10</td>
-                    <td className="py-2 tabular-nums">0.0500</td>
-                    <td className="py-2 text-right">
-                      <span className="rounded bg-loss/20 px-2 py-0.5 text-loss">Sell</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <button
+                type="button"
+                className="mt-5 w-full bg-accent hover:opacity-90 text-white text-sm font-semibold py-3 rounded-xl transition"
+              >
+                Buy WETH
+              </button>
+            </div>
+          </div>
+
+          {/* Right Main Area */}
+          <div className="lg:col-span-8 xl:col-span-9 flex flex-col gap-4">
+            {/* Price Chart Card */}
+            <div className="bg-card border border-card rounded-xl p-4">
+              {/* Chart Toolbar */}
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-card">
+                <div className="flex items-center gap-1 bg-canvas/70 border border-card rounded-lg p-1">
+                  <button
+                    type="button"
+                    className="bg-accent text-white text-xs font-medium px-3 py-1.5 rounded-md"
+                  >
+                    Price Chart
+                  </button>
+                  <button
+                    type="button"
+                    className="text-slate-400 hover:text-white text-xs font-medium px-3 py-1.5 rounded-md"
+                  >
+                    Depth
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  {/* Timeframe Selector */}
+                  <div className="flex items-center gap-0.5 bg-canvas/70 border border-card rounded-lg p-1 text-xs">
+                    <button
+                      type="button"
+                      className="px-2.5 py-1 rounded text-slate-400 hover:text-white"
+                    >
+                      1m
+                    </button>
+                    <button
+                      type="button"
+                      className="px-2.5 py-1 rounded text-slate-400 hover:text-white"
+                    >
+                      5m
+                    </button>
+                    <button
+                      type="button"
+                      className="px-2.5 py-1 rounded text-slate-400 hover:text-white"
+                    >
+                      15m
+                    </button>
+                    <button
+                      type="button"
+                      className="px-2.5 py-1 rounded bg-accent text-white font-medium"
+                    >
+                      1h
+                    </button>
+                    <button
+                      type="button"
+                      className="px-2.5 py-1 rounded text-slate-400 hover:text-white"
+                    >
+                      4h
+                    </button>
+                    <button
+                      type="button"
+                      className="px-2.5 py-1 rounded text-slate-400 hover:text-white"
+                    >
+                      1D
+                    </button>
+                  </div>
+
+                  {/* Chart Type */}
+                  <div className="flex items-center gap-0.5 bg-canvas/70 border border-card rounded-lg p-1">
+                    <button
+                      type="button"
+                      className="p-1.5 rounded bg-card text-accent"
+                    >
+                      <CandlestickChart className="w-4 h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      className="p-1.5 rounded text-slate-400 hover:text-white"
+                    >
+                      <TrendingUp className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  {/* Indicators */}
+                  <button
+                    type="button"
+                    className="bg-canvas/70 border border-card hover-card rounded-lg px-3 py-1.5 text-xs font-medium flex items-center gap-1.5 text-slate-200"
+                  >
+                    <SlidersHorizontal className="w-3.5 h-3.5" />
+                    <span>Indicators</span>
+                  </button>
+
+                  {/* Snapshot & Fullscreen */}
+                  <button
+                    type="button"
+                    className="bg-canvas/70 border border-card hover-card rounded-lg p-1.5 text-slate-300"
+                  >
+                    <Camera className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    className="bg-canvas/70 border border-card hover-card rounded-lg p-1.5 text-slate-300"
+                  >
+                    <Maximize2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Blank Price Chart Graph Placeholder */}
+              <div className="mt-3 h-[360px] w-full rounded-lg border border-dashed border-card bg-canvas/40">
+                {/* Price Chart Graph Placeholder */}
+              </div>
+            </div>
+
+            {/* Bottom Analytics & Recent Trades */}
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-4">
+              {/* Left Bottom Column */}
+              <div className="xl:col-span-7 flex flex-col gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Buy / Sell Activity */}
+                  <div className="bg-card border border-card rounded-xl p-4">
+                    <div className="flex items-center gap-1.5 text-xs text-slate-300 font-medium">
+                      <span>Buy / Sell Activity (24h)</span>
+                      <Info className="w-3.5 h-3.5 text-slate-400" />
+                    </div>
+
+                    <div className="flex items-center justify-between mt-3 text-base font-semibold tabular-nums">
+                      <span className="text-gain">62% Buy</span>
+                      <span className="text-loss">38% Sell</span>
+                    </div>
+
+                    <div className="h-2 w-full rounded-full overflow-hidden flex bg-canvas mt-2.5">
+                      <div className="w-[62%] bg-gain" />
+                      <div className="w-[38%] bg-loss" />
+                    </div>
+
+                    <div className="flex items-center justify-between mt-3 text-[11px] text-slate-400 tabular-nums">
+                      <span>$5.39M Buy Vol</span>
+                      <span>$3.31M Sell Vol</span>
+                    </div>
+                  </div>
+
+                  {/* Liquidity Card */}
+                  <div className="bg-card border border-card rounded-xl p-4">
+                    <div className="flex items-center gap-1.5 text-xs text-slate-300 font-medium">
+                      <span>Liquidity</span>
+                      <Info className="w-3.5 h-3.5 text-slate-400" />
+                    </div>
+
+                    <div className="flex items-center gap-2.5 mt-3">
+                      <span className="text-xl font-bold tabular-nums">$12.40M</span>
+                      <span className="bg-gain/15 text-gain text-[11px] font-medium px-2 py-0.5 rounded-full">
+                        Deep
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-card">
+                      <div>
+                        <p className="text-[11px] text-slate-400">WETH Reserve</p>
+                        <p className="text-xs font-medium tabular-nums mt-0.5">
+                          6,203.18 WETH
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-[11px] text-slate-400">USDC Reserve</p>
+                        <p className="text-xs font-medium tabular-nums mt-0.5">
+                          $12.40M
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Pool Info Card */}
+                <div className="bg-card border border-card rounded-xl p-4">
+                  <div className="flex items-center gap-2 text-xs">
+                    <button
+                      type="button"
+                      className="bg-accent/20 text-accent border border-accent/40 font-medium px-3 py-1.5 rounded-lg"
+                    >
+                      Pool Info
+                    </button>
+                    <button
+                      type="button"
+                      className="text-slate-400 hover:text-white font-medium px-3 py-1.5 rounded-lg"
+                    >
+                      Token Info
+                    </button>
+                    <button
+                      type="button"
+                      className="text-slate-400 hover:text-white font-medium px-3 py-1.5 rounded-lg"
+                    >
+                      Links
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-3 mt-3 border-t border-card">
+                    <div>
+                      <p className="text-[11px] text-slate-400">DEX</p>
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <CircleDollarSign className="w-3.5 h-3.5 text-accent" />
+                        <span className="text-xs font-medium">Uniswap V3</span>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-[11px] text-slate-400">Network</p>
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <Coins className="w-3.5 h-3.5 text-accent" />
+                        <span className="text-xs font-medium">Ethereum</span>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-[11px] text-slate-400">Pool Address</p>
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <span className="text-xs font-medium tabular-nums">
+                          0x8ad5...e1f2
+                        </span>
+                        <Copy className="w-3.5 h-3.5 text-slate-400" />
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-[11px] text-slate-400">Created</p>
+                      <p className="text-xs font-medium mt-1">Mar 21, 2023</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Bottom Column: Recent Trades */}
+              <div className="xl:col-span-5 bg-card border border-card rounded-xl p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-200 font-medium">
+                    <span>Recent Trades</span>
+                    <Info className="w-3.5 h-3.5 text-slate-400" />
+                  </div>
+                  <button
+                    type="button"
+                    className="bg-canvas/70 border border-card hover-card rounded-lg px-2.5 py-1 text-xs flex items-center gap-1.5 text-slate-300"
+                  >
+                    <span>All</span>
+                    <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                  </button>
+                </div>
+
+                <div className="overflow-x-auto scrollbar-hide">
+                  <table className="w-full text-xs tabular-nums">
+                    <thead>
+                      <tr className="text-slate-400 border-b border-card text-left">
+                        <th className="pb-2 font-medium">Time</th>
+                        <th className="pb-2 font-medium">Type</th>
+                        <th className="pb-2 font-medium text-right">
+                          Amount (WETH)
+                        </th>
+                        <th className="pb-2 font-medium text-right">
+                          Price (USDC)
+                        </th>
+                        <th className="pb-2 font-medium text-right">Value</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#222646]">
+                      <tr>
+                        <td className="py-2.5 text-slate-300">12:34:21</td>
+                        <td className="py-2.5 text-gain font-medium">Buy</td>
+                        <td className="py-2.5 text-right">0.5230</td>
+                        <td className="py-2.5 text-right">2,000.34</td>
+                        <td className="py-2.5 text-right">$1,046.18</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2.5 text-slate-300">12:34:07</td>
+                        <td className="py-2.5 text-loss font-medium">Sell</td>
+                        <td className="py-2.5 text-right">1.2000</td>
+                        <td className="py-2.5 text-right">1,999.80</td>
+                        <td className="py-2.5 text-right">$2,399.76</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2.5 text-slate-300">12:33:52</td>
+                        <td className="py-2.5 text-gain font-medium">Buy</td>
+                        <td className="py-2.5 text-right">0.3000</td>
+                        <td className="py-2.5 text-right">1,999.92</td>
+                        <td className="py-2.5 text-right">$599.98</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2.5 text-slate-300">12:33:41</td>
+                        <td className="py-2.5 text-loss font-medium">Sell</td>
+                        <td className="py-2.5 text-right">0.7500</td>
+                        <td className="py-2.5 text-right">1,998.64</td>
+                        <td className="py-2.5 text-right">$1,498.98</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2.5 text-slate-300">12:33:28</td>
+                        <td className="py-2.5 text-gain font-medium">Buy</td>
+                        <td className="py-2.5 text-right">2.0000</td>
+                        <td className="py-2.5 text-right">2,000.00</td>
+                        <td className="py-2.5 text-right">$4,000.00</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -376,4 +583,3 @@ export default function Trading() {
     </div>
   );
 }
-
