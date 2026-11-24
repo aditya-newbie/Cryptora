@@ -36,6 +36,7 @@ export interface CoinDetail {
       github: string[];
       bitbucket: string[];
     };
+    telegram_channel_identifier: string;
   };
 
   genesis_date: string | null;

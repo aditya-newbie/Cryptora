@@ -4,7 +4,6 @@ import {
   ArrowUpRight,
   Blocks,
   CalendarDays,
-  ChevronDown,
   ChevronRight,
   CircleDot,
   Coins,
@@ -20,18 +19,10 @@ import { fetchCoinDetail, fetchCoinMarket } from "../../../../services/coingecko
 import { formatMatricPrefix, formatNumber } from "../../../../utils/format";
 import { changeTextClass } from "../../../../utils/other";
 import Description from "../../../../components/Description";
-import { MarketTrend, TreadingVolume } from "../../../../components/AssetCharts";
+import { MarketTrend, RsiChart, TreadingVolume } from "../../../../components/AssetCharts";
 import { useState } from "react";
+import { getCurrentRsi } from "../../../../utils/calc";
 
-function GraphPlaceholder({ label }: { label: string }) {
-  return (
-    <div
-      aria-label={label}
-      role="img"
-      className="h-full w-full rounded-md bg-gray-800"
-    />
-  );
-}
 
 export interface TimeSpan {
   time: string,
@@ -167,8 +158,8 @@ export default function AssetDetails() {
                 {primaryChartOptions.map(option => {
                   return (
                     <label key={option} className={`rounded-lg border bg-accent/20 px-3.5 py-1 ${activePrimaryChart === option
-                        ? "border-accent bg-accent/20"
-                        : "border-card-border text-gray-300"
+                      ? "border-accent bg-accent/20"
+                      : "border-card-border text-gray-300"
                       }`} >
                       <span className="text-xs">{option}</span>
                       <input
@@ -210,10 +201,10 @@ export default function AssetDetails() {
             <div className="mt-1 h-50 sm:h-[250px]">
               <MarketTrend
                 marketTrendData={
-                  activePrimaryChart === "Price" 
+                  activePrimaryChart === "Price"
                     ? MarketChartQuery?.data?.price
                     : MarketChartQuery?.data?.market_caps
-                  }
+                }
                 timeSpan={activeTime}
               />
             </div>
@@ -309,12 +300,7 @@ export default function AssetDetails() {
                   Trading Volume
                   <Info className="h-3 w-3 text-gray-400" />
                 </span>
-                <button
-                  type="button"
-                  className="flex items-center gap-1 rounded-full border border-card-border px-2 py-0.5 text-[9px]"
-                >
-                  24H <ChevronDown className="h-3 w-3" />
-                </button>
+
               </div>
               <div className="h-[105px]">
                 <TreadingVolume volumeData={MarketChartQuery?.data?.total_volumes} timeSpan={activeTime} />
@@ -328,14 +314,14 @@ export default function AssetDetails() {
                   <Info className="h-3 w-3 text-gray-400" />
                 </span>
                 <span className="font-bold">
-                  54.3
+                  {getCurrentRsi(MarketChartQuery?.data?.price, activeTime?.time)}
                   <span className="ml-1 rounded-full border border-card-border px-2 py-0.5 text-[9px] font-normal text-gray-300">
                     Neutral
                   </span>
                 </span>
               </div>
               <div className="h-[105px]">
-                <GraphPlaceholder label="RSI graph placeholder" />
+                <RsiChart coinId={coinId} timeSpan={activeTime} />
               </div>
             </div>
           </div>
@@ -350,21 +336,23 @@ export default function AssetDetails() {
               <div className="flex min-h-5 items-center gap-2 border-b border-card-border/70">
                 <Globe className="h-3 w-3 shrink-0 text-gray-400" />
                 <span className="w-20 shrink-0 text-gray-200">Website</span>
-                <span className="truncate text-purple-300 underline">
-                  {coinDetailQuery?.data?.links.homepage}
-                </span>
+                <a className="truncate text-purple-300 underline" href={coinDetailQuery?.data?.links.homepage[0]} target="blank">
+                  {coinDetailQuery?.data?.links.homepage[0]}
+                </a>
               </div>
               <div className="flex min-h-5 items-center gap-2 border-b border-card-border/70">
                 <Blocks className="h-3 w-3 shrink-0 text-gray-400" />
                 <span className="w-20 shrink-0 text-gray-200">Whitepaper</span>
-                <span className="w-70 truncate text-purple-300 underline whitespace-nowrap overflow-hidden text-elliipsis">
-                  {coinDetailQuery?.data?.links?.whitepaper}
-                </span>
+                <a className="truncate text-purple-300 underline" href={coinDetailQuery?.data?.links.whitepaper} target="blank">
+                  {coinDetailQuery?.data?.links.whitepaper}
+                </a>
               </div>
               <div className="flex min-h-5 items-center gap-2 border-b border-card-border/70">
                 <CircleDot className="h-3 w-3 shrink-0 text-gray-400" />
                 <span className="w-20 shrink-0 text-gray-200">Blockchain</span>
-                <span className="w-70 truncate text-purple-300 underline whitespace-nowrap overflow-hidden text-elliipsis">{coinDetailQuery?.data?.links?.blockchain_site}</span>
+                <a className="w-70 truncate text-purple-300 underline whitespace-nowrap overflow-hidden" href={coinDetailQuery?.data?.links.blockchain_site[0]} target="blank">
+                  {coinDetailQuery?.data?.links.blockchain_site[0]}...
+                </a>
               </div>
               <div className="flex min-h-5 items-center gap-2 border-b border-card-border/70">
                 <CalendarDays className="h-3 w-3 shrink-0 text-gray-400" />
@@ -375,7 +363,7 @@ export default function AssetDetails() {
                 <Link2 className="h-3 w-3 shrink-0 text-gray-400" />
                 <span className="w-20 shrink-0 text-gray-200">Categories</span>
                 <span className="min-h-[18px] min-w-10 rounded-full border border-card-border px-2 py-0.5 text-[9px]">
-                  {coinDetailQuery?.data?.categories[2]}
+                  {coinDetailQuery?.data?.categories[1]}
                 </span>
                 <span className="rounded-full border border-card-border px-2 py-0.5 text-[9px]">
                   Store of Value
@@ -389,28 +377,28 @@ export default function AssetDetails() {
                 <div className="flex min-h-5 items-center gap-2 border-b border-card-border/70">
                   <CircleDot className="h-3 w-3 shrink-0 text-gray-400" />
                   <span className="w-14 shrink-0 text-gray-200">X</span>
-                  <span className="truncate text-purple-300">@Bitcoin</span>
+                  <span className="truncate text-purple-300">{coinDetailQuery?.data?.links.twitter_screen_name}</span>
                 </div>
                 <div className="flex min-h-5 items-center gap-2 border-b border-card-border/70">
                   <CircleDot className="h-3 w-3 shrink-0 text-gray-400" />
                   <span className="w-14 shrink-0 text-gray-200">Reddit</span>
-                  <span className="truncate text-purple-300">r/Bitcoin</span>
+                  <a href={coinDetailQuery?.data?.links.subreddit_url ?? ""} target="blank" className="truncate text-purple-300">{coinDetailQuery?.data?.links.subreddit_url}</a>
                 </div>
                 <div className="flex min-h-5 items-center gap-2 border-b border-card-border/70">
                   <CircleDot className="h-3 w-3 shrink-0 text-gray-400" />
                   <span className="w-14 shrink-0 text-gray-200">GitHub</span>
-                  <span className="truncate text-purple-300">bitcoin/bitcoin</span>
+                  <a href={coinDetailQuery.data?.links.repos_url.github[0] ?? ""} target="blank" className="truncate text-purple-300">{coinDetailQuery.data?.links.repos_url.github[0]}</a>
                 </div>
                 <div className="flex min-h-5 items-center gap-2 border-b border-card-border/70">
                   <CircleDot className="h-3 w-3 shrink-0 text-gray-400" />
                   <span className="w-14 shrink-0 text-gray-200">Telegram</span>
-                  <span className="truncate text-purple-300">Bitcoin</span>
+                  <span className="truncate text-purple-300">{coinDetailQuery?.data?.links.telegram_channel_identifier}</span>
                 </div>
               </div>
             </div>
           </div>
         </section>
-      </div>
-    </main>
+      </div >
+    </main >
   );
 }

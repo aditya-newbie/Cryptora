@@ -4,6 +4,9 @@ import type { ChartData } from "../types/Coin";
 import { getPriceTicks, getTimeTicks } from "../utils/format";
 import type { TimeSpan } from "../app/routes/app/pages/AssetDetails";
 import { getBarChartData } from "../utils/mutate";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCoinMarket } from "../services/coingecko";
+import { getRsiData } from "../utils/calc";
 
 interface MarketTrendProp {
   marketTrendData: ChartData[] | undefined;
@@ -12,6 +15,11 @@ interface MarketTrendProp {
 
 interface TreadingVolumeProp {
   volumeData: ChartData[] | undefined;
+  timeSpan: TimeSpan | undefined;
+}
+
+interface RsiProp {
+  coinId: string | undefined;
   timeSpan: TimeSpan | undefined;
 }
 
@@ -136,13 +144,13 @@ export function TreadingVolume({ volumeData, timeSpan }: TreadingVolumeProp) {
 
   const aggregatedData = getBarChartData(volumeData);
   const time = timeSpan.time
-  console.log(aggregatedData)
   return (
     <ResponsiveContainer>
       <BarChart data={aggregatedData}>
         <XAxis
           dataKey="time"
           tick={{ fill: "#64748B", fontSize: 12 }}
+          ticks={getTimeTicks(aggregatedData)}
           tickFormatter={(timeMs) => {
             switch (time) {
               case "24H":
@@ -163,7 +171,7 @@ export function TreadingVolume({ volumeData, timeSpan }: TreadingVolumeProp) {
         <YAxis
           type="number"
           tick={{ fill: "#64748B", fontSize: 12 }}
-          ticks={getPriceTicks(volumeData)}
+          ticks={getPriceTicks(aggregatedData)}
           tickFormatter={(price) => {
             if (price < 1) {
               return String(price.toFixed(6))
@@ -191,4 +199,99 @@ export function TreadingVolume({ volumeData, timeSpan }: TreadingVolumeProp) {
       </BarChart>
     </ResponsiveContainer>
   )
+}
+
+
+export function RsiChart({ coinId, timeSpan }: RsiProp) {
+
+  const { data: hourlyData } = useQuery({
+    queryKey: ["MarketChart", coinId, "90"],
+    queryFn: () => fetchCoinMarket(coinId, "90"),
+  })
+  const { data: dailyData } = useQuery({
+    queryKey: ["MarketChart", coinId, "365"],
+    queryFn: () => fetchCoinMarket(coinId, "365"),
+  })
+
+  if (!coinId) return null;
+  if (!timeSpan || !hourlyData || !dailyData) return null;
+  const time = timeSpan.time;
+  const rsiData = time === "365D" ? getRsiData(dailyData.price, time) : getRsiData(hourlyData.price, time)
+
+  return (
+    <ResponsiveContainer>
+      <LineChart data={rsiData}>
+        <CartesianGrid
+          vertical={false}
+          stroke="#64748b"
+          strokeOpacity={0.2}
+          strokeDasharray="3 3"
+        />
+
+        <XAxis
+          dataKey="time"
+          type="number"
+          tick={{ fill: "#64748B", fontSize: 12 }}
+          ticks={getTimeTicks(rsiData)}
+          tickFormatter={(timeMs) => {
+            switch (time) {
+              case "24H":
+                return dayjs(timeMs).format("ha");
+              case "7D":
+                return dayjs(timeMs).format("ddd");
+              case "1M":
+                return dayjs(timeMs).format("D MMM");
+              case "3M":
+                return dayjs(timeMs).format("D MMM");
+              case "1Y":
+                return dayjs(timeMs).format("MMM");
+              default:
+                return dayjs(timeMs).format("DD MMM YYYY")
+            }
+          }}
+        />
+        <YAxis
+          type="number"
+          tick={{ fill: "#64748B", fontSize: 12 }}
+          ticks={getPriceTicks(rsiData)}
+          tickFormatter={(price) => {
+            if (price < 1) {
+              return String(price.toFixed(6))
+            } else if (price < 10) {
+              return String(price.toFixed(4))
+            } else if (price < 1000) {
+              return String(price.toFixed(2))
+            } else if (price < 10 ** 6) {
+              return `${(price / 1000).toFixed(1)}k`
+            } else if (price < 10 ** 9) {
+              return `${(price / 10 ** 6).toFixed(2)}M`
+            } else if (price < 10 ** 12) {
+              return `${(price / 10 ** 9).toFixed(2)}B`
+            } else {
+              return `${(price / 10 ** 12).toFixed(2)}T`
+            }
+          }}
+        />
+
+
+        <Line
+          type="linear"
+          dataKey="price"
+
+          stroke="#8B5CF6"
+          strokeWidth={2}
+          dot={false}
+          activeDot={{
+            r: 5,
+            fill: "#241e41",
+            stroke: "#afafaf",
+            strokeWidth: 2,
+          }}
+          isAnimationActive={true}
+          animationDuration={600}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  )
+
 }
