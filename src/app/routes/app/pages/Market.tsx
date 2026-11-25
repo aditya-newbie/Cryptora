@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 
 import { filter24hChange, filterCategory, filterMarketCap, filterTabPill, filterVolume24h } from "../../../../utils/mutate";
-import { PrimarySelect } from "../../../../components/select";
+import { FilterSelect } from "../../../../components/select";
 import { useFilterStore } from "../../../../stores/dashboard-filter-store";
 import React, { useMemo, useState } from "react";
 import useMarket from "../../../../hooks/useMarket";
@@ -137,7 +137,7 @@ export default function Market() {
             <span>New Listings</span>
           </label>
 
-          <PrimarySelect
+          <FilterSelect
             value={category}
             onChange={setCategory}
             values={categoryFilters}
@@ -164,13 +164,13 @@ export default function Market() {
           </div>
 
           {/* Market Cap Dropdown */}
-          <PrimarySelect value={marketCap} onChange={setMarketCap} values={marketCapFilters} placeholder="MarketCap" />
+          <FilterSelect value={marketCap} onChange={setMarketCap} values={marketCapFilters} placeholder="MarketCap" />
 
           {/* Volume (24h) Dropdown */}
-          <PrimarySelect value={volume24h} onChange={setVolume24h} values={volume24hFilters} placeholder="Volume (24h)" />
+          <FilterSelect value={volume24h} onChange={setVolume24h} values={volume24hFilters} placeholder="Volume (24h)" />
 
           {/* 24h Change Dropdown */}
-          <PrimarySelect value={change24h} onChange={setChange24h} values={change24hFilters} placeholder="24h Change" />
+          <FilterSelect value={change24h} onChange={setChange24h} values={change24hFilters} placeholder="24h Change" />
 
 
         </div>
