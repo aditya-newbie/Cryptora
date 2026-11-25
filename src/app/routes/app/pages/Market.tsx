@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 
 import { filter24hChange, filterCategory, filterMarketCap, filterTabPill, filterVolume24h } from "../../../../utils/mutate";
-import { PrimarySelect, SecondarySelect } from "../../../../components/select";
+import { PrimarySelect } from "../../../../components/select";
 import { useFilterStore } from "../../../../stores/dashboard-filter-store";
 import React, { useMemo, useState } from "react";
 import useMarket from "../../../../hooks/useMarket";
@@ -64,7 +64,7 @@ export default function Market() {
 
   return (
     <div className="font-body min-h-screen bg-canvas text-white">
-      <div className="mx-auto max-w-350 px-6 py-8">
+      <div className="mx-auto max-w-350 px-6 py-4">
         {/* ── Page Title ── */}
         <h1 className="text-3xl font-bold">Markets</h1>
         <p className="mt-1 text-sm text-gray-400">
@@ -137,7 +137,14 @@ export default function Market() {
             <span>New Listings</span>
           </label>
 
-          <SecondarySelect value={category} onChange={setCategory} values={categoryFilters} placeholder="Category" />
+          <PrimarySelect
+            value={category}
+            onChange={setCategory}
+            values={categoryFilters}
+            placeholder="Category"
+            className="flex h-10 items-center justify-between gap-2.5 rounded-full border border-card bg-card px-4 py-2 text-sm text-gray-300 hover:text-white cursor-pointer transition-colors outline-none focus:border-accent"
+            icons={true}
+          />
         </div>
 
         {/* ── Search + Filter Bar ── */}

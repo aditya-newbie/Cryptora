@@ -1,6 +1,6 @@
-import type  MarketCoin from "./MarketCoin";
+import type MarketCoin from "./MarketCoin";
 
-export interface FilterItem {
+export interface SelectItem {
   name: string;
   id: string;
 }

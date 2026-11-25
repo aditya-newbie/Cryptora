@@ -17,6 +17,7 @@
     "@tanstack/react-query": "^5.107.1",
     "@tanstack/react-query-persist-client": "^5.107.1",
     "@tanstack/react-virtual": "^3.14.26",
+    "@web3icons/react": "^4.1.27",
     "dayjs": "^1.11.23",
     "idb": "^8.0.4",
     "lucide-react": "^1.69.0",

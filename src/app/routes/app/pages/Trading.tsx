@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import {
   ArrowUpDown,
   Camera,
@@ -15,91 +16,115 @@ import {
   TrendingUp,
   X,
 } from "lucide-react";
+import { fetchNetworks } from "../../../../services/gecko-terminal";
+import { PrimarySelect } from "../../../../components/select";
+import { useState } from "react";
+import type { SelectItem } from "../../../../types/Dashboard";
 
 export default function TrendingTerminal() {
+
+  const networkQuery = useQuery({
+    queryKey: ["network"],
+    queryFn: fetchNetworks,
+    staleTime: 1000 * 60 * 60 * 24
+  })
+  const [networksSelect] = useState(() => {
+    return (
+      (networkQuery?.data?.data ?? []).map(network => {
+        return { name: network.attributes.name, id: network.id }
+      })
+    )
+  })
+  const [selectedNetwork, setSelectedNetwork] = useState(networksSelect[0])
+
+  function handleNetworkChange(network) {
+    setSelectedNetwork(network)
+  }
+
+
   return (
-    <div className="min-h-screen bg-canvas text-white font-body p-4 md:p-6">
+    <div className="min-h-screen bg-canvas text-white font-body px-4 p-2 md:p-4">
       <div className="max-w-[1440px] mx-auto space-y-4">
         {/* Top Selector Bar */}
-        <div className="bg-card border border-card rounded-xl p-3">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+        <div className="bg-card border border-card rounded-xl px-3 py-2">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-2.5 items-center">
             {/* 01 Network */}
             <div className="md:col-span-3">
-              <p className="text-xs text-slate-400 mb-1.5">01 Network</p>
-              <div className="bg-canvas/70 border border-card rounded-lg px-3 py-2.5 flex items-center justify-between hover-card">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-full bg-accent/20 text-accent flex items-center justify-center">
-                    <Coins className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-sm font-medium">Ethereum</span>
-                </div>
-                <ChevronDown className="w-4 h-4 text-slate-400" />
-              </div>
+              <p className="text-[11px] text-slate-400 mb-1 leading-none font-medium">01 Network</p>
+              <PrimarySelect
+                value={selectedNetwork}
+                onChange={handleNetworkChange}
+                values={networksSelect}
+                className="w-70 bg-canvas/70 border border-card rounded-lg px-2.5 py-1.5 flex items-center justify-between hover-card"
+              />
             </div>
 
             {/* 02 Token */}
             <div className="md:col-span-3">
-              <p className="text-xs text-slate-400 mb-1.5">02 Token</p>
-              <div className="bg-canvas/70 border border-card rounded-lg px-3 py-2 flex items-center justify-between hover-card">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-full bg-accent/20 text-accent flex items-center justify-center shrink-0">
-                    <Coins className="w-3.5 h-3.5" />
+              <p className="text-[11px] text-slate-400 mb-1 leading-none font-medium">02 Token</p>
+              <div className="bg-canvas/70 border border-card rounded-lg px-2.5 py-1.5 flex items-center justify-between hover-card">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-5 h-5 rounded-full bg-accent/20 text-accent flex items-center justify-center shrink-0">
+                    <Coins className="w-3 h-3" />
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium truncate">Wrapped Ether (WETH)</p>
-                    <p className="text-[11px] text-slate-400 tabular-nums truncate">
+                  <div className="min-w-0 leading-tight">
+                    <p className="text-xs font-medium truncate">Wrapped Ether (WETH)</p>
+                    <p className="text-[10px] text-slate-400 tabular-nums truncate">
                       0xC02a...6Cc2
                     </p>
                   </div>
                 </div>
-                <X className="w-4 h-4 text-slate-400 shrink-0" />
+                <X className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               </div>
             </div>
 
             {/* 03 Confirm Pool */}
             <div className="md:col-span-4">
-              <p className="text-xs text-slate-400 mb-1.5">03 Confirm Pool</p>
-              <div className="bg-canvas/70 border border-card rounded-lg px-3 py-2 flex items-center justify-between gap-2 hover-card">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-full bg-accent/20 text-accent flex items-center justify-center shrink-0">
-                    <CircleDollarSign className="w-3.5 h-3.5" />
+              <p className="text-[11px] text-slate-400 mb-1 leading-none font-medium">03 Confirm Pool</p>
+              <div className="bg-canvas/70 border border-card rounded-lg px-2.5 py-1.5 flex items-center justify-between gap-2 hover-card">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-5 h-5 rounded-full bg-accent/20 text-accent flex items-center justify-center shrink-0">
+                    <CircleDollarSign className="w-3 h-3" />
                   </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium whitespace-nowrap">
+                  <div className="min-w-0 leading-tight">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-medium whitespace-nowrap">
                         WETH / USDC
                       </span>
-                      <span className="bg-gain/20 text-gain text-[10px] font-medium px-2 py-0.5 rounded-full">
+                      <span className="bg-gain/20 text-gain text-[9px] font-medium px-1.5 py-0.5 rounded-full leading-none">
                         Recommended
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-400">Uniswap V3</p>
+                    <p className="text-[10px] text-slate-400">Uniswap V3</p>
                   </div>
                 </div>
 
-                <div className="hidden sm:flex items-center gap-4 text-right shrink-0">
+                <div className="hidden sm:flex items-center gap-3 text-right shrink-0">
                   <div>
-                    <p className="text-[10px] text-slate-400">Liquidity</p>
-                    <p className="text-xs font-medium tabular-nums">$12.4M</p>
+                    <p className="text-[9px] text-slate-400 leading-none">Liquidity</p>
+                    <p className="text-[11px] font-medium tabular-nums mt-0.5">$12.4M</p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-slate-400">24h Vol</p>
-                    <p className="text-xs font-medium tabular-nums">$8.7M</p>
+                    <p className="text-[9px] text-slate-400 leading-none">24h Vol</p>
+                    <p className="text-[11px] font-medium tabular-nums mt-0.5">$8.7M</p>
                   </div>
                 </div>
 
-                <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               </div>
             </div>
 
             {/* Confirm Pool Button */}
-            <div className="md:col-span-2">
+            <div className="md:col-span-2 flex flex-col justify-end">
+              <div className="hidden md:block text-[11px] text-transparent mb-1 leading-none select-none">
+                &nbsp;
+              </div>
               <button
                 type="button"
-                className="w-full bg-accent hover:opacity-90 text-white text-sm font-medium px-4 py-3 rounded-xl flex items-center justify-center gap-2 transition"
+                className="w-full bg-accent hover:opacity-90 text-white text-xs font-medium px-3 py-2 rounded-lg flex items-center justify-center gap-1.5 transition shadow-sm"
               >
                 <span>Confirm Pool</span>
-                <Check className="w-4 h-4" />
+                <Check className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>

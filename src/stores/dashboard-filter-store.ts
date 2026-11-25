@@ -1,19 +1,19 @@
 import { create } from "zustand";
-import type { FilterItem } from "../types/Dashboard";
+import type { SelectItem } from "../types/Dashboard";
 
 interface FilterStore {
   category: string;
   setCategory(cat: string): void;
-  categoryFilters: FilterItem[];
+  categoryFilters: SelectItem[];
   marketCap: string;
   setMarketCap(cap: string): void;
-  marketCapFilters: FilterItem[];
+  marketCapFilters: SelectItem[];
   change24h: string;
   setChange24h(chng: string): void;
-  change24hFilters: FilterItem[];
+  change24hFilters: SelectItem[];
   volume24h: string;
   setVolume24h(vol: string): void;
-  volume24hFilters: FilterItem[];
+  volume24hFilters: SelectItem[];
 };
 
 export const useFilterStore = create<FilterStore>((set) => ({
