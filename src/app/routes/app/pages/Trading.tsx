@@ -15,37 +15,64 @@ import {
   TrendingUp,
   X,
 } from "lucide-react";
-import { useState } from "react";
-import { TreadingSelect } from "../../../../components/select";
-import type { SelectItem } from "../../../../types/Dashboard";
+import React, { useState } from "react";
 import useNetwork from "../../../../hooks/useNetwork";
+import { NetworkIcon } from "@web3icons/react/dynamic";
 
 export default function TrendingTerminal() {
-  const { networksSelect, isLoading} = useNetwork();
-  const [selectedNetwork, setSelectedNetwork] = useState<SelectItem | undefined>(undefined)
-  const currentNetwork = selectedNetwork ?? networksSelect[0] ?? {name: "", id: ""}
+  const { networksSelect, isLoading } = useNetwork();
+  const [networkInput, setNetworkInput] = useState("Ethereum")
+  const [isNetworkInputFocus, setIsNetworkInputFocus] = useState(false)
 
-  function handleNetworkChange(value: string) {
-    setSelectedNetwork(networksSelect.find((network) => value === network.id))
+  function handleNetworkChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setNetworkInput(event.target.value);
   }
+
+  const searchedNetwork = networksSelect.filter(network => (
+    network.name.toLowerCase().includes(networkInput.toLowerCase())
+    || network.id.toLowerCase().includes(networkInput.toLowerCase())
+  ))
+  const currentNetwork = networksSelect.find(network => network.name === networkInput) ?? {name: "", id: ""}
+  console.log(currentNetwork)
 
   return (
     isLoading ? <div>Loading...</div> :
       <div className="min-h-screen bg-canvas text-white font-body px-4 p-2 md:p-4">
-        <div className="max-w-[1440px] mx-auto space-y-4">
+        <div className="max-w-360 mx-auto space-y-4">
           {/* Top Selector Bar */}
           <div className="bg-card border border-card rounded-xl px-3 py-2">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-2.5 items-center">
               {/* 01 Network */}
-              <div className="md:col-span-3">
+              <div className="md:col-span-3 relative">
                 <p className="text-[11px] text-slate-400 mb-1 leading-none font-medium">01 Network</p>
-                <TreadingSelect
-                  value={currentNetwork.id}
-                  onChange={handleNetworkChange}
-                  values={networksSelect}
-                  className="w-80 bg-canvas/70 border border-card rounded-lg px-2.5 py-1.5 flex items-center justify-between hover-card"
-                  placeholder="Select a Network"
+                <input
+                  value={networkInput}
+                  onFocus={() => { setIsNetworkInputFocus(true) }}
+                  onBlur={() => { setTimeout(() => {setIsNetworkInputFocus(false)},300 )}}
+                  onChange={(e) => { handleNetworkChange(e) }}
+                  className="border-card border bg-canvas/70 rounded-lg h-8 w-76 text-white/90 outline-0 focus:outline-accent focus:outline-1 px-2.5"
                 />
+                <div 
+                className={
+                  `h-auto w-76 bg-canvas/90 rounded-lg border border-accent absolute top-12 p-1 flex flex-col gap-1
+                  ${isNetworkInputFocus ?  "visible" : "hidden"}`
+                }
+                >
+                  {searchedNetwork.map(network => {
+                    return (
+                      <div key={network.id} onClick={() => {setNetworkInput(network.name)}}>
+                        <NetworkIcon
+                          name={network.name}
+                          variant="branded"
+                          size={28}
+                          fallback={<img src="src/assets/not-available-network.svg" className="inline-block" style={{ height: "28px" }} ></img>}
+                          className="inline-block"
+                        />
+                        <span className="ml-2 font-semibold text-white/90">{network.name}</span>
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
 
               {/* 02 Token */}

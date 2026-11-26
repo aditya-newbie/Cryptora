@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 710 660" fill="none">
+  <defs>
+    <linearGradient id="lavender" x1="120" y1="80" x2="610" y2="620" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d8d7ff"/>
+      <stop offset="0.48" stop-color="#b7b5f2"/>
+      <stop offset="1" stop-color="#8984df"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="170" y1="90" x2="590" y2="620" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#827bd5"/>
+      <stop offset="0.5" stop-color="#a19be9"/>
+      <stop offset="1" stop-color="#625db5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer circular outline -->
+  <circle cx="354" cy="359" r="330" stroke="url(#ring)" stroke-width="19"/>
+
+  <!-- Network connections -->
+  <path d="M354 224 L230 430 L478 430 Z" stroke="url(#lavender)" stroke-width="29" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Network nodes -->
+  <circle cx="354" cy="224" r="65" fill="url(#lavender)"/>
+  <circle cx="230" cy="430" r="64" fill="url(#lavender)"/>
+  <circle cx="478" cy="430" r="64" fill="url(#lavender)"/>
+
+  <!-- Question badge, intentionally overlapping the network and outer ring -->
+  <circle cx="522" cy="541" r="89" fill="url(#lavender)"/>
+  <text x="522" y="592" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="143" font-weight="700" fill="#080716">?</text>
+</svg>
