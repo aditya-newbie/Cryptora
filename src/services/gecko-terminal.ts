@@ -12,11 +12,17 @@ interface Networks {
 }
 
 export async function fetchNetworks(): Promise<Networks> {
-  const res = await fetch("https://api.geckoterminal.com/api/v2/networks");
+  const page1 = await fetch("https://api.geckoterminal.com/api/v2/networks?page=1");
+  const page2 = await fetch("https://api.geckoterminal.com/api/v2/networks?page=2");
+  const page3 = await fetch("https://api.geckoterminal.com/api/v2/networks?page=3");
 
-  if (!res.ok) {
+  if (!page1.ok || !page3.ok || !page3.ok) {
     throw new Error("Failed to fetch networks")
   }
 
-  return res.json()
+  const page1Data = await page1.json()
+  const page2Data = await page2.json()
+  const page3Data = await page3.json()
+
+  return {data: [ ...page1Data.data, ...page2Data.data, ...page3Data.data ]}
 }

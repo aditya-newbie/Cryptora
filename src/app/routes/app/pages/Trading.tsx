@@ -32,8 +32,7 @@ export default function TrendingTerminal() {
     network.name.toLowerCase().includes(networkInput.toLowerCase())
     || network.id.toLowerCase().includes(networkInput.toLowerCase())
   ))
-  const currentNetwork = networksSelect.find(network => network.name === networkInput) ?? {name: "", id: ""}
-  console.log(currentNetwork)
+  //const currentNetwork = networksSelect.find(network => network.name === networkInput) ?? {name: "", id: ""}
 
   return (
     isLoading ? <div>Loading...</div> :
@@ -54,7 +53,7 @@ export default function TrendingTerminal() {
                 />
                 <div 
                 className={
-                  `h-auto w-76 bg-canvas/90 rounded-lg border border-accent absolute top-12 p-1 flex flex-col gap-1
+                  `h-auto w-76 bg-canvas/90 rounded-lg border border-accent absolute top-12 p-1 flex flex-col gap-1 max-h-100 overflow-auto scrollbar-thin scrollbar-thumb-slate-700/90
                   ${isNetworkInputFocus ?  "visible" : "hidden"}`
                 }
                 >
