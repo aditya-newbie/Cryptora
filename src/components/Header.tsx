@@ -18,7 +18,7 @@ interface NavLinkData {
 const navLinks: NavLinkData[] = [
   { lable: "Dashboard", to: "/", icon: Home, end: true },
   { lable: "Market", to: "/market", icon: BarChart3, end: false },
-  { lable: "Trading", to: "/trade", icon: SlidersHorizontal, end: false },
+  { lable: "Trading", to: "/trade?Network=eth", icon: SlidersHorizontal, end: false },
   { lable: "Portfolio", to: "/portfolio", icon: Wallet, end: false },
 
 ]
