@@ -7,9 +7,10 @@ interface PoolIconProp {
   className?: string;
   networkId: string;
   poolId: string;
+  size?: number;
 }
 
-export default function PoolIcon({ className = "", networkId, poolId }: PoolIconProp) {
+export default function PoolIcon({ className = "", networkId, poolId, size = 36 }: PoolIconProp) {
   const { data: pools } = useQuery({
     queryKey: ["pools", networkId],
     queryFn: () => fetchPools(networkId),
@@ -22,36 +23,45 @@ export default function PoolIcon({ className = "", networkId, poolId }: PoolIcon
     pools?.included?.find((token) => token.id === baseTokenId)?.attributes.symbol ?? "";
   const quoteTokenSymbol =
     pools?.included?.find((token) => token.id === quoteTokenId)?.attributes.symbol ?? "";
+  const iconSize = Math.round((size * 2) / 3);
 
   return (
     <div className={`${className} flex shrink-0 items-center -space-x-2.5`}>
-      <div className="relative z-10 flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-card bg-canvas">
+      <div
+        className="relative z-10 flex items-center justify-center overflow-hidden rounded-full border-2 border-card bg-canvas"
+        style={{ width: size, height: size }}
+      >
         <TokenIcon
           key={baseTokenSymbol || "base-empty"}
           symbol={baseTokenSymbol}
-          size={24}
+          size={iconSize}
           variant="branded"
           fallback={
             <img
               src={notAvailableIcon}
               alt={baseTokenSymbol || "Unknown token"}
-              className="h-6 w-6 object-contain"
+              className="object-contain"
+              style={{ width: iconSize, height: iconSize }}
             />
           }
         />
       </div>
 
-      <div className="relative z-0 flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-card bg-canvas">
+      <div
+        className="relative z-0 flex items-center justify-center overflow-hidden rounded-full border-2 border-card bg-canvas"
+        style={{ width: size, height: size }}
+      >
         <TokenIcon
           key={quoteTokenSymbol || "quote-empty"}
           symbol={quoteTokenSymbol}
-          size={24}
+          size={iconSize}
           variant="branded"
           fallback={
             <img
               src={notAvailableIcon}
               alt={quoteTokenSymbol || "Unknown token"}
-              className="h-6 w-6 object-contain"
+              className="object-contain"
+              style={{ width: iconSize, height: iconSize }}
             />
           }
         />

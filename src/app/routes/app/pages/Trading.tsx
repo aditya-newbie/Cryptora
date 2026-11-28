@@ -13,7 +13,7 @@ import {
   Star,
   TrendingUp,
 } from "lucide-react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useNetwork from "../../../../hooks/useNetwork";
 import { NetworkIcon } from "@web3icons/react/dynamic";
 import { useSearchParams } from "react-router";
@@ -153,8 +153,11 @@ export default function TrendingTerminal() {
   const poolQueryRef = useRef<HTMLInputElement>(null);
   const selectedPoolId = searchParams.get("pool");
   const currentPool = pools?.data?.find(pool => (pool.id === selectedPoolId)) ?? emptyPool
-  console.log(currentPool)
+  const [recentPools, setRecentPools] = useState<Pool[]>(() => JSON.parse(localStorage.getItem("recent-pools") ?? "[]"))
 
+  useEffect(() => {
+    localStorage.setItem("recent-pools", JSON.stringify(recentPools))
+  },[recentPools])
 
   useEventListener<KeyboardEvent>("keydown", (event) => {
     if (event.key === "Enter") {
@@ -195,8 +198,17 @@ export default function TrendingTerminal() {
         prev.set("pool", found.id)
         return prev;
       })
+
+      const exists = recentPools.find(p => p.id === found.id)
+      if (exists) {
+        setRecentPools(prev => prev.filter(p => p.id !== exists.id))
+      } else if (recentPools.length >= 3) {
+        setRecentPools(prev => prev.slice(0, -1))
+      }
+      setRecentPools(prev => [found, ...prev])
     }
   }
+
   function selectPool(pool: Pool) {
     setPoolQuery(pool.attributes.name);
     setSearchParams((prev) => {
@@ -204,6 +216,14 @@ export default function TrendingTerminal() {
       return prev;
     })
     poolQueryRef.current?.blur()
+
+    const exists = recentPools.find(p => p.id === pool.id)
+    if (exists) {
+      setRecentPools(prev => prev.filter(p => p.id !== exists.id))
+    } else if (recentPools.length >= 3) {
+      setRecentPools(prev => prev.slice(0, -1))
+    }
+    setRecentPools(prev => [pool, ...prev])
   }
 
   const searchedNetwork = networksSelect.filter(network => (
@@ -222,10 +242,10 @@ export default function TrendingTerminal() {
         <div className="max-w-360 mx-auto space-y-4">
           {/* Top Selector Bar */}
           <div className="bg-card border border-card rounded-xl px-3 py-2">
-            <div className="grid grid-cols-11 gap-2.5 items-center">
+            <div className="grid grid-cols-17 gap-2.5 items-center">
               {/* 01 Network */}
-              <div className="relative col-span-3">
-                <p className="text-xs text-slate-400 mb-1 leading-none font-medium">Network</p>
+              <div className="relative col-span-4">
+                <p className="text-xs text-slate-300 mb-1 leading-none font-medium">Network</p>
                 <div className={`border-card border bg-canvas/70 rounded-lg h-12 w-75 ${isSearchingNetwork ? "border-accent" : ""}`} >
                   {currentNetwork.name && <NetworkIcon
                     name={currentNetwork.name}
@@ -280,9 +300,9 @@ export default function TrendingTerminal() {
               </div>
 
               {/* O2 Market */}
-              <div className="relative col-span-4">
-                <p className="text-xs text-slate-400 mb-1 leading-none font-medium">Market</p>
-                <div className={`flex items-center gap-2 px-2.5 border-card border bg-canvas/70 rounded-lg h-12 w-120 ${isSearchingPool ? "border-accent" : ""}`}>
+              <div className="relative col-span-5 pl-4">
+                <p className="text-xs text-slate-300 mb-1 leading-none font-medium">Market</p>
+                <div className={`flex items-center gap-2 px-2.5 border-card border bg-canvas/70 rounded-lg h-12 w-86 ${isSearchingPool ? "border-accent" : ""}`}>
                   {selectedNetworkId && selectedPoolId && <PoolIcon
                     networkId={selectedNetworkId}
                     poolId={selectedPoolId}
@@ -306,8 +326,7 @@ export default function TrendingTerminal() {
                 </div>
                 <div
                   className={
-                    `h-auto w-120 bg-canvas/90 rounded-lg border border-accent absolute top-16 p-1 flex flex-col gap-1 max-h-100 overflow-auto scrollbar-thin scrollbar-thumb-slate-700/90
-                  ${isSearchingPool ? "visible" : "hidden"}`
+                    `h-auto w-120 bg-canvas/90 rounded-lg border border-accent absolute top-16 p-1 flex flex-col gap-1 max-h-100 overflow-auto scrollbar-thin scrollbar-thumb-slate-700/90 ${isSearchingPool ? "visible" : "hidden"}`
                   }
                   onMouseDown={(e) => { e.preventDefault() }}
                 >
@@ -331,7 +350,32 @@ export default function TrendingTerminal() {
               </div>
 
               {/* 03 Recent */}
-              <div className="reative col-span-4"></div>
+              <div className="reative col-span-8 h-full">
+                <p className="text-xs text-slate-300 mb-1 leading-none font-medium">Recent markets</p>
+                <div className="grid grid-cols-3 gap-5">
+                  {recentPools.slice(0, 3).map(pool => {
+                    return (
+                      <div 
+                      key={pool.id} 
+                      onClick={() => {selectPool(pool)}}
+                      className={
+                        `w-full h-10 bg-card border rounded-xl grid grid-cols-7 items-center pl-2 ${pool.id === selectedPoolId
+                          ? "border-accent/60"
+                          : "border-card"
+                        }`
+                      }>
+                        <PoolIcon
+                          poolId={pool.id}
+                          networkId={selectedNetworkId ?? ""}
+                          className="col-span-2"
+                          size={26}
+                        />
+                        <p className="col-span-5 overflow-hidden whitespace-nowrap">{pool.attributes.name}</p>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
 
             </div>
           </div>
