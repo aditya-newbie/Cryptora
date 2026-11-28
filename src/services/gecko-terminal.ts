@@ -1,22 +1,13 @@
-interface Network {
-  "id": string,
-  "type": string,
-  "attributes": {
-    "name": string,
-    "coingecko_asset_platform_id": string
-  }
-}
+import type { Networks } from "../types/trade";
+import type { Pools } from "../types/trade";
 
-interface Networks {
-  data: Network[];
-}
 
 export async function fetchNetworks(): Promise<Networks> {
   const page1 = await fetch("https://api.geckoterminal.com/api/v2/networks?page=1");
   const page2 = await fetch("https://api.geckoterminal.com/api/v2/networks?page=2");
   const page3 = await fetch("https://api.geckoterminal.com/api/v2/networks?page=3");
 
-  if (!page1.ok || !page3.ok || !page3.ok) {
+  if (!page1.ok || !page2.ok || !page3.ok) {
     throw new Error("Failed to fetch networks")
   }
 
@@ -26,3 +17,13 @@ export async function fetchNetworks(): Promise<Networks> {
 
   return {data: [ ...page1Data.data, ...page2Data.data, ...page3Data.data ]}
 }
+
+export async function fetchPools(networkId: string):Promise<Pools> {
+  const page1 = await fetch(`https://api.geckoterminal.com/api/v2/networks/${networkId}/pools?include=base_token,quote_token&sort=h24_volume_usd_desc&page=1`)
+
+  if (!page1.ok) {
+    throw new Error("Failed to fetch pools")
+  }
+
+  return page1.json();
+} 
